@@ -1,0 +1,50 @@
+body{
+    border: 10px solid red;
+}
+.navbar{
+    width: 30%;
+    background-color: #012e46; 
+    color:#fff;
+    height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
+    position: fixed;
+}
+.navbar.close{
+    width: 60px;
+    padding: 20px 5px;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 50px;
+}
+.header_title{
+    margin: 0px;
+    text-align: center;
+    font-size: 18px;
+}
+.list{
+    list-style: none;
+    padding: 0px;
+}
+.list li{
+    margin: 10px 0px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.text_link{
+    text-decoration: none;
+    color: #fff;
+}
+
+.navbar.close .button_toggle_navbar{
+    text-align: center;
+    margin: 0px auto;
+}
+.navbar.close .navbar_image{
+    margin: 0px auto;
+}
