@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('collaborators', function(Blueprint $table){
-            $table->increments('id')->nullable(false);
+        Schema::create('collaborators', function (Blueprint $table) {
+            $table->increments('id'); // Clave primaria
             $table->string('name', 100)->nullable(false);
             $table->string('surname', 100)->nullable(false);
             $table->string('email', 100)->nullable(false);
             $table->string('phone', 16)->nullable(false);
-            $table->dateTime('created_at');
-            $table->dateTime('update_at');
-            $table->integer('branch_id', 11)->nullable(false);
+            $table->unsignedInteger('branch_id'); // Elimina la definición de clave primaria en `branch_id`
+            $table->timestamps();
+        
+            // Define `branch_id` como clave foránea si es necesario
+            $table->foreign('branch_id')->references('id')->on('branch')->onDelete('cascade');
         });
     }
 
