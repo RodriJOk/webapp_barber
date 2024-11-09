@@ -13,17 +13,22 @@ return new class extends Migration
     {
         Schema::create('shift_reservation', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre', 100)->nullable();
-            $table->string('apellido', 100)->nullable();
-            $table->date('date')->nullable();
-            $table->time('time')->nullable();
+            $table->string('nombre', 100)->nullable(); // Asumiendo que puede ser nulo
+            $table->string('apellido', 100)->nullable(); // Asumiendo que puede ser nulo
+            $table->date('date'); // Sin nullable si siempre se debe especificar una fecha
+            $table->time('time'); // Sin nullable si siempre se debe especificar una hora
             $table->string('observations', 100)->nullable();
-            $table->bigInteger('id_user'); // Sin el segundo parámetro `20`
             
-            $table->timestamps(); // Agrega `created_at` y `updated_at`
-        });
+            // Clave foránea con foreignId si está relacionada a la tabla users
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            
+            $table->timestamps(); // Agrega created_at y updated_at para registro de creación/actualización
+            
+            // Índices
+            $table->index(['date', 'time']); // Índice para optimizar consultas por fecha y hora
+        });        
     }
-    
+
     /**
      * Reverse the migrations.
      */
