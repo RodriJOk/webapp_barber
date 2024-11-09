@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('professionals', function(Blueprint $table){
-            $table->increments('id');
+        Schema::create('professionals', function (Blueprint $table) {
+            $table->increments('id'); // Clave primaria auto-incremental
             $table->string('name', 200)->nullable();
             $table->string('surname', 100)->nullable();
-            $table->integer('branch_id', 11)->nullable();
+            $table->unsignedInteger('branch_id')->nullable(); // Usar unsignedInteger para claves foráneas
             $table->string('spacialization', 100)->nullable();
             $table->dateTime('created_at')->nullable(false);
             $table->dateTime('update_at')->nullable(false);
             $table->string('phone', 100)->nullable();
         });
     }
+
 
     /**
      * Reverse the migrations.
