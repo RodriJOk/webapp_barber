@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('branch', function(Blueprint $table){
-            $table->increment('id')->nullable(false);
+            $table->increments('id'); // Cambiado a increments
             $table->string('name', 100)->nullable(false);
             $table->string('address', 1000)->nullable(false);
             $table->unsignedBigInteger('id_user')->nullable(false);
             $table->string('phone')->nullable(false);
             $table->timestamp('created_at');
-            $table->timestamp('update_at');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamp('updated_at'); // Cambiado a updated_at
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade'); // Asegúrate de que la clave coincida
         });
     }
 

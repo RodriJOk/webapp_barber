@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('suscription', function(Blueprint $table){
-            $table->increment('id')->nullable(false);
+            $table->increments('id')->nullable(false);
             $table->string('name', 255)->nullable(false);
             $table->enum('type', ['mensual', 'anual'])->nullable(false);
             $table->timestamps('start_date');

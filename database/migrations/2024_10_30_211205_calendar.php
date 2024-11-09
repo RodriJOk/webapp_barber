@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('calendar', function(Blueprint $table){
-            $table->increment('id')->nullable(false);
+            $table->increments('id')->nullable(false);
             $table->string('hora_inicio', 100)->nullable(false);
             $table->string('hora_fin', 100)->nullable(false);
             $table->string('descripcion', 100)->nullable(false);

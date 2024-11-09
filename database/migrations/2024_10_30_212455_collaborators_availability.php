@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('collaborators_availability', function(Blueprint $table){
-            $table->increment('id')->nullable();
+            $table->increments('id')->nullable();
             $table->integer('collaborator_id', 11)->nullable();
             $table->enum('day_of_th_week', ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'])->nullable();
             $table->time('start_time')->nullable();
