@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function(Blueprint $table){
-            $table->bigIncrements('id'); // O puedes usar increments si prefieres enteros más pequeños
+            $table->bigIncrements('id'); // O usa increments si prefieres enteros más pequeños
             $table->string('name', 255)->nullable(false);
             $table->string('email', 255)->unique()->nullable(false);
-            $table->timestamp('email_verified_at')->nullable(); // Asegúrate de no especificar nada dentro del paréntesis
+            $table->timestamp('email_verified_at')->nullable(); // Campo separado, sin duplicación
             $table->string('password', 255)->nullable(false);
-            $table->rememberToken();
-            $table->timestamps(); // Este método agrega `created_at` y `updated_at`
+            $table->rememberToken(); // Corrige a rememberToken()
+            $table->timestamps(); // Este método agrega `created_at` y `updated_at` automáticamente
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branch');
+        Schema::dropIfExists('users');
     }
 };
