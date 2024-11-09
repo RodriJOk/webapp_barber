@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function(Blueprint $table){
-            $table->bigIncrements('id'); // O usa increments si prefieres enteros más pequeños
-            $table->string('name', 255)->nullable(false);
-            $table->string('email', 255)->unique()->nullable(false);
-            $table->timestamp('email_verified_at')->nullable(false);
-            $table->string('password', 255)->nullable(false);
-            $table->rememberToken(); // Corrige a rememberToken()
-            $table->timestamps(); // Este método agrega `created_at` y `updated_at` automáticamente
+        Schema::create('branch', function(Blueprint $table){
+            $table->increments('id'); 
+            $table->string('name', 100)->nullable(false);
+            $table->string('address', 1000)->nullable(false);
+            $table->unsignedBigInteger('id_user')->nullable(false);
+            $table->string('phone')->nullable(false);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at'); // Cambiado a updated_at
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade'); // Asegúrate de que la clave coincida
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('branch');
     }
 };
