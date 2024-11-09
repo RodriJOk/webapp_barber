@@ -15,8 +15,8 @@ return new class extends Migration
             $table->increments('id')->nullable(false);
             $table->string('name', 255)->nullable(false);
             $table->enum('type', ['mensual', 'anual'])->nullable(false);
-            $table->timestamps('start_date');
-            $table->timestamps('end_date');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->enum('activo', ['si', 'no'])->nullable(false);
             $table->integer('id_pago')->nullable(false);
             $table->integer('id_cliente')->nullable(false);
