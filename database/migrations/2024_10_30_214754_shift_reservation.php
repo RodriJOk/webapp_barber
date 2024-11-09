@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shift_reservation', function(Blueprint $table){
-            $table->increments('id')->nullable();
+            $table->increments('id');
             $table->string('nombre', 100)->nullable();
             $table->string('apellido', 100)->nullable();
             $table->date('date')->nullable();
