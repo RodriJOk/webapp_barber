@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="{{ asset('icons/cuidado.png') }}" type="image/x-icon">
         <!-- Fonts -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -62,6 +63,11 @@
                 border-radius: 10px;
                 cursor: pointer;
             }
+            .list li .item{
+                display: flex; 
+                flex-direction: row; 
+                gap: 10px;
+            }
             .text_link{
                 text-decoration: none;
                 color: #fff;
@@ -101,6 +107,13 @@
             .calendar{
                 margin: 10px 0px;
             }
+            .close_session{
+                background: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+                font-size: 16px;
+            }
         </style>
     </head>
     <body>
@@ -122,7 +135,7 @@
                 </header>
                 <ul class="list">
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/user.png')}}" 
@@ -133,7 +146,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/calendar.png')}}" 
@@ -144,7 +157,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/membresia.png')}}" 
@@ -155,7 +168,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/members_groups.png')}}" 
@@ -166,7 +179,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/groups.png')}}" 
@@ -177,29 +190,32 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item">
                             <img
                                 class="navbar_image"
                                 src="{{asset('icons/logout.png')}}" 
                                 alt="Abrir"
                                 width="20px"
                                 height="20px">
-                            <a href="" class="text_link">Cerrar Session</a>
+                            <form action="{{ route('close_session') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="text_link close_session">Cerrar Session</button>
+                            </form>
                         </div>
                     </li>
                 </ul>
             </navbar>
-            <div class="calendar_container">
-                <div class="header">
+            <section class="calendar_container">
+                <header class="header">
                     <h2 class="title">Mi calendario</h2>
                     <div class="container_button">
                         <button class="create_event" onclick="open_modal()">
                             Crear evento
                         </button>
                     </div>
-                </div>
+                </header>
                 <div id="calendar" class="calendar"></div>
-            </div>
+            </section>
         </main>
     </body>
     <script>

@@ -3,12 +3,14 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link rel="shortcut icon" href="{{ asset('icons/cuidado.png') }}" type="image/x-icon">
         <title>Inicio de Session</title>
-        <link rel="stylesheet" href="{{ asset('layout/sidebar.css') }}">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <style>
             body{
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -40,9 +42,27 @@
                 text-align: center;
                 text-wrap: balance;
             }
-            .list{
-                text-align: center;
-                list-style: none;
+            .section{
+                text-align: center; 
+                width: 90%; 
+                margin: 0 auto;
+            }
+            .form_item{
+                display: flex; 
+                flex-direction: column; 
+                gap: 20px; 
+                margin: 20px 0px;
+            }
+            .form_item .container_password{
+                position: relative;
+            }
+            .container_password .view_password_button{
+                position: absolute; 
+                right:10px; 
+                top:calc(50% - 8px); 
+                text-decoration:none; 
+                border:none; 
+                background-color:transparent;
             }
             .input_email{
                 margin: 10px auto;
@@ -129,8 +149,8 @@
                                 <h1 class="title">Por favor, ingrese sus credenciales</h1>
                             </div>
                         </header>
-                        <div style="text-align:center; width:90%; margin: 0 auto;">
-                            <div style="display: flex; flex-direction: column; gap: 20px; margin: 20px 0px;">
+                        <div class="section">
+                            <div class="form_item">
                                 <label for="email">Email</label>
                                 <input 
                                     type="email" 
@@ -141,16 +161,30 @@
                                     required
                                     autocomplete="off">
                             </div>
-                            <div style="display: flex; flex-direction: column; margin-bottom: 10px;">
+                            <div class="form_item">
                                 <label for="password">Contraseña</label>
-                                <input 
-                                    type="password" 
-                                    name="password" 
-                                    id="password" 
-                                    class="input_email"
-                                    placeholder="Contraseña"
-                                    required
-                                    autocomplete="off">
+                                <div class="container_password">
+                                    <input 
+                                        type="password" 
+                                        name="password" 
+                                        id="password" 
+                                        class="input_email"
+                                        placeholder="Contraseña"
+                                        required
+                                        autocomplete="off">
+                                    <button 
+                                        class="view_password_button" 
+                                        onclick="toggle_visibility('password', 'repeat_password_icon')"
+                                        type="button">
+                                        <img 
+                                            id="repeat_password_icon" 
+                                            src="{{asset('icons/visibility.png')}}" 
+                                            alt="Mirar la repeticion de la contraseña" 
+                                            width="15" 
+                                            height="15">
+                                    </button>
+                                    
+                                </div>
                             </div>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="buttons">
@@ -169,8 +203,9 @@
                                         Registrarme
                                     </button>
                                     <button 
+                                        onclick="send_form()"
                                         class="login"
-                                        type="submit">
+                                        type="button">
                                         Ingresar
                                     </button>
                                 </div>
@@ -184,4 +219,53 @@
             </main>
         </div>
     </body>
+    <script>
+        function toggle_visibility(element, icon){
+            let form = document.getElementsByClassName('form')[0];
+            form.addEventListener('submit', function(event){
+                event.preventDefault();
+            });
+
+            let input = document.getElementById(element);
+            let iconElement = document.getElementById(icon); // Cambiado aquí
+
+            if(input.value != ""){
+                if(input.type == 'password'){
+                    iconElement.src = '{{asset('icons/visibility_off.png')}}';
+                    input.type = 'text';
+                } else {
+                    iconElement.src = '{{asset('icons/visibility.png')}}';
+                    input.type = 'password';
+                }
+            }
+        }
+        function send_form(){
+            let form = document.getElementsByClassName('form')[0];
+            let email = document.getElementById('email');
+            let password = document.getElementById('password');
+            if(email.value == "" || password.value == ""){
+                console.log('Por favor, complete los campos');
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.error('Por favor, complete los campos');
+                return;
+            }
+            form.submit();
+        }
+    </script>
 </html>

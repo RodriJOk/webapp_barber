@@ -24,33 +24,34 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/reset_password', 'reset_password')->name('reset_password');
     Route::get('/new_password', 'new_password')->name('new_password');
     Route::post('/save_new_password', 'save_new_password')->name('save_new_password');
+    Route::post('/close_session', 'close_session')->name('close_session');
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/usuarios', 'index')->middleware('auth');
-    Route::get('/my_profile', 'my_profile')->name('my_profile')->middleware('auth');
+    Route::get('/usuarios', 'index')->middleware('auth', 'rol:admin');
+    Route::get('/my_profile', 'my_profile')->name('my_profile')->middleware('auth', 'rol:admin,colaborador,cliente');
 });
 
 Route::controller(CalendarController::class)->group(function () {
-    Route::get('/my_calendar', 'index')->name('my_calendar')->middleware('auth');
-    Route::get('/edit_event', 'edit_event')->name('edit_event')->middleware('auth');
-    Route::post('/delete_event', 'delete_event')->name('delete_event')->middleware('auth');
-    Route::post('/create_event', 'create_event')->name('create_event')->middleware('auth');
+    Route::get('/my_calendar', 'index')->name('my_calendar')->middleware('auth', 'rol:admin,colaborador,cliente');
+    Route::get('/edit_event', 'edit_event')->name('edit_event')->middleware('auth', 'rol:admin,colaborador,cliente');
+    Route::post('/delete_event', 'delete_event')->name('delete_event')->middleware('auth', 'rol:admin,colaborador,cliente');
+    Route::post('/create_event', 'create_event')->name('create_event')->middleware('auth', 'rol:admin,colaborador,cliente');
 });
 
 Route::controller(SuscriptionController::class)->group(function () {
-    Route::get('/suscription', 'index')->name('suscription')->middleware('auth');
-    Route::post('/create_suscription', 'create_suscription')->name('create_suscription')->middleware('auth');
-    Route::get('/edit_suscription', 'edit_suscription')->middleware('auth');
-    Route::get('/delete_suscription', 'delete_suscription')->middleware('auth');
+    Route::get('/suscription', 'index')->name('suscription')->middleware('auth', 'rol:admin');
+    Route::post('/create_suscription', 'create_suscription')->name('create_suscription')->middleware('auth', 'rol:admin');
+    Route::get('/edit_suscription', 'edit_suscription')->middleware('auth', 'rol:admin');
+    Route::get('/delete_suscription', 'delete_suscription')->middleware('auth', 'rol:admin');
 });
 
 Route::controller(BranchController::class)->group(function () {
-    Route::post('/update_profile', 'update_profile')->name('update_profile')->middleware('auth');
+    Route::post('/update_profile', 'update_profile')->name('update_profile')->middleware('auth', 'rol:admin');
 });
 
 Route::controller(ClientController::class)->group(function () {
-    Route::get('/my_clients', 'index')->name('my_clients')->middleware('auth');
+    Route::get('/my_clients', 'index')->name('my_clients')->middleware('auth', 'rol:admin');
 });
 
 Route::controller(CollaboratorsController::class)->group(function () {
@@ -62,8 +63,8 @@ Route::controller(CollaboratorsController::class)->group(function () {
 });
 
 Route::controller(CollaboratorAvailableController::class)->group(function () {
-    Route::get('/my_collaborators_availability/{id}', 'my_collaborators_availability')->name('my_collaborators_availability')->middleware('auth');
-    Route::post('/save_collaborator_availability', 'save_collaborator_availability')->name('save_collaborator_availability')->middleware('auth');
-    Route::get('/delete_collaborator_availability/{id}', 'delete_collaborator_availability')->name('delete_collaborator_availability')->middleware('auth');
-    Route::post('/update_collaborator_availability', 'update_collaborator_availability')->name('update_collaborator_availability')->middleware('auth');
+    Route::get('/my_collaborators_availability/{id}', 'my_collaborators_availability')->name('my_collaborators_availability')->middleware('auth', 'rol:admin');
+    Route::post('/save_collaborator_availability', 'save_collaborator_availability')->name('save_collaborator_availability')->middleware('auth', 'rol:admin');
+    Route::get('/delete_collaborator_availability/{id}', 'delete_collaborator_availability')->name('delete_collaborator_availability')->middleware('auth', 'rol:admin');
+    Route::post('/update_collaborator_availability', 'update_collaborator_availability')->name('update_collaborator_availability')->middleware('auth', 'rol:admin');
 });

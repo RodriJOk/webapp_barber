@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{{ asset('icons/cuidado.png') }}" type="image/x-icon">
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <title>Mis clientes</title>
     <style>
@@ -134,6 +135,13 @@
             cursor: pointer;
             height: 40px;
         }
+        .close_session{
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -217,7 +225,10 @@
                             alt="Abrir"
                             width="20px"
                             height="20px">
-                        <a href="" class="text_link">Cerrar Session</a>
+                        <form action="{{ route('close_session') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="text_link close_session">Cerrar Session</button>
+                        </form>
                     </div>
                 </li>
             </ul>

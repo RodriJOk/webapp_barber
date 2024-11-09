@@ -22,6 +22,8 @@
             .main{
                 width: 100wv; 
                 height: 100vh;
+                display: flex; 
+                flex-direction:row;
             }
             .form_new_password{
                 background-color: #000a23; 
@@ -29,15 +31,47 @@
                 padding:20px; 
                 width:40%;
             }
-            .container_title{
-                margin: 40px 0px 30px;
+            .form_header{
+                margin: 10px 0px 10px;
             }
             .title{
                 text-align: center;
                 font-size: 26px;
                 text-wrap: balance;
             }
-            .input_email{
+            .form_body{
+                text-align:center; 
+                width:90%; 
+                margin: 0 auto;
+            }
+            .form_body .validation_rules{
+                text-decoration:none; 
+                text-align:start; 
+                list-style:none;
+            }
+            .validation_rules li .pass_lenght, 
+            .validation_rules li .pass_min_lower,
+            .validation_rules li .pass_min_upper,
+            .validation_rules li .pass_min_number,
+            .validation_rules li .pass_match
+            {
+                color:red;
+                font-size: 14px;
+            }
+            .validation_rules li .pass_other_chars{
+                font-size: 14px;
+                color:yellow;
+            }
+            .form_body .item{
+                display:flex; 
+                flex-direction:column; 
+                gap: 6px; 
+                margin: 12px 0px;
+            }
+            .form_body .item .container_input{
+                position: relative;
+            }
+            .item .input_email{
                 margin: 10px auto;
                 border: 1px solid #fff; 
                 color: #fff; 
@@ -50,141 +84,160 @@
                 border-radius: 15px;
                 padding: 0px 16px;
             }
-            .list{
-                text-align: center;
-                list-style: none;
+            .container_input .view_password_button,
+            .container_input .repeat_password_button
+            {
+                position: absolute; 
+                right:10px; 
+                top:calc(50% - 8px); 
+                text-decoration:none; 
+                border:none; 
+                background-color:transparent;
+            }
+            .submit_button{
+                width: 100%;
+                background-color: #012e46;
+                color: #fff;
+                height: 40px;
+                outline: none; 
+                text-decoration: none; 
+                border: none;
+                border-radius: 15px;
+                font-size: 16px;
+            }
+            .container_image{
+                width: 60%; 
+                height: 100vh;
+            }
+            .container_image img{
+                width: 100%; 
+                height: 100%; 
+                background-size: cover;
             }
         </style>
     </head>
     <body>
-        <div>
-            <main class="main">
-                <div style="display: flex; flex-direction:row;">
-                    <form 
-                        id="form_new_password"
-                        class="form_new_password"
-                        action="{{ route('save_new_password') }}" 
-                        method="POST"
-                        onsbumit="sendForm(event)">
-                        @csrf
-                        <header style="padding-bottom: 20px;">
-                            <div class="container_title">
-                                <h1 class="title">
-                                    Ingresa tu nueva contraseña
-                                </h1>
-                            </div>
-                        </header>
-                        <div style="text-align:center; width:90%; margin: 0 auto;">
-                            <ul style="text-decoration:none; text-align:start; list-style:none;">
-                                <li>
-                                    <span id="pass_length" style="color:red;">
-                                        Debe tener entre 10 y 50 caracteres
-                                    </span>
-                                </li>
-                                <li>
-                                    <span id="pass_min_lower" style="color:red;">
-                                        (Obligatorio) Minimo 4 minusculas
-                                    </span>
-                                </li>
-                                <li>
-                                    <span id="pass_min_upper" style="color:red;">
-                                        (Obligatorio) Minimo 2 mayusculas
-                                    </span>
-                                </li>
-                                <li>
-                                    <span id="pass_min_number" style="color:red;">
-                                        (Obligatorio) Minimo 2 numeros
-                                    </span>
-                                </li>
-                                <li>
-                                    <span id="pass_match" style="color:red;">
-                                        (Obligatorio) Las claves deben coincidir
-                                    </span>
-                                </li>
-                                <li>
-                                    <span id="pass_other_chars" style="color:yellow;">
-                                        (Opcional) Caracteres especiales: <b>.!$%&*_-#</b>
-                                    </span>
-                                </li>
-                            </ul>
-                            <div style="display:flex; flex-direction:column; gap: 10px; margin: 20px 0px;">
-                                <label for="password">Email</label>
+        <main class="main">
+            <form 
+                class="form_new_password" 
+                action="{{ route('save_new_password') }}" 
+                method="POST"
+                onsbumit="sendForm(event)">
+                @csrf
+                <header class="form_header">
+                    <h1 class="title">
+                        Ingresa tu nueva contraseña
+                    </h1>
+                </header>
+                <div class="form_body">
+                    <ul class="validation_rules">
+                        <li>
+                            <span id="pass_length" class="pass_lenght">
+                                Debe tener entre 10 y 50 caracteres
+                            </span>
+                        </li>
+                        <li>
+                            <span id="pass_min_lower" class="pass_min_lower">
+                                (Obligatorio) Minimo 4 minusculas
+                            </span>
+                        </li>
+                        <li>
+                            <span id="pass_min_upper" class="pass_min_upper">
+                                (Obligatorio) Minimo 2 mayusculas
+                            </span>
+                        </li>
+                        <li>
+                            <span id="pass_min_number" class="pass_min_number">
+                                (Obligatorio) Minimo 2 numeros
+                            </span>
+                        </li>
+                        <li>
+                            <span id="pass_match" class="pass_match">
+                                (Obligatorio) Las claves deben coincidir
+                            </span>
+                        </li>
+                        <li>
+                            <span id="pass_other_chars" class="pass_other_chars">
+                                (Opcional) Caracteres especiales: <b>.!$%&*_-#</b>
+                            </span>
+                        </li>
+                    </ul>
+                    <div>
+                        <div class="item">
+                            <label for="password">Email</label>
+                            <input 
+                                type="email"
+                                name="email"
+                                class="input_email"
+                                required
+                                placeholder="Ingresa tu email con el que te registraste"
+                                value=""
+                                autocomplete="off">
+                        </div>
+                        <div class="item">
+                            <label for="password">Contraseña</label>
+                            <div class="container_input">
                                 <input 
-                                    type="email"
-                                    name="email"
+                                    type="password" 
+                                    name="password" 
+                                    id="password"
                                     class="input_email"
+                                    placeholder="Ingresa tu nueva clave"
                                     required
-                                    placeholder="Ingresa tu email con el que te registraste"
-                                    value=""
-                                    autocomplete="off">
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 10px; margin: 20px 0px;">
-                                <label for="password">Contraseña</label>
-                                <div style="position: relative;">
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        id="password"
-                                        class="input_email"
-                                        placeholder="Ingresa tu nueva clave"
-                                        required
-                                        autocomplete="off"
-                                        onkeyup="validatePassword('password')"
-                                        maxlength="50"
-                                        minlength="10">
-                                    <button 
-                                        style="position: absolute; right:10px; top:calc(50% - 8px); text-decoration:none; border:none; background-color:transparent;" 
-                                        onclick="toggle_visibility('password', 'password_icon')"
-                                        type="button">
-                                        <img id="password_icon" src="{{asset('icons/visibility.png')}}" alt="eye" style="width: 15px; height: 15px;">
-                                    </button>
-                                </div>
-                                <label for="repeat_password">Repita su contraseña</label>
-                                <div style="position: relative;">
-                                    <input 
-                                        type="password" 
-                                        name="repeat_password" 
-                                        id="repeat_password"
-                                        class="input_email"
-                                        placeholder="Repeti tu nueva clave"
-                                        required
-                                        autocomplete="off"
-                                        onkeyup="validatePassword('repeat_password')"
-                                        maxlength="50"
-                                        minlength="10">
-                                    <button 
-                                        style="position: absolute; right:10px; top:calc(50% - 8px); text-decoration:none; border:none; background-color:transparent;" 
-                                        onclick="toggle_visibility('repeat_password', 'repeat_password_icon')"
-                                        type="button">
-                                        <img id="repeat_password_icon" src="{{asset('icons/visibility.png')}}" alt="eye" style="width: 15px; height: 15px;">
-                                    </button>
-                                </div>
-                            </div>
-                            <div style="display: flex; flex-direction:column; gap: 10px; margin: 20px 0px;">
+                                    autocomplete="off"
+                                    onkeyup="validatePassword('password')"
+                                    maxlength="50"
+                                    minlength="10">
                                 <button 
-                                    onclick="sendForm(event)"
-                                    type="submit"
-                                    style="
-                                        width: 100%;
-                                        background-color: #012e46;
-                                        color: #fff;
-                                        height: 40px;
-                                        outline: none; 
-                                        text-decoration: none; 
-                                        border: none;
-                                        border-radius: 15px;
-                                        font-size: 16px;">    
-                                    Guardar contraseña
+                                    class="view_password_button" 
+                                    onclick="toggle_visibility('password', 'password_icon')"
+                                    type="button">
+                                    <img id="password_icon" src="{{asset('icons/visibility.png')}}" alt="Ver contraseña" width="15" height="15">
                                 </button>
                             </div>
                         </div>
-                    </form>
-                    <section style="width: 60%; height: 100vh;">
-                        <img src="{{asset('images/login.jpg')}}" alt="login" style="width: 100%; height: 100%; background-size: cover;">
-                    </section>
+                        <div class="item">
+                            <label for="repeat_password">Repita su contraseña</label>
+                            <div class="container_input">
+                                <input 
+                                    type="password" 
+                                    name="repeat_password" 
+                                    id="repeat_password"
+                                    class="input_email"
+                                    placeholder="Repeti tu nueva clave"
+                                    required
+                                    autocomplete="off"
+                                    onkeyup="validatePassword('repeat_password')"
+                                    maxlength="50"
+                                    minlength="10">
+                                <button 
+                                    class="repeat_password_button" 
+                                    onclick="toggle_visibility('repeat_password', 'repeat_password_icon')"
+                                    type="button">
+                                    <img 
+                                        id="repeat_password_icon" 
+                                        src="{{asset('icons/visibility.png')}}" 
+                                        alt="Mirar la repeticion de la contraseña" 
+                                        width="15" 
+                                        height="15">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <button 
+                            onclick="sendForm(event)"
+                            type="submit"
+                            class="submit_button">    
+                            Guardar contraseña
+                        </button>
+                    </div>
                 </div>
-            </main>
-        </div>
+            </form>
+            <section class="container_image">
+                <img src="{{asset('images/login.jpg')}}" alt="login">
+            </section>
+        </main>
     </body>
 
     <script>
@@ -256,7 +309,7 @@
 
         }
         function toggle_visibility(element, icon){
-            let form = document.getElementById('form_new_password');
+            let form = document.getElementsByClassName('form_new_password')[0];
             form.addEventListener('submit', function(event){
                 event.preventDefault();
             });
@@ -276,8 +329,7 @@
         }
 
         function sendForm(event){
-            console.log("Estoy en la funcion sendForm");
-            let form = document.getElementById('form_new_password');
+            let form = document.getElementsByClassName('form_new_password')[0];
             form.addEventListener('submit', function(event){
                 event.preventDefault();
             });

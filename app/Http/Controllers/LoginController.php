@@ -218,4 +218,9 @@ class LoginController extends Controller
         toastr()->success('Se ha registrado correctamente. Inicie sesión con sus credenciales.');
         return view('login/index');
     }
+    public function close_session(){
+        Auth::logout();
+        session()->flush();
+        return redirect('/login');
+    }
 }

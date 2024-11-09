@@ -77,7 +77,7 @@
                     alt="Abrir"
                     width="20px"
                     height="20px">
-                <a href="" class="text_link">Cerrar Session</a>
+                <a href="{{ route('close_session')}}" class="text_link">Cerrar Session</a>
             </div>
         </li>
     </ul>

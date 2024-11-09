@@ -186,6 +186,13 @@
                 border:none; 
                 border-radius: 5px;
             }
+            .close_session{
+                background: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+                font-size: 16px;
+            }
         </style>
     </head>
     <body>
@@ -269,7 +276,10 @@
                                 alt="Abrir"
                                 width="20px"
                                 height="20px">
-                            <a href="" class="text_link">Cerrar Session</a>
+                            <form action="{{ route('close_session') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="text_link close_session">Cerrar Session</button>
+                            </form>
                         </div>
                     </li>
                 </ul>
