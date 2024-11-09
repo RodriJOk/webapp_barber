@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('collaborators_availability', function(Blueprint $table){
-            $table->increments('id')->nullable();
-            $table->integer('collaborator_id', 11)->nullable();
+        Schema::create('collaborators_availability', function (Blueprint $table) {
+            $table->increments('id'); // Remueve nullable() en la clave primaria
+            $table->unsignedInteger('collaborator_id');
             $table->enum('day_of_th_week', ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'])->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->dateTime('update_at')->nullable(false);
         });
     }
+
 
     /**
      * Reverse the migrations.
