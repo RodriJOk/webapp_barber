@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function(Blueprint $table){
+        Schema::create('users', function (Blueprint $table) {
             $table->increments('id')->nullable(false);
             $table->string('name', 255)->nullable(false);
             $table->string('email', 255)->nullable(false)->unique();
-            $table->timestamps('email_verified_at');
+            $table->timestamp('email_verified_at')->nullable(); // Campo separado, sin el uso de timestamps
             $table->string('password', 255)->nullable(false);
-            $table->string('remember_toker', 100);
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->string('remember_token', 100); // Corrige el error de escritura
+            $table->timestamps(); // Agrega created_at y updated_at automáticamente
         });
     }
 
