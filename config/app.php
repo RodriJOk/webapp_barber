@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://webappbarber-56b0944e3615.herokuapp.com/'),
 
     /*
     |--------------------------------------------------------------------------
