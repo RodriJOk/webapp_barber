@@ -4,10 +4,8 @@
     </IfModule>
 
     RewriteEngine On
-
-    # Handle Authorization Header
-    RewriteCond %{HTTPs:Authorization} .
-    RewriteRule .* - [E=HTTPS_AUTHORIZATION:%{HTTPs:Authorization}]
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
