@@ -6,8 +6,8 @@
     RewriteEngine On
 
     # Forzar HTTPS si la conexión no es segura
-    RewriteCond %{HTTPS} off
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    #RewriteCond %{HTTPS} off
+    #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Redireccionar barras finales si no es una carpeta...
     RewriteCond %{REQUEST_FILENAME} !-d
