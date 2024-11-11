@@ -160,7 +160,6 @@ class LoginController extends Controller
     }
     public function create_user(){
         $data = request()->all();
-        data($data);
 
         $rules = [
             'nombre' => 'required|min:3|regex:/^[A-Za-z\s]+$/',
@@ -215,7 +214,6 @@ class LoginController extends Controller
             toastr()->error('Ha ocurrido un error al guardar el usuario. Por favor, vuelva a intentarlo.');
             return redirect('/login');
         }
-        dd($data);
         toastr()->success('Se ha registrado correctamente. Inicie sesión con sus credenciales.');
         return view('login/index');
     }
