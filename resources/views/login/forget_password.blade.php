@@ -93,6 +93,30 @@
                 height: 100%; 
                 background-size: cover;
             }
+            @media screen and (max-width: 768px){
+                .container{
+                    flex-direction: column;
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+                .form{
+                    width: 100vw;
+                    height: 100vh;
+                    padding: 0px;
+                }
+                .form_header{
+                    margin: 0 auto;
+                }
+                .header{
+                    margin: 40px 0px;
+                }
+                .container_image{
+                    display: none;
+                }
+                .input_email{
+                    width: 90%;
+                }
+            }
         </style>
     </head>
     <body>

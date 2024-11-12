@@ -16,6 +16,10 @@
                 padding: 0px;
                 box-sizing: border-box;
             }
+            .main_section{
+                display: flex; 
+                flex-direction: row;
+            }
             /* Estilos del navbar */
             .navbar{
                 width: 270px;
@@ -30,14 +34,14 @@
                 width: 60px;
                 padding: 20px 5px;
             }
-            .header{
+            .navbar .header{
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
                 min-height: 50px;
             }
-            .header_title{
+            .navbar .header .header_title{
                 margin: 0px;
                 text-align: center;
                 font-size: 18px;
@@ -52,6 +56,11 @@
                 border-radius: 10px;
                 cursor: pointer;
             }
+            .list li .item_list{
+                display: flex; 
+                flex-direction: row; 
+                gap: 10px;
+            }
             .text_link{
                 text-decoration: none;
                 color: #fff;
@@ -60,17 +69,41 @@
             .navbar.close .button_toggle_navbar{
                 text-align: center;
                 margin: 0px auto;
+                background: none; 
+                border:none;
             }
+            .navbar .button_toggle_navbar{
+                border: none;
+                background: none;
+            }
+            .navbar .button_toggle_navbar .toggle_navbar{
+                width: 20px;
+                height: 20px;
+            }
+            .navbar.close .button_toggle_navbar .toggle_navbar{
+                transform: rotate(180deg);
+                width: 20px;
+                height: 20px;
+                border: none;
+                background: none;
+            }  
             .navbar.close .navbar_image{
                 margin: 0px auto;
             }
-
+            .section{
+                display: flex; 
+                flex-direction: row; 
+                gap: 20px; 
+                justify-content:center; 
+                margin: 40px 0px;
+            }
             /* Estilos del modal de informacion */
             .section_information{
                 max-width: calc(100% - 300px); 
                 border:1px solid #ccc; 
                 text-align:center;
                 border-radius: 15px;
+                width: 450px;
             }
             .header_information{
                 display: flex; 
@@ -193,28 +226,106 @@
                 padding: 0;
                 font-size: 16px;
             }
+            .container{
+                min-width: 70%; 
+                padding: 10px; 
+                margin: 0 auto; 
+                position: relative; 
+                margin-left: 350px;
+            }
+            .title_page{
+                font-size: 26px;
+            }
+            @media (max-width: 768px){
+                .navbar{
+                    z-index: 9999;
+                }
+                .container{
+                    margin-left: 80px;
+                }
+                .section{
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    margin: 0 auto; 
+                }
+                .header_information{
+                    width: 100%;
+                    justify-content: space-around;
+                    padding: 0px;
+                }
+                .header_information .title{
+                    font-size: 18px;
+                    content: 'Tu sucursal';
+                }
+                .header_information .edit_buttom .buttom_text{
+                    display: none;
+                }
+                .section .section_information{
+                    max-width: 95%;
+                    min-width: 90%;
+                    overflow: hidden;
+                }
+                .section_information .item_information{
+                    border-bottom: 1px solid #ccc;
+                    margin: 10px 0px;
+                    padding: 5px;
+                }
+                .item_information .name_details,
+                .item_information .address_details,
+                .item_information .phone_details{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 5px;
+                }
+                .item_information .name_details h3, 
+                .item_information .name_details p,
+                .item_information .address_details h3,
+                .item_information .address_details p,
+                .item_information .phone_details h3,
+                .item_information .phone_details p{
+                    margin: 0px;
+                    padding: 0px;
+                }
+                .main_section .modal_information{
+                    max-width: 90%;
+                    min-width: 87%;
+                    top: calc(50% - 300px);
+                }
+                .modal_information .container_buttom{
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 25px;
+                }
+                .modal_information .container_buttom .close_modal,
+                .modal_information .container_buttom .delete_reservation{
+                    width: 100%;
+                    margin: 5px 0px;
+                }
+                .modal_information .modal_information_header{
+                    margin: 20px 0px;
+                }
+            }
         </style>
     </head>
     <body>
-        <main style="display: flex; flex-direction: row;">
+        <main class="main_section">
             <navbar class="navbar">
                 <header class="header">
                     <h2 class="header_title">
                         <a href="{{route('home')}}" class="text_link">Menu</a>
                     </h2>
-                    <button class="button_toggle_navbar" onclick="toggle_navbar()" style="background: none; border:none;">
+                    <button class="button_toggle_navbar" onclick="toggle_navbar()">
                         <img 
                             class="toggle_navbar"
                             src="{{asset('icons/arrow_to_right.png')}}" 
-                            alt="Cerrar"
-                            width="20px"
-                            height="20px"
-                            style="transform: rotate(180deg);">
+                            alt="Cerrar">
                     </button>
                 </header>
                 <ul class="list">
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item_list">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/user.png')}}" 
@@ -225,7 +336,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item_list">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/calendar.png')}}" 
@@ -236,7 +347,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item_list">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/membresia.png')}}" 
@@ -247,7 +358,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item_list">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/members_groups.png')}}" 
@@ -258,7 +369,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item_list">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/groups.png')}}" 
@@ -269,7 +380,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;">
+                        <div class="item_list">
                             <img
                                 class="navbar_image"
                                 src="{{asset('icons/logout.png')}}" 
@@ -284,33 +395,49 @@
                     </li>
                 </ul>
             </navbar>
-            <div style="min-width: 70%; padding: 10px; margin: 0 auto; position: relative; margin-left: 350px;">
-                <h1 style="font-size: 26px">Mi perfil</h1>
-                <main style="display: flex; flex-direction: row; gap: 20px; justify-content:center; margin: 40px 0px;">
+            <div class="container">
+                <h1 class="title_page">Mi perfil</h1>
+                <main class="section">
                     <section class="section_information" style="width: 450px;">
                         <div class="header_information">
                             <h2 class="title">Datos de tu sucursal</h2>
                             <button class="edit_buttom" onclick="open_modal('modal_information')">
-                                <img src="{{asset('icons/edit.png')}}" alt="Editar" width="20px" height="20px">
+                                <img 
+                                    src="{{asset('icons/edit.png')}}" 
+                                    alt="Editar" 
+                                    width="20px" 
+                                    height="20px">
                                 <span class="buttom_text">Editar</span>
                             </button>
                         </div>
                         <div class="item_information">
-                            <img src="{{asset('icons/store.png')}}" alt="Sucursal" width="20px" height="20px">
+                            <img 
+                                src="{{asset('icons/store.png')}}" 
+                                alt="Sucursal" 
+                                width="20px" 
+                                height="20px">
                             <div class="name_details">
                                 <h3>Nombre: </h3>
                                 <p>{{ $branch['name'] }}</p>
                             </div>
                         </div>
                         <div class="item_information">
-                            <img src="{{asset('icons/location.png')}}" alt="Direccion" width="20px" height="20px">
+                            <img 
+                                src="{{asset('icons/location.png')}}" 
+                                alt="Direccion" 
+                                width="20px" 
+                                height="20px">
                             <div class="address_details">
                                 <h3>Direccion: </h3>
                                 <p>{{ $branch['address'] }}</p>
                             </div>
                         </div>
                         <div class="item_information">
-                            <img src="{{asset('icons/phone.png')}}" alt="Contacto" width="20px" height="20px">
+                            <img 
+                                src="{{asset('icons/phone.png')}}" 
+                                alt="Contacto" 
+                                width="20px" 
+                                height="20px">
                             <div class="phone_details">
                                 <h3>Celular/Telefono: </h3>
                                 <p>{{ $branch['phone'] }}</p>
@@ -323,21 +450,33 @@
                             <h2 class="title">Information del usuario</h2>
                         </div>
                         <div class="item_information">
-                            <img src="{{asset('icons/person.png')}}" alt="Nombre usuario" width="20px" height="20px">
+                            <img 
+                                src="{{asset('icons/person.png')}}" 
+                                alt="Nombre usuario" 
+                                width="20px" 
+                                height="20px">
                             <div class="name_details">
                                 <h3>Nombre: </h3>
                                 <p>{{ $user['name'] }}</p>
                             </div>
                         </div>
                         <div class="item_information">
-                            <img src="{{asset('icons/mail.png')}}" alt="Direccion" width="20px" height="20px">
+                            <img 
+                                src="{{asset('icons/mail.png')}}" 
+                                alt="Direccion" 
+                                width="20px" 
+                                height="20px">
                             <div class="address_details">
                                 <h3>Email: </h3>
                                 <p>{{ $user['email'] }}</p>
                             </div>
                         </div>
                         <div class="item_information">
-                            <img src="{{asset('icons/id_card.png')}}" alt="Contacto" width="20px" height="20px">
+                            <img 
+                                src="{{asset('icons/id_card.png')}}" 
+                                alt="Contacto" 
+                                width="20px" 
+                                height="20px">
                             <div class="phone_details">
                                 <h3>Miembro desde: </h3>
                                 <p>{{ $user['created_at'] }}</p>

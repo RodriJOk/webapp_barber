@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{ asset('icons/cuidado.png') }}" type="image/x-icon">
         <title>Inicio de Session</title>
-        <link rel="stylesheet" href="{{ asset('layout/sidebar.css') }}">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -27,10 +26,11 @@
                 background-color: #000a23; 
                 color:white; 
                 padding:20px; 
-                width:40%;"
+                width:40%;
             }
             .form_header .container_title{
-                margin: 40px 0px 30px;
+                /* margin: 40px 0px 30px; */
+                display:none;
             }
             .form_header .container_title .title{
                 text-align: center;
@@ -108,6 +108,27 @@
                 width: 100%; 
                 height: 100%; 
                 background-size: cover;
+            }
+            @media screen and (max-width: 768px){
+                .container_image{
+                    display: none;
+                }
+                .form{
+                    width: 100%;
+                }
+                .form_header .container_title{
+                    display: block;
+                    margin: 15px 0px 40px;
+                }
+                .input_nombre, 
+                .input_email,
+                .input_password{
+                    width: 90%;
+                    margin: 0 auto;
+                }
+                .select_rol{
+                    width: 100%;
+                }
             }
         </style>
     </head>

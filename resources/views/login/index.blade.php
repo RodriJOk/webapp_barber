@@ -133,6 +133,41 @@
                 height: 100%; 
                 background-size: cover;
             }
+            @media screen and (max-width: 768px){
+                .container_section{
+                    flex-direction: column;
+                }
+                .form{
+                    width: 90vw;
+                    height: 100vh;
+                }
+                .header{
+                    margin: 40px 0px;
+                }
+                .section{
+                    width: 100%;
+                    margin: 20px 0px;
+                }
+                .form_item{
+                    margin: 25px 0px;
+                }
+                .buttons{
+                    margin: 20px 0px;
+                    gap: 25px;
+                }
+                .container_image{
+                    display: none;
+                }
+                .buttons .container_login{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                }
+                .buttons .container_login .register,
+                .buttons .container_login .login{
+                    width: 100%;
+                }
+            }
         </style>
     </head>
     <body>

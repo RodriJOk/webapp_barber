@@ -93,6 +93,14 @@
                 padding: 0;
                 font-size: 16px;
             }
+            @media (max-width: 768px){
+                .navbar{
+                    z-index: 9999;
+                }
+                .section{
+                    margin-left: 80px;
+                }
+            }
         </style>
     </head>
     <body>
