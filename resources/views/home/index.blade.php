@@ -40,6 +40,7 @@
                 justify-content: space-between;
                 align-items: center;
                 min-height: 50px;
+                margin: 10px 0px 30px;
             }
             .header_title{
                 margin: 0px;
@@ -79,13 +80,6 @@
             .navbar.close .navbar_image{
                 margin: 0px auto;
             }
-            .section{
-                min-width: 60%; 
-                padding: 10px; 
-                margin: 0 auto; 
-                position: relative; 
-                margin-left: 350px; 
-            }
             .close_session{
                 background: none;
                 border: none;
@@ -93,12 +87,89 @@
                 padding: 0;
                 font-size: 16px;
             }
+            .section{
+                min-width: 60%; 
+                padding: 10px; 
+                margin: 0 auto; 
+                position: relative; 
+                margin-left: 350px; 
+            }
+            /* Estilos de la seccion de enlaces */
+            .link_container{
+                display: flex; 
+                flex-direction:row; 
+                flex-wrap: wrap; 
+                width:850px; 
+                gap: 15px; 
+                margin: 0 auto; 
+                text-align:center; 
+                justify-content:center;
+            }
+            .link{
+                border: 1px solid #ccc; 
+                text-align:center; 
+                display:flex; 
+                flex-direction:row; 
+                text-decoration:none; 
+                color: #00000091;
+                width:45%; 
+                border-radius: 20px; 
+                justify-content:left; 
+                gap: 20px;
+                height:65px;
+                padding: 0px 10px;
+            }
+            .link_icon{
+                display: flex; 
+                flex-direction:column; 
+                justify-content:center;
+            }
+            .link_icon img{
+                width: 30px;
+                height: 30px;
+            }
+            .link_info{
+                display: flex; 
+                flex-direction:column; 
+                text-align:left;
+                justify-content: center;
+            }
+            .link_info .title{
+                font-size: 16px; 
+                margin: 5px 0px;
+            }
+            .link_info .description{
+                font-size: 14px; 
+                text-wrap:balance; 
+                margin: 5px 0px;
+            }
             @media (max-width: 768px){
                 .navbar{
                     z-index: 9999;
                 }
                 .section{
                     margin-left: 80px;
+                }
+                .section .header{
+                    text-align: center;
+                    margin: 30px 0px;
+                }
+                .section .header .header_title{
+                    font-size: 18px;
+                }
+                .link_container{
+                    width: 100%;
+                    flex-direction: column;
+                }
+                .link{
+                    width: 90%;
+                    height: 70px;
+                }
+                .link_info .title{
+                    font-size: 14px;
+                }
+                .link_info .description{
+                    font-size: 12px;
                 }
             }
         </style>
@@ -192,9 +263,47 @@
                 </ul>
             </navbar>
             <section class="section">
-                <header>
-                    <h1>Bienvenido a la aplicacion</h1>
+                <header class="header">
+                    <h1 class="header_title">Bienvenido a la aplicacion</h1>
                 </header>
+                <main class="link_container">
+                    <a href="{{ route('my_profile') }}" class="link">
+                        <div class="link_icon">
+                            <img src="{{asset('icons/person_grey.png')}}" alt="Perfil. Ajustar y cambiar la configuracion del perfil">
+                        </div>
+                        <div class="link_info">
+                            <h2 class="title">Perfil</h2>
+                            <p class="description">Ajusta y cambiar la configuracion del perfil</p>
+                        </div>
+                    </a>
+                    <a href="{{ route('my_calendar') }}" class="link">
+                        <div class="link_icon">
+                            <img src="{{asset('icons/calendar_grey.png')}}" alt="Reservas. Gestiona tus horarios y los de tus clientes">
+                        </div>
+                        <div class="link_info">
+                            <h2 class="title">Ver tus reservas</h2>
+                            <p class="description">Gestiona tus horarios y los de tus clientes</p>
+                        </div>
+                    </a>
+                    <a href="{{ route('my_clients') }}" class="link">
+                        <div class="link_icon">
+                            <img src="{{asset('icons/client_grey.png')}}" alt="Clientes. Contacta a tus clientes de forma rapida y sencilla">
+                        </div>
+                        <div class="link_info">
+                            <h2 class="title">Mis clientes</h2>
+                            <p class="description">Contactalos de forma rapido y sencilla</p>
+                        </div>
+                    </a>
+                    <a href="{{ route('suscription') }}" class="link">
+                        <div class="link_icon">
+                            <img src="{{asset('icons/credit_card_grey.png')}}" alt="Mi suscripcion. Renueva y gestiona tu membresia">
+                        </div>
+                        <div class="link_info">
+                            <h2 class="title">Mis suscripcion</h2>
+                            <p class="description">Renueva y gestiona tu membresia</p>
+                        </div>
+                    </a>
+                </main>
             </section>
         </main>
     </body>
