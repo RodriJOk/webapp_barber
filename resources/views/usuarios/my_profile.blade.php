@@ -271,6 +271,9 @@
                     margin: 10px 0px;
                     padding: 5px;
                 }
+                .section_information .item_information:last-child{
+                    border-bottom: none;
+                }
                 .item_information .name_details,
                 .item_information .address_details,
                 .item_information .phone_details{
