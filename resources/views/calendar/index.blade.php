@@ -36,6 +36,7 @@
                 padding: 20px;
                 overflow-y: auto;
                 position: fixed;
+                z-index: 1000;
             }
             .navbar.close{
                 width: 60px;
@@ -113,6 +114,47 @@
                 margin: 0;
                 padding: 0;
                 font-size: 16px;
+            }
+            @media (max-width: 768px){
+                .header .title{
+                    font-size: 18px;
+                }
+                .calendar_container{
+                    margin-left: 70px;
+                    min-width: 78%;
+                }
+                .calendar{
+                    height: 600px;
+                }
+                .fc-header-toolbar{
+                    display: flex;
+                    flex-direction: column-reverse;
+                }
+                .fc-header-toolbar .fc-toolbar-chunk:nth-child(1){
+                    width: 100%;
+                }
+                .fc-header-toolbar .fc-toolbar-chunk:nth-child(1) .fc-button-group{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    gap: 40px;
+                }
+                .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) .fc-toolbar-title{
+                    font-size: 18px;
+                    font-family: Verdana, Geneva, Tahoma, sans-serif;
+                    margin: 10px 0px;
+                }
+                .fc-header-toolbar .fc-toolbar-chunk:nth-child(3){
+                    width: 100%;
+                }
+                .fc-header-toolbar .fc-toolbar-chunk:nth-child(3) .fc-button-group{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    gap: 10px;
+                }
+
             }
         </style>
     </head>
@@ -222,24 +264,47 @@
         let reservas = '<?php echo json_encode($reservations); ?>';
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'timeGridWeek',
-                locale: 'es',
-                bussinesHours: {
-                    daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
-                    startTime: '08:00',
-                    endTime: '22:00'
-                },
-                headerToolbar: {
-                    right: 'timeGridWeek,timeGridDay,listWeek',
-                    center: 'title',
-                    left: 'prev,next'
-                },
-                schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-                events: [],
-                slotMinTime: '08:00:00',
-                slotMaxTime: '23:59:59',
-            });
+            let calendar;
+            //Si la vista es mobile
+            if(window.innerWidth < 768){
+                calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'timeGridDay',
+                    locale: 'es',
+                    bussinesHours: {
+                        daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
+                        startTime: '08:00',
+                        endTime: '22:00'
+                    },
+                    headerToolbar: {
+                        right: 'timeGridWeek,timeGridDay,listWeek',
+                        center: 'title',
+                        left: 'prev,next'
+                    },
+                    schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+                    events: [],
+                    slotMinTime: '08:00:00',
+                    slotMaxTime: '23:59:59',
+                });
+            }else{
+                calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'timeGridWeek',
+                    locale: 'es',
+                    bussinesHours: {
+                        daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
+                        startTime: '08:00',
+                        endTime: '22:00'
+                    },
+                    headerToolbar: {
+                        right: 'timeGridWeek,timeGridDay,listWeek',
+                        center: 'title',
+                        left: 'prev,next'
+                    },
+                    schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+                    events: [],
+                    slotMinTime: '08:00:00',
+                    slotMaxTime: '23:59:59',
+                });
+            }
 
             //Recorrer el array de reservas y agregarlas al calendario
             let reservas_array = JSON.parse(reservas);
@@ -349,7 +414,7 @@
 
             let calendarEl = document.getElementById('calendar');
             let calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'timeGridWeek',
+                
                 locale: 'es',
                 headerToolbar: {
                     right: 'timeGridWeek,timeGridDay,listWeek',
@@ -359,6 +424,14 @@
                 schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
                 events: [evento]
             });
+            //Si es la vista en mobile, que la vista inicial sea la de dia
+            if(window.innerWidth < 768){
+                console.log('entro');
+                calendar.setOption('initialView', 'dayGridWeek');
+            }else{
+                console.log('no entro');
+                calendar.setOption('initialView', 'timeGridWeek');
+            }
 
             calendar.render();
         }
