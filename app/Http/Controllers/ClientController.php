@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
@@ -31,5 +32,58 @@ class ClientController extends Controller
         }
 
         return view('client/index', compact('clients', 'id_usuario', 'id_branch', 'search_result', 'search_name', 'search_order'));
+    }
+    public function create_client(){
+        $data = request()->all();
+        
+        $nombre = $data['nombre'];
+        $apellido = $data['surname'];
+        $email = $data['email'];
+        $telefono = $data['celular_telefono'];
+
+        $rules = [
+            'nombre' => 'required',
+            'surname' => 'required',
+            'email' => 'required|email',
+            'celular_telefono' => 'required'
+        ];
+
+        $messages = [
+            'nombre.required' => 'El campo nombre es requerido',
+            'surname.required' => 'El campo apellido es requerido',
+            'email.required' => 'El campo email es requerido',
+            'email.email' => 'El campo email debe ser un email',
+            'celular_telefono.required' => 'El campo celular es requerido'
+        ];
+
+        $validator = Validator::make($data, $rules, $messages);
+
+        if ($validator->fails()) {
+            toastr()->error('Error en los datos ingresados' . $validator->errors());
+            return redirect('/my_clients')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $client_information = [
+            'nombre' => $nombre,
+            'apellido' => $apellido,
+            'id_branch' => session('id_branch'),
+            'celular' => $telefono,
+            'email' => $email
+        ];
+
+        $client = Client::createClient($client_information);
+        if(!$client){
+            toastr()->error('Error al crear el cliente. Intente nuevamente más tarde');
+            return redirect('/my_clients');
+        }
+
+        toastr()->success('Cliente creado correctamente');
+        return redirect('/my_clients');
+
+
+    }
+    public function search_client(){
     }
 }

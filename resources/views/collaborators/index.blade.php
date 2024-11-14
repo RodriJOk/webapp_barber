@@ -211,6 +211,14 @@
             padding: 0;
             font-size: 16px;
         }
+        @media (max-width: 768px){
+            .section_main{
+                margin-left: 70px;
+            }
+            .navbar{
+                z-index: 1000;
+            }
+        }
     </style>
 </head>
 <body>
@@ -318,55 +326,60 @@
                     <button onclick="open_modal('modal')">Agregar un nuevo colaborador</button>
                 </div>
             </div>
-            <p>Listado de los colaboradores</p>
-            <table class="table">
-                <thead class="table_header">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Email</th>
-                        <th>Celular/Telefono</th>
-                        <th>Acciones</th>
-                        <th>Horarios</th>
-                    </tr>
-                </thead>
-                <tbody class="table_body">
-                    @foreach ($all_collaborators as $collaborator)
+            @if (count($all_collaborators) == 0)
+                <p>No tienes colaboradores registrados</p>
+            {{-- Agregar un else --}}
+            @elseif($all_collaborators->isNoyEmpty())
+                <p>Listado de los colaboradores</p>
+                <table class="table">
+                    <thead class="table_header">
                         <tr>
-                            <td>{{$collaborator->name}}</td>
-                            <td>{{$collaborator->surname}}</td>
-                            <td>{{$collaborator->email}}</td>
-                            <td>{{$collaborator->phone}}</td>
-                            <td>
-                                <div class="container_button_actions">
-                                    <button class="button_edit" onclick="open_modal('modal_editar')">
-                                        <span>
-                                            <img src="{{asset('icons/edit.png')}}" alt="Editar datos del colaborador" width="20px" height="20px"/>
-                                        </span>
-                                        <span>Editar</span>
-                                    </button>
-                                    <button class="button_delete" onclick="delete_collaborator({{$collaborator->id}})">
-                                        <span>
-                                            <img src="{{asset('icons/delete.png')}}" alt="Eliminar colaborador" width="20px" height="20px"/>
-                                        </span>
-                                        <span>
-                                            Eliminar
-                                        </span>
-                                    </button>
-                                </div>
-                            </td>
-                            <td colspan="6">
-                                <div class="container_button_schedule">
-                                    {{-- <button onclick="open_modal('modal_horarios')"> --}}
-                                    <button onclick="window.location.href='{{ route('my_collaborators_availability', ['id' => $collaborator->id]) }}'">
-                                        <span>Ver horarios</span>
-                                    </button>
-                                </div>
-                            </td>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>Celular/Telefono</th>
+                            <th>Acciones</th>
+                            <th>Horarios</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="table_body">
+                        @foreach ($all_collaborators as $collaborator)
+                            <tr>
+                                <td>{{$collaborator->name}}</td>
+                                <td>{{$collaborator->surname}}</td>
+                                <td>{{$collaborator->email}}</td>
+                                <td>{{$collaborator->phone}}</td>
+                                <td>
+                                    <div class="container_button_actions">
+                                        <button class="button_edit" onclick="open_modal('modal_editar')">
+                                            <span>
+                                                <img src="{{asset('icons/edit.png')}}" alt="Editar datos del colaborador" width="20px" height="20px"/>
+                                            </span>
+                                            <span>Editar</span>
+                                        </button>
+                                        <button class="button_delete" onclick="delete_collaborator({{$collaborator->id}})">
+                                            <span>
+                                                <img src="{{asset('icons/delete.png')}}" alt="Eliminar colaborador" width="20px" height="20px"/>
+                                            </span>
+                                            <span>
+                                                Eliminar
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td colspan="6">
+                                    <div class="container_button_schedule">
+                                        {{-- <button onclick="open_modal('modal_horarios')"> --}}
+                                        <button onclick="window.location.href='{{ route('my_collaborators_availability', ['id' => $collaborator->id]) }}'">
+                                            <span>Ver horarios</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
 
 
@@ -448,7 +461,7 @@
         </dialog> 
         
         {{-- Seccion de modal para editar la info de un colaborador--}}
-        <dialog id="modal_editar" class="modal_editar">
+        {{-- <dialog id="modal_editar" class="modal_editar">
             <div class="modal_header">
                 <h2>Editar documentacion de un colaborador</h2>
                 <button class="close_modal" onclick="close_modal('modal_editar')">
@@ -504,7 +517,7 @@
                     </div>
                 </form>
             </section>
-        </dialog>
+        </dialog> --}}
     <script>
         function toggle_navbar(){
             let navbar = document.querySelector('.navbar');

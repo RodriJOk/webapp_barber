@@ -52,6 +52,8 @@ Route::controller(BranchController::class)->group(function () {
 
 Route::controller(ClientController::class)->group(function () {
     Route::get('/my_clients', 'index')->name('my_clients')->middleware('auth', 'rol:admin');
+    Route::post('/create_client', 'create_client')->name('create_client')->middleware('auth', 'rol:admin');
+    Route::get('/search_client', 'search_client')->name('search_client')->middleware('auth', 'rol:admin');
 });
 
 Route::controller(CollaboratorsController::class)->group(function () {

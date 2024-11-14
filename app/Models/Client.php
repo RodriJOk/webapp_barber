@@ -17,12 +17,13 @@ class Client extends Authenticatable{
         'name',
         'surname',
         'created_at',
-        'updated_at',
+        'update_at',
         'id_branch',
-        'phone',
         'email',
+        'phone',
     ];
 
+    public $timestamps = false;
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -35,13 +36,13 @@ class Client extends Authenticatable{
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'created_at' => 'datetime',
+    //         'update_at' => 'datetime',
+    //     ];
+    // }
 
     protected function getClientsByBranchId($id)
     {
@@ -65,5 +66,18 @@ class Client extends Authenticatable{
         $clients = $clients->get();
 
         return $clients ? $clients->toArray() : null;
+    }
+    protected function createClient($data)
+    {
+        $client = Client::create([
+            'name' => $data['nombre'],
+            'surname' => $data['apellido'],
+            'email' => $data['email'],
+            'phone' => $data['celular'],
+            'id_branch' => session('id_branch'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'update_at' => date('Y-m-d H:i:s')
+        ]);
+        return $client ? $client->toArray() : null;
     }
 }

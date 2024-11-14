@@ -85,9 +85,7 @@
         }
         .container_client_header .container_button button{
             padding: 10px; 
-            width: 100%; 
-            /* background-color:#00d1b2;  */
-            /* Poner en color azul */
+            width: 100%;
             background-color: #007bff; 
             color:#fff; 
             border:none; 
@@ -109,8 +107,25 @@
         }
         .container_search_section{
             position: relative; 
-            width: 100%; 
+            width: 75%; 
             height: 100%;
+        }
+        .filter_search{
+            display: flex; 
+            flex-direction: row; 
+            gap: 10px;
+            width: 25%;
+        }
+        .filter_search .select_search{
+            width: 50%;
+        }
+        .filter_search .button_search{
+            width: 50%;
+            padding: 10px; 
+            background-color:#00d1b2; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px;
         }
         .input_search{
             position: relative; 
@@ -126,21 +141,209 @@
             top:8px; 
             right: 0px;
         }
-        .button_search{
-            width: 20%; 
-            background-color: #00d1b2; 
-            color: #fff; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer;
-            height: 40px;
-        }
         .close_session{
             background: none;
             border: none;
             margin: 0;
             padding: 0;
             font-size: 16px;
+        }
+        /* Estilos de la tabla */
+        .table{
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 36px 0px;
+        }
+        .thead{
+            background-color: #012e46; 
+            color: #fff; 
+            text-align: center;
+        }
+        .row_header .column_name,
+        .row_header .column_surname
+        .row_header .column_created_at,
+        .row_header .column_updated_at,
+        .row_header .column_name_branch,
+        .row_header .column_phone,
+        .row_header .column_email{
+            padding: 10px; 
+            border-bottom: 1px solid #ccc;
+        }
+        .tbody{
+            text-align: center;
+        }
+
+        .row_content .content_name,
+        .row_content .content_surname,
+        .row_content .content_created_at,
+        .row_content .content_updated_at,
+        .row_content .content_name_branch,
+        .row_content .content_phone,
+        .row_content .content_email{
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Estilos del modal */
+        .modal{
+            background-color: #fff;
+            z-index: 9999;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: absolute;
+            top: 20px;
+            min-width: 500px;
+            display: none;
+        }
+        .modal_header{
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between;
+        }
+        .modal_header .close_modal{
+            background: none; 
+            color:#000; 
+            font-size: 18px;
+            border:none;
+            border-radius: 50%; 
+            cursor: pointer;
+            padding:10px;
+        }
+        .modal_body{
+            display: flex; 
+            flex-direction:column;
+        }
+        .modal_body .items{
+            display: flex; 
+            flex-direction: column; 
+            margin: 10px 0px;
+        }
+        .modal_body .container_buttom{
+            display: flex; 
+            flex-direction: row; 
+            margin: 10px 0px; 
+            width:100%;
+        }
+
+        .modal_body .container_buttom .close_modal{
+            padding: 10px 0px;
+            width: 50%; 
+            background-color:#c50f34; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px; 
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .modal_body .container_buttom .delete_reservation{
+            padding: 10px 0px;
+            width: 50%; 
+            background-color:#00d1b2; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px;
+        }
+        .items .input_name,
+        .items .input_surname,
+        .items .input_phone,
+        .items .input_email{
+            margin: 10px auto;
+            border: 1px solid #ccc; 
+            color: #000; 
+            width: 100%; 
+            font-size: 16px; 
+            height: 40px;
+            outline: none; 
+            text-decoration: none; 
+            background: transparent;
+            border-radius: 15px;
+            padding: 0px 5px;
+        }
+
+        .close_session{
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+        @media (max-width: 768px){
+            .navbar{
+                z-index: 1000;
+            }
+            .client_container{
+                margin-left: 80px;
+            }
+            .search_container{
+                flex-direction: column;
+                gap: 10px;
+            }
+            .container_search_section{
+                width: 96%;
+            }
+            .filter_search{
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                width: 100%;
+            }
+            .filter_search .select_search{
+                width: 50%;
+            }
+            .filter_search .button_search{
+                width: 50%;
+            }
+            /* Estilos de la tabla */
+            .table{
+                width: 100%; 
+                border-collapse: collapse; 
+                margin: 36px 0px;
+            }
+            .table .thead .row_header .column_created_at,
+            .table .thead .row_header .column_updated_at,
+            .table .thead .row_header .column_name_branch,
+            .table .thead .row_header .column_email{
+                display: none;
+            }
+
+            .table .tbody .row_content .content_created_at,
+            .table .tbody .row_content .content_updated_at,
+            .table .tbody .row_content .content_name_branch,
+            .table .tbody .row_content .content_email{
+                display: none;
+            }
+
+            .modal{
+                z-index: 1001;
+                top: 50px;
+                width: 88%;
+                min-height: 400px;
+                min-width: 300px;
+            }
+            .modal_body .items{
+                margin: 10px 0px;
+                gap: 5px;
+            }
+            .items .input_name,
+            .items .input_surname,
+            .items .input_phone,
+            .items .input_email{
+                border: 1px solid #ccc; 
+                width: 98%; 
+                font-size: 16px; 
+                height: 26px;
+                outline: none; 
+                text-decoration: none; 
+                background: transparent;
+                border-radius: 15px;
+                padding: 0px 5px;
+                color: #000;
+            }
+            .modal_body .container_buttom{
+                margin: 20px 0px;
+            }
         }
     </style>
 </head>
@@ -237,19 +440,14 @@
             <div class="container_client_header">
                 <h2 class="title">Mis clientes</h2>
                 <div class="container_button">
-                    <button onclick="open_modal()">Agregar un nuevo cliente</button>
+                    <button onclick="open_modal('modal')">Agregar un nuevo cliente</button>
                 </div>
             </div>
 
             <div style="margin: 10px 0px;">
-                <form method="GET" action="{{route('my_clients')}}">
+                <form method="GET" action="{{route('search_client')}}">
                     @csrf
                     <div class="search_container">
-                        <select name="order" id="order" class="select_search">
-                            <option value="0">Ordenar por</option>
-                            <option value="asc">Mas reciente</option>
-                            <option value="desc">Mas antiguo</option>
-                        </select>
                         <div class="container_search_section">
                             <input 
                                 autocomplete="off" 
@@ -265,7 +463,14 @@
                                     <img src="{{asset('icons/close.png')}}" alt="Borrar resultados de busqueda" width="20px" height="20px">
                                 </button>
                         </div>
-                        <button type="submit" class="button_search">Buscar</button>
+                        <div class="filter_search">
+                            <select name="order" id="order" class="select_search">
+                                <option value="0">Ordenar por</option>
+                                <option value="asc">Mas reciente</option>
+                                <option value="desc">Mas antiguo</option>
+                            </select>
+                            <button type="submit" class="button_search">Buscar</button>
+                        </div>
                     </div>
                 </form>
                 
@@ -275,91 +480,157 @@
                     </div>
                 @endif
                 @if(isset($search_result) && count($search_result) > 0)
-                    <table style="width: 100%; border-collapse: collapse; margin: 36px 0px;">
-                        <thead style="background-color: #012e46; color: #fff; text-align: center;">
-                            <tr>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                    <table class="table">
+                        <thead class="thead">
+                            <tr class="row_header">
+                                <th class="column_name">
                                     Nombre
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_surname">
                                     Apellido
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_created_at">
                                     Creacion
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_updated_at">
                                     Actualizacion
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_name_branch">
                                     Nombre sucursal
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_phone">
                                     Celular
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_email">
                                     Email
                                 </th>
                             </tr>
                         </thead>
-                        <tbody style="text-align: center;">
-                        @foreach ($search_result as $client)
-                            <tr>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['name']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['surname']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['created_at']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['update_at'] ?? 'No actualizado'}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['name_branch']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['phone']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['email']}}</td>
-                            </tr>
-                        @endforeach
+                        <tbody class="tbody">
+                            @foreach ($search_result as $client)
+                                <tr class="row_content">
+                                    <td class="content_name">{{$client['name']}}</td>
+                                    <td class="content_surname">{{$client['surname']}}</td>
+                                    <td class="content_created_at">{{$client['created_at']}}</td>
+                                    <td class="content_updated_at">{{$client['update_at'] ?? 'No actualizado'}}</td>
+                                    <td class="content_name_branch">{{$client['name_branch']}}</td>
+                                    <td class="content_phone">{{$client['phone']}}</td>
+                                    <td class="content_email">{{$client['email']}}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 @endif
-                @if(!isset($search_result))
-                    <table style="width: 100%; border-collapse: collapse; margin: 36px 0px;">
-                        <thead style="background-color: #012e46; color: #fff; text-align: center;">
-                            <tr>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                @if(!isset($search_result) && count($clients) > 0)
+                    <table class="table">
+                        <thead class="thead">
+                            <tr class="row_header">
+                                <th class="column_name">
                                     Nombre
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_surname">
                                     Apellido
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_created_at">
                                     Creacion
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_updated_at">
                                     Actualizacion
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_name_branch">
                                     Nombre sucursal
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_phone">
                                     Celular
                                 </th>
-                                <th style="padding: 10px; border-bottom: 1px solid #ccc;">
+                                <th class="column_email">
                                     Email
                                 </th>
                             </tr>
                         </thead>
-                        <tbody style="text-align: center;">
-                        @foreach ($clients as $client)
-                            <tr>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['name']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['surname']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['created_at']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['update_at'] ?? 'No actualizado'}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['name_branch']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['phone']}}</td>
-                                <td style="border-bottom: 1px solid #ccc;">{{$client['email']}}</td>
-                            </tr>
-                        @endforeach
+                        <tbody class="tbody">
+                            @foreach ($clients as $client)
+                                <tr class="row_content">
+                                    <td class="content_name">{{$client['name']}}</td>
+                                    <td class="content_surname">{{$client['surname']}}</td>
+                                    <td class="content_created_at">{{$client['created_at']}}</td>
+                                    <td class="content_updated_at">{{$client['update_at'] ?? 'No actualizado'}}</td>
+                                    <td class="content_name_branch">{{$client['name_branch']}}</td>
+                                    <td class="content_phone">{{$client['phone']}}</td>
+                                    <td class="content_email">{{$client['email']}}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                @elseif(!isset($search_result) && count($clients) == 0)
+                    <div style="text-align: center; margin: 20px 0px;">
+                        <h3>No tienes clientes registrados</h3>
+                    </div>
                 @endif
             </div>
         </div>
+
+        {{-- Modal para crear clientes --}}
+        <dialog id="modal" class="modal">
+            <div class="modal_header">
+                <h2>Nuevo cliente</h2>
+                <button class="close_modal" onclick="close_modal('modal')">
+                    <img class="navbar_image" src="{{asset('icons/close.png')}}" alt="Close Modal" width="35px" height="35px">
+                </button>
+            </div>
+            <section class="modal_body">
+                <form action="{{ route('create_client') }}" method="POST" >
+                    @csrf
+                    {{-- <input type="hidden" name="id_branch" value="{{ $branch['id'] }}"> --}}
+                    <div class="items">
+                        <label for="nombre">Nombre</label>
+                        <input 
+                            class="input_name"
+                            type="text" 
+                            name="nombre" 
+                            autocomplete="off" 
+                            placeholder="Nombre">
+                    </div>
+                    <div class="items">
+                        <label for="surname">Apellido</label>
+                        <input 
+                            class="input_surname"
+                            type="text" 
+                            name="surname" 
+                            autocomplete="off" 
+                            placeholder="Apellido">
+                    </div>
+                    <div class="items">
+                        <label for="celular_telefono">Celular/Telefono</label>
+                        <input 
+                            class="input_phone"
+                            type="text" 
+                            name="celular_telefono" 
+                            value="" 
+                            autocomplete="off" 
+                            placeholder="Celular/Telefono">
+                    </div>
+                    <div class="items">
+                        <label for="email">Email</label>
+                        <input 
+                            class="input_email"
+                            type="text" 
+                            name="email" 
+                            value="" 
+                            autocomplete="off" 
+                            placeholder="Email">
+                    </div>
+                    <div class="container_buttom">
+                        <button type="button" class="close_modal" onclick="close_modal('modal')" style="font-size: 18px;">
+                            Cerrar modal
+                        </button>
+                        <button type="submit" class="delete_reservation" style="font-size: 18px;">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </dialog>  
     </main>
 
     <script>
@@ -399,6 +670,14 @@
         function clear_search(){
             let search = document.getElementById('search');
             search.value = '';
+        }
+        function open_modal(element){
+            let modal = document.getElementById(element);
+            modal.style.display = 'block';
+        }
+        function close_modal(element){
+            let modal = document.getElementById(element);
+            modal.style.display = 'none';
         }
     </script>
 </body>
