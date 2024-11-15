@@ -115,6 +115,19 @@
                 padding: 0;
                 font-size: 16px;
             }
+            /* Estilos del modal */
+            .modal{
+                background-color: #fff;
+                z-index: 100000;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: row;
+                padding: 20px;
+                position: absolute;
+                top: 20px;
+                min-width: 500px;
+                display: none;
+            }
             @media (max-width: 768px){
                 .header .title{
                     font-size: 18px;
@@ -251,13 +264,45 @@
                 <header class="header">
                     <h2 class="title">Mi calendario</h2>
                     <div class="container_button">
-                        <button class="create_event" onclick="open_modal()">
+                        <a href="{{ route('new_event') }}" class="create_event">
                             Crear evento
-                        </button>
+                        </a>
+
+                        {{-- <form action="{{ route('new_event')}}" method="POST">
+                            @csrf
+                            <button class="create_event" type="submit">
+                                Crear evento
+                            </button>
+                        </form> --}}
+                        {{-- <button class="create_event" onclick="open_modal()">
+                            Crear evento
+                        </button> --}}
                     </div>
                 </header>
                 <div id="calendar" class="calendar"></div>
             </section>
+
+            {{-- <dialog id="modal" class="modal" style="display: none;">
+                <form action="{{ route('create_event') }}" method="POST">
+                    <div style="display: flex; flex-direction:column; gap: 10px;">
+
+                        @csrf
+                        <label for="service">Servicio</label>
+                        <select name="service" id="service" required>
+                            <option value="1">Corte de cabello (30 minutos)</option>
+                            <option value="2">Barba (30 minutos)</option>
+                            <option value="3">Corte de cabello y barba (1 hora)</option>
+                        </select>
+                        <label for="fecha_reserva">Fecha de la reserva</label>
+                        <input type="text" id="fecha_reserva" name="fecha_reserva" required>
+                        <label for="hora_reserva">Hora de la reserva</label>
+                        <input type="text" id="hora_reserva" name="hora_reserva" required>
+                        <label for="observaciones_reserva">Observaciones</label>
+                        <input type="text" id="observaciones_reserva" name="observaciones_reserva" required>
+                        <button type="submit">Reservar</button>
+                    </div>
+                </form>
+            </dialog> --}}
         </main>
     </body>
     <script>
@@ -426,10 +471,8 @@
             });
             //Si es la vista en mobile, que la vista inicial sea la de dia
             if(window.innerWidth < 768){
-                console.log('entro');
                 calendar.setOption('initialView', 'dayGridWeek');
             }else{
-                console.log('no entro');
                 calendar.setOption('initialView', 'timeGridWeek');
             }
 
@@ -463,7 +506,6 @@
             let modal = document.getElementById(element);
             modal.style.display = 'none';
         }
-
 
         //Seteo la instancia de la libreria flatpickr
         let reserva = document.getElementById('fecha_reserva');

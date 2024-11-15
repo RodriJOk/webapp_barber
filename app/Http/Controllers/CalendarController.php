@@ -11,6 +11,9 @@ class CalendarController extends Controller
         $get_all_reservations = Calendar::getAllReservations();
         return view('calendar/index', ['reservations' => $get_all_reservations]);
     }
+    public function new_event(){
+        return view('calendar/new_event');
+    }
     public function create_event()
     {
         $model = new Calendar();

@@ -51,22 +51,6 @@ class Client extends Authenticatable{
                          ->where('id_branch', $id)->get();
         return $clients ? $clients->toArray() : null;
     }
-
-    protected function searchClient($client_name, $order)
-    {
-        $clients = Client::select('clients.id', 'clients.name', 'clients.surname', 'clients.created_at', 'clients.update_at','clients.email', 'clients.phone', 'branch.name as name_branch', 'branch.id as id_branch')
-                         ->join('branch', 'branch.id', '=', 'clients.id_branch', 'inner');
-        if(isset($client_name) && $client_name != null){
-            $clients->where('clients.name', 'like', '%'.$client_name.'%');
-            $clients->orWhere('clients.surname', 'like', '%'.$client_name.'%');
-        }
-        if(isset($order) && $order != 0){
-            $clients->orderBy('clients.name', $order == 1 ? 'asc' : 'desc');
-        }
-        $clients = $clients->get();
-
-        return $clients ? $clients->toArray() : null;
-    }
     protected function createClient($data)
     {
         $client = Client::create([
@@ -80,4 +64,18 @@ class Client extends Authenticatable{
         ]);
         return $client ? $client->toArray() : null;
     }
+    protected function searchClient($client_name, $order, $id_branch)
+    {
+        $clients = Client::select('clients.*')
+                        ->where('clients.name', 'like', '%'.$client_name.'%')
+                        ->orWhere('clients.surname', 'like', '%'.$client_name.'%');
+        if($order == 'asc'){
+            $clients = $clients->orderBy('clients.name', 'asc');
+        }else{
+            $clients = $clients->orderBy('clients.name', 'desc');
+        }
+        $clients = $clients->get();
+        return $clients ? $clients->toArray() : null;
+    }
+
 }

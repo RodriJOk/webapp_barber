@@ -36,6 +36,7 @@ Route::controller(CalendarController::class)->group(function () {
     Route::get('/my_calendar', 'index')->name('my_calendar')->middleware('auth', 'rol:admin,colaborador,cliente');
     Route::get('/edit_event', 'edit_event')->name('edit_event')->middleware('auth', 'rol:admin,colaborador,cliente');
     Route::post('/delete_event', 'delete_event')->name('delete_event')->middleware('auth', 'rol:admin,colaborador,cliente');
+    Route::get('/new_event', 'new_event')->name('new_event')->middleware('auth', 'rol:admin,colaborador,cliente');
     Route::post('/create_event', 'create_event')->name('create_event')->middleware('auth', 'rol:admin,colaborador,cliente');
 });
 

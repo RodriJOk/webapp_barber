@@ -453,7 +453,7 @@
                                 autocomplete="off" 
                                 type="text" 
                                 class="input_search" 
-                                name="search" 
+                                name="name_search" 
                                 id="search" 
                                 placeholder="Buscar un cliente"
                                 value="{{request()->search}}"
