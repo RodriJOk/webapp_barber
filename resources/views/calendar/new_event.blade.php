@@ -114,6 +114,123 @@
                 margin: 0;
                 padding: 0;
                 font-size: 16px;
+                cursor: pointer;
+            }
+            /* Estilos de select de profesionales */
+            .select_professional{
+                margin: 10px auto;
+                border: 1px solid #ccc; 
+                width: 100%;
+                font-size: 16px; 
+                height: 40px;
+                outline: none; 
+                text-decoration: none; 
+                background: transparent;
+                border-radius: 15px;
+                color: #000;
+            }
+            .select_professional option{
+                background-color: #fff;
+                color: #000;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0px 10px;
+            }
+            /* Estilos de la seccion de servicios */
+            .select_services{
+                margin: 10px auto;
+                border: 1px solid #ccc; 
+                width: 100%;
+                font-size: 16px; 
+                height: 40px;
+                outline: none; 
+                text-decoration: none; 
+                background: transparent;
+                border-radius: 15px;
+                color: #000;
+            }
+            .select_services option{
+                background-color: #fff;
+                color: #000;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0px 10px;
+            }
+            /* Estilos del desplegable de los dias */
+            .days_available{
+                margin: 10px auto;
+                text-align: center;
+                max-width: 90%;
+            }
+            .day{
+                display:flex;
+                flex-direction:column;
+                justify-content:center;
+                border: 1px solid #ccc;
+                width: 100%;
+                margin: 10px 0px;
+            }
+            .day_container .button_day{
+                background:none; 
+                border:none; 
+                font-size:14px; 
+                font-weight:900; 
+                margin:10px 0px; 
+                cursor:pointer; 
+                width:100%;
+            }
+            .button_day .day_information{
+                display:flex; 
+                flex-direction: row; 
+                justify-content: space-between;
+            }
+            .slot_container{
+                display:flex; 
+                flex-direction: row; 
+                flex-wrap: wrap; 
+                gap:5px; 
+                display:none; 
+                padding: 0px 5px;
+            }
+            .slot_container .slot_button{
+                color:#000; 
+                padding:10px; 
+                border-radius:5px; 
+                cursor:pointer; 
+                width:auto; 
+                border:1px solid #ccc; 
+                background:none; 
+                margin:5px 0px;
+            }
+
+
+            .container_buttom{
+                display: flex; 
+                flex-direction: row; 
+                margin: 10px 0px; 
+                width:100%;
+                font-size: 18px;
+            }
+
+            .container_buttom .cancel_event{
+                padding: 10px 0px;
+                width: 50%; 
+                background-color:#c50f34; 
+                color:#fff; 
+                border:none; 
+                border-radius: 5px; 
+                margin-right: 10px;
+            }
+
+            .container_buttom .create_event{
+                padding: 10px 0px;
+                width: 50%; 
+                color:#fff; 
+                border:none; 
+                border-radius: 5px;
+                background-color: #ccc;
             }
             @media (max-width: 768px){
                 .header .title{
@@ -251,29 +368,40 @@
                 <header class="header">
                     <h2 class="title">Realizar una nueva reserva</h2>
                 </header>
-                <main>
-                    <form action="{{ route('create_event')}}" method="POST">
+                <main style="display:flex; flex-direction: column; width: 60%; margin: 0 auto; border: 2px solid #ccc;padding:10px; border-radius: 5px;">
+                    <form action="{{ route('create_event')}}" method="POST" class="form_create_event">
                         @csrf
-                        <div>
-                            <label>Servicio</label>
-                            <select name="service" id="service">
-                                <option value="1">Corte de cabello</option>
-                                <option value="2">Corte de barba</option>
-                                <option value="3">Corte de cabello y barba</option>
+                        <div style="display:flex; flex-direction: column; justify-content: center; width:100%; gap:10px; margin:20px 0px;">
+                            <label style="font-size:18px; font-weight: 700;">Profesionales</label>
+                            <select name="professional" id="professional" class="select_professional">
+                                <option value="">Selecciona un profesional</option>
+                                @foreach($professionals as $professional)
+                                    <option value="{{$professional->id}}">{{$professional->name}} {{$professional->surname}}</option>
+                                @endforeach
                             </select>
                         </div>
-                        <div>
-                            <h3>Dias disponibles</h3>
-                            <div class="container_dias_disponibles">
-                            </div>
+                        <div class="container_select_service" style="display:flex; flex-direction: column; justify-content: center; width:100%; gap:10px; margin:20px 0px; display:none;">
+                            <label style="font-size:18px; font-weight: 700;">Servicio</label>
+                            <select name="service" id="service" class="select_services">
+                            </select>
                         </div>
-                        <div>
-                            <h3>Horarios disponibles</h3>
-                            <div class="container_horarios_disponibles">
-                            </div>
+                        <div class="container_days_available" style="display:none; margin:15px 0px;">
+                            <label style="font-size:18px; font-weight: 700;">Dias disponibles</label>
+                            <div class="days_available"></div>
                         </div>
-                        <div>
-                            <button class="create_event">Reservar</button>
+                        <div class="container_buttom">
+                            <button 
+                                type="buttom" 
+                                class="cancel_event" 
+                                onclick="cancel_event()">
+                                Cancelar
+                            </button>
+                            <button 
+                                type="submit" 
+                                class="create_event"
+                                disabled>
+                                Reservar
+                            </button>
                         </div>
                     </form>
                 </main>
@@ -281,7 +409,201 @@
         </main>
     </body>
     <script>
-        //Codigo AJAX para obtener los dias disponibles
-        
+        $('.select_professional').on('change', function(){
+            let professional = $(this).val();
+            let container_services= document.getElementsByClassName('container_select_service')[0];
+            let container_days_available = document.getElementsByClassName('container_days_available')[0];
+            if(container_services.style.display == 'block'){
+                container_services.style.display = 'none';
+            }
+            if(container_days_available.style.display == 'block'){
+                container_days_available.style.display = 'none';
+            }
+            
+            get_services(professional);
+        });
+
+        function get_services(id_professional){
+            let professional = $('#professional').val();
+            $.ajax({
+                url: '{{route('get_services_by_professional')}}',
+                type: 'POST',
+                data: {
+                    id_professional: id_professional,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function(response){
+                    let container_services= document.getElementsByClassName('container_select_service')[0];
+                    container_services.style.display = 'block';
+                    let select_services = document.getElementById('service');
+                    let services = response;
+                    select_services.innerHTML = '';
+                    if(services.length == 0){
+                        select_services.innerHTML = '<option value="">No hay servicios disponibles</option>';
+                        return;
+                    }
+                    if(services.length > 0){
+                        select_services.innerHTML = '<option value="">Selecciona un servicio</option>';
+                        services.forEach(service => {
+                            select_services.innerHTML += `<option value="${service.id}">${service.name}</option>`;
+                        });
+                    }
+                    else{
+                        select_services.innerHTML = '<option value="">No hay servicios disponibles</option>';
+                    }
+                },
+                error: function(error){
+                    toastr.error('Ha ocurrido un error al obtener los servicios. Por favor, intenta de nuevo.');
+                }
+            });
+        }
+
+        $('.select_services').on('change', function(){
+            let services = $(this).val();
+            let professional = document.getElementById('professional');
+            let id_professional = professional.options[professional.selectedIndex].value;
+            get_available(services, id_professional);
+        });
+        function get_available(services, id_professional){
+            $.ajax({
+                url: '{{route('get_availability_day')}}',
+                type: 'POST',
+                data: {
+                    _token: '{{csrf_token()}}',
+                    services: services,
+                    id_professional: id_professional,
+                    date: new Date().toISOString().split('T')[0]
+                },
+                success: function(response){
+                    console.log(response);
+                    if(response.availability_by_day == 0){
+                        toastr.error('No hay dias disponibles para el profesional seleccionado');
+                        return;
+                    }
+                    let container_days_available = document.getElementsByClassName('container_days_available')[0];
+                    container_days_available.style.display = 'block';
+                    
+                    let days_available = document.getElementsByClassName('days_available')[0];
+                    days_available.innerHTML = '';
+                    
+                    response.availability_by_day.forEach(day => {
+                        days_available.innerHTML += `
+                        <div class="day">
+                            <div class="day_container">
+                                <button onclick="show_slots(this)" class="button_day">
+                                    <div class="day_information">
+                                        <span>${day.date}</span>
+                                        <span>
+                                            <img src="{{asset('icons/expand_circle_down.png')}}" alt="Abrir" width="20px" height="20px">
+                                        </span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="slot_container">
+                                ${day.availableSlots.map(slot => `
+                                    <button class="slot_button" onclick="select_slot(this)">
+                                        ${slot}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>`;
+                    });
+
+                    let button_create_event = document.getElementsByClassName('create_event')[0];
+                    button_create_event.disabled = false;
+                    button_create_event.style.backgroundColor = '#00d1b2';
+                },
+                error: function(error){
+                    toastr.error('Ha ocurrido un error al obtener los dias disponibles. Por favor, intenta de nuevo.');
+                }
+            });
+        }
+
+        function show_slots(element){
+            let slot_container = element.parentElement.nextElementSibling;
+            if(slot_container.style.display == 'none'){
+                slot_container.style.display = 'flex';
+            }
+            else{
+                slot_container.style.display = 'none';
+            }
+        }
+
+        let form_create_event = document.getElementsByClassName('form_create_event')[0];
+        form_create_event.addEventListener('submit', function(event){
+            event.preventDefault();
+            // let professional = document.getElementById('professional');
+            // let service = document.getElementById('service');
+            // let slots = document.querySelectorAll('.day button');
+            // let slots_selected = [];
+            // slots.forEach(slot => {
+            //     if(slot.style.backgroundColor == 'rgb(0, 209, 178)'){
+            //         slots_selected.push(slot.innerText);
+            //     }
+            // });
+            // if(professional.value == ''){
+            //     toastr.error('Debes seleccionar un profesional');
+            //     return;
+            // }
+            // if(service.value == ''){
+            //     toastr.error('Debes seleccionar un servicio');
+            //     return;
+            // }
+            // if(slots_selected.length == 0){
+            //     toastr.error('Debes seleccionar al menos un horario');
+            //     return;
+            // }
+            // $.ajax({
+            //     url: '{{route('create_event')}}',
+            //     type: 'POST',
+            //     data: {
+            //         _token: '{{csrf_token()}}',
+            //         professional: professional.value,
+            //         service: service.value,
+            //         slots: slots_selected
+            //     },
+            //     success: function(response){
+            //         toastr.success('Reserva realizada con exito');
+            //         setTimeout(() => {
+            //             window.location.href = '{{route('my_calendar')}}';
+            //         }, 2000);
+            //     },
+            //     error: function(error){
+            //         toastr.error('Ha ocurrido un error al realizar la reserva. Por favor, intenta de nuevo.');
+            //     }
+            // });
+        });
+        function select_slot(element){
+            let slots = document.querySelectorAll('.day button');
+            slots.forEach(slot => {
+                slot.style.backgroundColor = 'transparent';
+                slot.style.color = '#000';
+            });
+
+            if(element.style.backgroundColor == 'rgb(0, 209, 178)'){
+                element.style.backgroundColor = 'transparent';
+                element.style.color = '#000';
+            }
+            else{
+                element.style.backgroundColor = '#00d1b2';
+                element.style.color = '#fff';
+            }
+        }
+        function cancel_event(){
+            //Si se selecciono todo le formulario, se limpia. Si no se redirige a la pagina principal
+            let professional = document.getElementById('professional');
+            let service = document.getElementById('service');
+            let slots = document.querySelectorAll('.day button');
+            if(professional.value != '' || service.value != '' || slots.length > 0){
+                professional.value = '';
+                service.value = '';
+                slots.forEach(slot => {
+                    slot.style.backgroundColor = 'transparent';
+                });
+            }
+            else{
+                window.location.href = '{{route('my_calendar')}}';
+            }
+        }
     </script>
 </html>

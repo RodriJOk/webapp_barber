@@ -140,9 +140,6 @@
                 method="POST">
                 @csrf
                 <header class="form_header">
-                    {{-- <div class="container_title">
-                        <h1 class="title">Por favor, completa el formulario</h1>
-                    </div> --}}
                 </header>
                 <div class="form_body">
                     <div class="form_item">

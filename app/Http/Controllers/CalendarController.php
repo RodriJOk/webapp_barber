@@ -4,6 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Calendar;
+use App\Models\Professionals;
+use App\Models\ProfessionalServices;
+use App\Models\ProfessionalAvailability;
+use App\Models\ShiftReservation;
+use Carbon\Carbon;
+use DateTime;
+use DateInterval;
 
 class CalendarController extends Controller
 {
@@ -12,7 +19,9 @@ class CalendarController extends Controller
         return view('calendar/index', ['reservations' => $get_all_reservations]);
     }
     public function new_event(){
-        return view('calendar/new_event');
+        $id_branch = session('id_branch');
+        $professionals = Professionals::getProfessionalsById($id_branch);
+        return view('calendar/new_event', ['professionals' => $professionals]);
     }
     public function create_event()
     {
@@ -54,5 +63,75 @@ class CalendarController extends Controller
             toastr()->error('Error al eliminar la reserva');
             return redirect('/my_calendar');
         }
+    }
+    public function get_services_by_professional(){
+        $id_professional = (int)request()->id_professional;
+        $services = ProfessionalServices::getServicesByProfessional($id_professional);
+        return response()->json($services);
+    }
+    public function get_availability_day(){
+        // $id_professional = (int)request()->id_professional;
+        // $services = (int)request()->services;
+        // $date = request()->date;
+        $id_professional = 1;
+        $services = 1;
+        $date = '2024-11-17';
+        $get_days_availability = ProfessionalAvailability::getDaysByProfessional($id_professional);
+        $get_reservation = ShiftReservation::getRervationByProfessional($id_professional, $date);
+        
+        $days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        $num_days = 7; // Número de días a calcular (puedes cambiarlo a 5 o más)
+        $availability_by_day = [];
+
+        // Calcular la disponibilidad para los próximos $num_days días
+        for ($i = 0; $i < $num_days; $i++) {
+            // $currentDate = date('Y-m-d', strtotime("+$i days", strtotime($date)));
+            $currentDate = date('Y-m-d', strtotime($date . " +$i days"));
+            $currentDayIndex = date('N', strtotime($currentDate)) - 1; // Índice basado en 0
+            $currentDayName = $days[$currentDayIndex];
+
+            // Filtrar disponibilidad por día
+            $dayAvailability = array_filter($get_days_availability, function ($day_availability) use ($currentDayName) {
+                return $day_availability->day_of_the_week == $currentDayName;
+            });
+
+            // Generar horarios disponibles para el día
+            if (!empty($dayAvailability)) {
+                // $startTime = new DateTime("$currentDate 08:00"); 
+                $startTime = new DateTime("$currentDate " . $dayAvailability[0]->start_time); // Hora de inicio
+                $endTime = new DateTime("$currentDate " . $dayAvailability[0]->end_time);     // Hora de fin
+                $interval = new DateInterval('PT30M');           // Intervalos de 30 minutos
+
+                // Reservas para esta fecha
+                $reservations = $get_reservation->filter(function ($reservation) use ($currentDate) {
+                    return $reservation->date == $currentDate;
+                })->pluck('time')->map(function ($time) {
+                    return date('H:i', strtotime($time));
+                })->toArray();
+
+                // Calcular los turnos disponibles
+                $availableSlots = [];   
+                while ($startTime < $endTime) {
+                    $slot = $startTime->format('H:i');
+                    if (!in_array($slot, $reservations)) {
+                        $availableSlots[] = $startTime->format('H:i');
+                    }
+                    $startTime->add($interval);
+                }
+
+                $availability_by_day[] = [
+                    'date' => ucfirst(Carbon::parse($currentDate)->translatedFormat('l d \d\e F')),
+                    'availableSlots' => $availableSlots,
+                ];
+            }
+        }
+
+        return response()->json(
+            ['availability' => $get_days_availability, 
+             'id_professional' => $id_professional,
+             'services' => $services,
+             'date' => $date,
+             'availability_by_day' => $availability_by_day
+            ]);
     }
 }

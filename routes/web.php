@@ -38,6 +38,9 @@ Route::controller(CalendarController::class)->group(function () {
     Route::post('/delete_event', 'delete_event')->name('delete_event')->middleware('auth', 'rol:admin,colaborador,cliente');
     Route::get('/new_event', 'new_event')->name('new_event')->middleware('auth', 'rol:admin,colaborador,cliente');
     Route::post('/create_event', 'create_event')->name('create_event')->middleware('auth', 'rol:admin,colaborador,cliente');
+    Route::post('/get_services_by_professional', 'get_services_by_professional')->name('get_services_by_professional')->middleware('auth', 'rol:admin,colaborador,cliente');
+    Route::post('/get_availability_day', 'get_availability_day')->name('get_availability_day')->middleware('auth', 'rol:admin,colaborador,cliente');
+    Route::get('/get_availability_day', 'get_availability_day')->name('get_availability_day')->middleware('auth', 'rol:admin,colaborador,cliente');
 });
 
 Route::controller(SuscriptionController::class)->group(function () {

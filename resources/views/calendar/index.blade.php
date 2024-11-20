@@ -113,6 +113,7 @@
                 border: none;
                 margin: 0;
                 padding: 0;
+                cursor: pointer;
                 font-size: 16px;
             }
             /* Estilos del modal */
@@ -245,16 +246,16 @@
                         </div>
                     </li>
                     <li>
-                        <div class="item">
+                        <div class="item" style="cursor: pointer;">
                             <img
                                 class="navbar_image"
                                 src="{{asset('icons/logout.png')}}" 
                                 alt="Abrir"
                                 width="20px"
                                 height="20px">
-                            <form action="{{ route('close_session') }}" method="POST">
+                            <form action="{{ route('close_session') }}" method="POST" class="form_close_session">
                                 @csrf
-                                <button type="submit" class="text_link close_session">Cerrar Session</button>
+                                <button class="text_link close_session" onclick="cerrar_session()">Cerrar Session</button>
                             </form>
                         </div>
                     </li>
@@ -267,42 +268,10 @@
                         <a href="{{ route('new_event') }}" class="create_event">
                             Crear evento
                         </a>
-
-                        {{-- <form action="{{ route('new_event')}}" method="POST">
-                            @csrf
-                            <button class="create_event" type="submit">
-                                Crear evento
-                            </button>
-                        </form> --}}
-                        {{-- <button class="create_event" onclick="open_modal()">
-                            Crear evento
-                        </button> --}}
                     </div>
                 </header>
                 <div id="calendar" class="calendar"></div>
             </section>
-
-            {{-- <dialog id="modal" class="modal" style="display: none;">
-                <form action="{{ route('create_event') }}" method="POST">
-                    <div style="display: flex; flex-direction:column; gap: 10px;">
-
-                        @csrf
-                        <label for="service">Servicio</label>
-                        <select name="service" id="service" required>
-                            <option value="1">Corte de cabello (30 minutos)</option>
-                            <option value="2">Barba (30 minutos)</option>
-                            <option value="3">Corte de cabello y barba (1 hora)</option>
-                        </select>
-                        <label for="fecha_reserva">Fecha de la reserva</label>
-                        <input type="text" id="fecha_reserva" name="fecha_reserva" required>
-                        <label for="hora_reserva">Hora de la reserva</label>
-                        <input type="text" id="hora_reserva" name="hora_reserva" required>
-                        <label for="observaciones_reserva">Observaciones</label>
-                        <input type="text" id="observaciones_reserva" name="observaciones_reserva" required>
-                        <button type="submit">Reservar</button>
-                    </div>
-                </form>
-            </dialog> --}}
         </main>
     </body>
     <script>
@@ -604,5 +573,11 @@
             maxTime: "22:00",
             minuteIncrement: 30, 
         });
+
+        function cerrar_session(){
+            let form_close_session = document.getElementsByClassName('form_close_session')[0];
+            form_close_session.submit();
+            toastr.success('Sesion cerrada correctamente', 'Exito');
+        }
     </script>
 </html>
