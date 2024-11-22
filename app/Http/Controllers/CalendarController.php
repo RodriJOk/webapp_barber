@@ -25,6 +25,7 @@ class CalendarController extends Controller
     }
     public function create_event()
     {
+        dd(request()->all());
         $model = new Calendar();
         $nombre = request()->nombre;
         $apellido = request()->apellido;
@@ -73,9 +74,9 @@ class CalendarController extends Controller
         // $id_professional = (int)request()->id_professional;
         // $services = (int)request()->services;
         // $date = request()->date;
-        $id_professional = 1;
+        $id_professional = 2;
         $services = 1;
-        $date = '2024-11-17';
+        $date = '2024-11-20';
         $get_days_availability = ProfessionalAvailability::getDaysByProfessional($id_professional);
         $get_reservation = ShiftReservation::getRervationByProfessional($id_professional, $date);
         
@@ -83,23 +84,35 @@ class CalendarController extends Controller
         $num_days = 7; // Número de días a calcular (puedes cambiarlo a 5 o más)
         $availability_by_day = [];
 
+        // dd($get_days_availability, $get_reservation);   
         // Calcular la disponibilidad para los próximos $num_days días
         for ($i = 0; $i < $num_days; $i++) {
             // $currentDate = date('Y-m-d', strtotime("+$i days", strtotime($date)));
             $currentDate = date('Y-m-d', strtotime($date . " +$i days"));
             $currentDayIndex = date('N', strtotime($currentDate)) - 1; // Índice basado en 0
             $currentDayName = $days[$currentDayIndex];
-
+            // dd($currentDate, $currentDayIndex, $currentDayName);
             // Filtrar disponibilidad por día
             $dayAvailability = array_filter($get_days_availability, function ($day_availability) use ($currentDayName) {
                 return $day_availability->day_of_the_week == $currentDayName;
             });
+            // if (empty($dayAvailability)) {
+            //     continue;
+            // }else{
+            //     dd($dayAvailability, $dayAvailability[2]->start_time);
+            // }
 
             // Generar horarios disponibles para el día
             if (!empty($dayAvailability)) {
-                // $startTime = new DateTime("$currentDate 08:00"); 
-                $startTime = new DateTime("$currentDate " . $dayAvailability[0]->start_time); // Hora de inicio
-                $endTime = new DateTime("$currentDate " . $dayAvailability[0]->end_time);     // Hora de fin
+                $startTime;
+                $endTime;
+                foreach ($dayAvailability as $key => $value) {
+                    $dayAvailability[$key]->start_time = date('H:i', strtotime($value->start_time));
+                    $dayAvailability[$key]->end_time = date('H:i', strtotime($value->end_time));
+                    
+                    $startTime = new DateTime($dayAvailability[$key]->start_time); // Hora de inicio
+                    $endTime = new DateTime($dayAvailability[$key]->end_time);     // Hora de fin
+                }
                 $interval = new DateInterval('PT30M');           // Intervalos de 30 minutos
 
                 // Reservas para esta fecha

@@ -490,7 +490,7 @@
                         days_available.innerHTML += `
                         <div class="day">
                             <div class="day_container">
-                                <button onclick="show_slots(this)" class="button_day">
+                                <button onclick="show_slots(this)" class="button_day" type="button">
                                     <div class="day_information">
                                         <span>${day.date}</span>
                                         <span>
@@ -501,7 +501,7 @@
                             </div>
                             <div class="slot_container">
                                 ${day.availableSlots.map(slot => `
-                                    <button class="slot_button" onclick="select_slot(this)">
+                                    <button class="slot_button" onclick="select_slot(this)" type="button">
                                         ${slot}
                                     </button>
                                 `).join('')}
@@ -532,46 +532,37 @@
         let form_create_event = document.getElementsByClassName('form_create_event')[0];
         form_create_event.addEventListener('submit', function(event){
             event.preventDefault();
-            // let professional = document.getElementById('professional');
-            // let service = document.getElementById('service');
-            // let slots = document.querySelectorAll('.day button');
-            // let slots_selected = [];
-            // slots.forEach(slot => {
-            //     if(slot.style.backgroundColor == 'rgb(0, 209, 178)'){
-            //         slots_selected.push(slot.innerText);
-            //     }
-            // });
-            // if(professional.value == ''){
-            //     toastr.error('Debes seleccionar un profesional');
-            //     return;
-            // }
-            // if(service.value == ''){
-            //     toastr.error('Debes seleccionar un servicio');
-            //     return;
-            // }
-            // if(slots_selected.length == 0){
-            //     toastr.error('Debes seleccionar al menos un horario');
-            //     return;
-            // }
-            // $.ajax({
-            //     url: '{{route('create_event')}}',
-            //     type: 'POST',
-            //     data: {
-            //         _token: '{{csrf_token()}}',
-            //         professional: professional.value,
-            //         service: service.value,
-            //         slots: slots_selected
-            //     },
-            //     success: function(response){
-            //         toastr.success('Reserva realizada con exito');
-            //         setTimeout(() => {
-            //             window.location.href = '{{route('my_calendar')}}';
-            //         }, 2000);
-            //     },
-            //     error: function(error){
-            //         toastr.error('Ha ocurrido un error al realizar la reserva. Por favor, intenta de nuevo.');
-            //     }
-            // });
+            let professional = document.getElementById('professional');
+            let service = document.getElementById('service');
+            let slots = document.querySelectorAll('.day button');
+            let slots_selected = [];
+            slots.forEach(slot => {
+                if(slot.style.backgroundColor == 'rgb(0, 209, 178)'){
+                    slots_selected.push(slot.innerText);
+                }
+            });
+            console.log(slots_selected, service.value, professional.value);
+            if(professional.value == ''){
+                toastr.error('Debes seleccionar un profesional');
+                return;
+            }
+            if(service.value == ''){
+                toastr.error('Debes seleccionar un servicio');
+                return;
+            }
+            if(slots_selected.length == 0){
+                toastr.error('Debes seleccionar al menos un horario');
+                return;
+            }
+
+            //Creo un input para enviar el slot seleccionado
+            let input_slots = document.createElement('input');
+            input_slots.type = 'hidden';
+            input_slots.name = 'slots';
+            input_slots.value = JSON.stringify(slots_selected);
+            form_create_event.appendChild(input_slots);
+
+            form_create_event.submit();
         });
         function select_slot(element){
             let slots = document.querySelectorAll('.day button');
