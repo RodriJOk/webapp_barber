@@ -204,8 +204,6 @@
                 background:none; 
                 margin:5px 0px;
             }
-
-
             .container_buttom{
                 display: flex; 
                 flex-direction: row; 
@@ -213,7 +211,6 @@
                 width:100%;
                 font-size: 18px;
             }
-
             .container_buttom .cancel_event{
                 padding: 10px 0px;
                 width: 50%; 
@@ -223,7 +220,6 @@
                 border-radius: 5px; 
                 margin-right: 10px;
             }
-
             .container_buttom .create_event{
                 padding: 10px 0px;
                 width: 50%; 
@@ -231,6 +227,50 @@
                 border:none; 
                 border-radius: 5px;
                 background-color: #ccc;
+            }
+            /* Seccion de la informacion de los usuarios */
+            .container_user_information{
+                display:flex; 
+                flex-direction: column; 
+                justify-content: center; 
+                width:100%; 
+                gap:10px; 
+                margin:20px 0px;
+            }
+            .container_user_information .user_name, 
+            .container_user_information .user_contact{
+                display: flex; 
+                flex-direction: row; 
+                gap: 10px;
+                margin: 0 auto;
+                width: 100%;
+                justify-content: center;
+            }
+            .user_name .item_name, 
+            .user_name .item_surname,
+            .user_contact .item_email,
+            .user_contact .item_phone{
+                display:flex; 
+                flex-direction:column; 
+                gap:5px;
+                width: 50%;
+            }
+
+            .user_name .item_name .input_user_name,
+            .user_name .item_surname .input_user_surname,
+            .user_contact .item_email .input_user_email,
+            .user_contact .item_phone .input_user_phone{
+                margin: 10px auto;
+                border: 1px solid #ccc; 
+                color: #000; 
+                width: 85%; 
+                font-size: 16px; 
+                height: 40px;
+                outline: none; 
+                text-decoration: none; 
+                background: transparent;
+                border-radius: 15px;
+                padding: 0px 16px;
             }
             @media (max-width: 768px){
                 .header .title{
@@ -500,14 +540,18 @@
                                 </button>
                             </div>
                             <div class="slot_container">
-                                ${day.availableSlots.map(slot => `
+                                ${day.availableSlots.map(slot =>
+                                `
                                     <button class="slot_button" onclick="select_slot(this)" type="button">
-                                        ${slot}
-                                    </button>
-                                `).join('')}
+                                        <span id="time_slot">${slot.hora}</span>
+                                        <input id="day_slot" type="hidden" name="day" value="${slot.dia}">
+                                    </button>`).join('')}
                             </div>
                         </div>`;
                     });
+
+                    days_available.innerHTML += `<div class="user_information"></div>`;
+                    mostrar_informacion_usuario();
 
                     let button_create_event = document.getElementsByClassName('create_event')[0];
                     button_create_event.disabled = false;
@@ -538,10 +582,14 @@
             let slots_selected = [];
             slots.forEach(slot => {
                 if(slot.style.backgroundColor == 'rgb(0, 209, 178)'){
-                    slots_selected.push(slot.innerText);
+                    let day = slot.querySelector('#day_slot').value;
+                    let time = slot.querySelector('#time_slot').innerText;
+                    slots_selected.push({
+                        time: time,
+                        day: day
+                    });
                 }
             });
-            console.log(slots_selected, service.value, professional.value);
             if(professional.value == ''){
                 toastr.error('Debes seleccionar un profesional');
                 return;
@@ -554,13 +602,29 @@
                 toastr.error('Debes seleccionar al menos un horario');
                 return;
             }
+            //Si se selecciona un dia y un horario que es menor a la fecha actual, se muestra un mensaje de error
+            let date = new Date();
+            let day = slots_selected[0].day.split('-');
+            let time = slots_selected[0].time.split(':');
+            let date_selected = new Date(day[0], day[1] - 1, day[2], time[0], time[1]);
+            if(date_selected < date){
+                toastr.error('No puedes seleccionar un dia y horario menor a la fecha actual');
+                return;
+            }
 
             //Creo un input para enviar el slot seleccionado
-            let input_slots = document.createElement('input');
-            input_slots.type = 'hidden';
-            input_slots.name = 'slots';
-            input_slots.value = JSON.stringify(slots_selected);
-            form_create_event.appendChild(input_slots);
+            let input_day = document.createElement('input');
+            input_day.type = 'hidden';
+            input_day.name = 'day';
+            input_day.value = slots_selected[0].day;
+            form_create_event.appendChild(input_day);
+
+            //Creo un input para enviar la fecha del slot seleccionado
+            let input_time = document.createElement('input');
+            input_time.type = 'hidden';
+            input_time.name = 'time';
+            input_time.value = slots_selected[0].time;
+            form_create_event.appendChild(input_time);
 
             form_create_event.submit();
         });
@@ -595,6 +659,61 @@
             else{
                 window.location.href = '{{route('my_calendar')}}';
             }
+        }
+        function mostrar_informacion_usuario(){
+            let user_information = document.getElementsByClassName('user_information')[0];
+            user_information.innerHTML = `
+                <div class="container_user_information">
+                    <div class="user_name">
+                        <div class="item_name">
+                            <label for="name">Nombre</label>    
+                            <input 
+                                class="input_user_name"
+                                type="text" 
+                                name="name"
+                                id="name" 
+                                placeholder="Nombre"
+                                autocomplete="off" 
+                                required>
+                        </div>
+                        <div class="item_surname">
+                            <label for="surname">Apellido</label>    
+                            <input 
+                                class="input_user_surname"
+                                type="text" 
+                                name="surname" 
+                                id="surname"
+                                placeholder="Apellido"
+                                autocomplete="off" 
+                                required>
+                        </div>
+                    </div>
+                    <div class="user_contact">
+                        <div class="item_email">
+                            <label for="email">Email</label>    
+                            <input 
+                                class="input_user_email"
+                                type="email" 
+                                name="email" 
+                                id="email"
+                                placeholder="Correo electronico" 
+                                autocomplete="off"
+                                required>
+                        </div>
+                        <div class="item_phone">
+                            <label for="phone">Celular</label>    
+                            <input 
+                                class="input_user_phone"
+                                type="text" 
+                                name="phone"
+                                id="phone" 
+                                placeholder="Celular" 
+                                autocomplete="off"
+                                required>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
     </script>
 </html>

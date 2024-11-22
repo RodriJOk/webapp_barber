@@ -279,8 +279,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             let calendar;
-            //Si la vista es mobile
-            if(window.innerWidth < 768){
+
+            // Si la vista es mobile
+            if (window.innerWidth < 768) {
                 calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'timeGridDay',
                     locale: 'es',
@@ -298,8 +299,13 @@
                     events: [],
                     slotMinTime: '08:00:00',
                     slotMaxTime: '23:59:59',
+                    eventContent: function(info) {
+                        return {
+                            html: `<div>${info.event.extendedProps.nombre + ' ' + info.event.extendedProps.apellido}</div>`
+                        };
+                    }
                 });
-            }else{
+            } else {
                 calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'timeGridWeek',
                     locale: 'es',
@@ -317,10 +323,15 @@
                     events: [],
                     slotMinTime: '08:00:00',
                     slotMaxTime: '23:59:59',
+                    eventContent: function(info) {
+                        return {
+                            html: `<div>${info.event.extendedProps.nombre + ' ' + info.event.extendedProps.apellido}</div>`
+                        };
+                    }
                 });
             }
 
-            //Recorrer el array de reservas y agregarlas al calendario
+            // Recorrer el array de reservas y agregarlas al calendario
             let reservas_array = JSON.parse(reservas);
             reservas_array.forEach(reserva => {
                 let fecha_inicio = new Date(reserva.date + 'T' + reserva.time);
@@ -329,10 +340,10 @@
                 let evento = {
                     nombre: reserva.nombre,
                     apellido: reserva.apellido,
-                    title: reserva.observations,
+                    title: reserva.observations, // Este es el texto que aparece por defecto si no lo personalizamos
                     start: fecha_inicio,
                     end: fecha_fin,
-                    allDay: false,
+                    allDay: false
                 };
                 calendar.addEvent(evento);
             });
@@ -345,8 +356,10 @@
                 let time = info.event.start.toLocaleTimeString();
                 setear_valores_input(nombre, apellido, title, date, time);
             });
+
             calendar.render();
         });
+
         // Codigo del navbar
         function toggle_navbar(){
             let navbar = document.querySelector('.navbar');
@@ -475,104 +488,6 @@
             let modal = document.getElementById(element);
             modal.style.display = 'none';
         }
-
-        //Seteo la instancia de la libreria flatpickr
-        let reserva = document.getElementById('fecha_reserva');
-        flatpickr(reserva, {
-            minDate: new Date().fp_incr(1),
-            enableTime: false,
-            dateFormat: "Y-m-d",
-            locale: {
-                firstDayOfWeek: 1,
-                weekdays: {
-                    shorthand: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-                },
-                months: {
-                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-                },
-                rangeSeparator: ' a ',
-                weekAbbreviation: 'Sm',
-                scrollTitle: 'Desplazar para aumentar',
-                toggleTitle: 'Click para cambiar',
-                time_24hr: true,
-            },
-        });
-        let hora_reserva = document.getElementById('hora_reserva');
-        flatpickr(hora_reserva, {
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i",
-            locale: {
-                firstDayOfWeek: 1,
-                weekdays: {
-                    shorthand: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-                },
-                months: {
-                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-                },
-                rangeSeparator: ' a ',
-                weekAbbreviation: 'Sm',
-                scrollTitle: 'Desplazar para aumentar',
-                toggleTitle: 'Click para cambiar',
-                time_24hr: true
-            },
-            minTime: "08:00",
-            maxTime: "22:00",
-            minuteIncrement: 30, 
-        });
-
-        let input_fecha_information = document.getElementById('fecha_reserva_information')
-        flatpickr(input_fecha_information, {
-            minDate: new Date().fp_incr(1),
-            enableTime: false,
-            dateFormat: "Y-m-d",
-            locale: {
-                firstDayOfWeek: 1,
-                weekdays: {
-                    shorthand: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-                },
-                months: {
-                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-                },
-                rangeSeparator: ' a ',
-                weekAbbreviation: 'Sm',
-                scrollTitle: 'Desplazar para aumentar',
-                toggleTitle: 'Click para cambiar',
-                time_24hr: true
-            },
-        });
-
-        let input_hora_information = document.getElementById('hora_reserva_information')
-        flatpickr(input_hora_information, {
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i",
-            locale: {
-                firstDayOfWeek: 1,
-                weekdays: {
-                    shorthand: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                    longhand: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-                },
-                months: {
-                    shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                    longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-                },
-                rangeSeparator: ' a ',
-                weekAbbreviation: 'Sm',
-                scrollTitle: 'Desplazar para aumentar',
-                toggleTitle: 'Click para cambiar',
-                time_24hr: true
-            },
-            minTime: "08:00",
-            maxTime: "22:00",
-            minuteIncrement: 30, 
-        });
 
         function cerrar_session(){
             let form_close_session = document.getElementsByClassName('form_close_session')[0];

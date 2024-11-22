@@ -14,32 +14,74 @@ use DateInterval;
 
 class CalendarController extends Controller
 {
+    /**
+     * ======================================================================
+     * Index
+     * ======================================================================
+     * Is a function that returns the view to show all the reservations in a calendar. 
+     **/
     public function index(){
         $get_all_reservations = Calendar::getAllReservations();
         return view('calendar/index', ['reservations' => $get_all_reservations]);
     }
+    /**
+     * ======================================================================
+     * New event
+     * ======================================================================
+     * Is a function that returns the view to create a new event
+     **/
     public function new_event(){
         $id_branch = session('id_branch');
         $professionals = Professionals::getProfessionalsById($id_branch);
         return view('calendar/new_event', ['professionals' => $professionals]);
     }
+    /**
+     * ======================================================================
+     * Create event
+     * ======================================================================
+     * Receives the data from new_event function and validates it
+     **/
     public function create_event()
     {
-        dd(request()->all());
-        $model = new Calendar();
-        $nombre = request()->nombre;
-        $apellido = request()->apellido;
-        $fecha_reserva = request()->fecha_reserva;
-        $hora_reserva = request()->hora_reserva;
-        $id_usuario = request()->session()->get('id_usuario');
-        $observacion = request()->observaciones_reserva;
+        //Validaciones de los datos que llegan 
+        $validated = request()->validate([
+            'name' => 'required',
+            'surname' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'day' => 'required',
+            'time' => 'required',
+            'professional' => 'required',
+            'service' => 'required'
+        ]);
+
+        //En el caso de que haya un error en la validación, se redirige a la vista anterior
+        if (!$validated) {
+            return redirect()->back()->withInput();
+        }
+
+        $model = new Calendar();   
+        $nombre = request()->name;
+        $apellido = request()->surname;
+        $email = request()->email;
+        $fecha_reserva = request()->day;
+        $hora_reserva = request()->time;
+        $id_professional = request()->professional;
+        $id_service = request()->service;
+        $phone = request()->phone;
+
         $data = [
             'nombre' => $nombre,
             'apellido' => $apellido,
-            'fecha_reserva' => $fecha_reserva,
-            'hora_reserva' => $hora_reserva,
-            'observaciones_reserva' => $observacion,
-            'id_usuario' => $id_usuario
+            'date' => $fecha_reserva,
+            'time' => $hora_reserva,
+            'observations' => "No hay observaciones",
+            'id_user' => request()->session()->get('id_usuario'),
+            'created_at' => Carbon::now(),
+            'updated_at' => null,
+            'id_professional' => $id_professional,
+            'id_service' => $id_service,
+            'id_branch' => request()->session()->get('id_branch')
         ];
 
         $shift_reservation_model = $model::createShiftReservation($data);
@@ -51,6 +93,12 @@ class CalendarController extends Controller
             return redirect('/my_calendar');
         } 
     }
+    /**
+     * ======================================================================
+     * Delete event
+     * ======================================================================
+     * Is a function that deletes an event in the calendar
+     **/
     public function delete_event(){
         $data = request()->all();
         $fecha = $data['fecha_reserva'];
@@ -71,36 +119,28 @@ class CalendarController extends Controller
         return response()->json($services);
     }
     public function get_availability_day(){
-        // $id_professional = (int)request()->id_professional;
-        // $services = (int)request()->services;
-        // $date = request()->date;
-        $id_professional = 2;
-        $services = 1;
-        $date = '2024-11-20';
+        $id_professional = (int)request()->id_professional;
+        $services = (int)request()->services;
+        $date = request()->date;
+        // $id_professional = 1;
+        // $services = 1;
+        // $date = '2024-11-22';
         $get_days_availability = ProfessionalAvailability::getDaysByProfessional($id_professional);
         $get_reservation = ShiftReservation::getRervationByProfessional($id_professional, $date);
-        
-        $days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-        $num_days = 7; // Número de días a calcular (puedes cambiarlo a 5 o más)
+
+        $days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+        $num_days = 7; 
         $availability_by_day = [];
 
-        // dd($get_days_availability, $get_reservation);   
-        // Calcular la disponibilidad para los próximos $num_days días
         for ($i = 0; $i < $num_days; $i++) {
-            // $currentDate = date('Y-m-d', strtotime("+$i days", strtotime($date)));
             $currentDate = date('Y-m-d', strtotime($date . " +$i days"));
             $currentDayIndex = date('N', strtotime($currentDate)) - 1; // Índice basado en 0
             $currentDayName = $days[$currentDayIndex];
-            // dd($currentDate, $currentDayIndex, $currentDayName);
+
             // Filtrar disponibilidad por día
             $dayAvailability = array_filter($get_days_availability, function ($day_availability) use ($currentDayName) {
                 return $day_availability->day_of_the_week == $currentDayName;
             });
-            // if (empty($dayAvailability)) {
-            //     continue;
-            // }else{
-            //     dd($dayAvailability, $dayAvailability[2]->start_time);
-            // }
 
             // Generar horarios disponibles para el día
             if (!empty($dayAvailability)) {
@@ -115,19 +155,34 @@ class CalendarController extends Controller
                 }
                 $interval = new DateInterval('PT30M');           // Intervalos de 30 minutos
 
-                // Reservas para esta fecha
-                $reservations = $get_reservation->filter(function ($reservation) use ($currentDate) {
-                    return $reservation->date == $currentDate;
-                })->pluck('time')->map(function ($time) {
-                    return date('H:i', strtotime($time));
-                })->toArray();
+                if($get_reservation == null){
+                    $reservations = [];
+                }else{
+                    $reservations = $get_reservation->filter(function ($reservation) use ($currentDate) {
+                        return $reservation->date == $currentDate;
+                    })->pluck('time')->map(function ($time) {
+                        return date('H:i', strtotime($time));
+                    })->toArray();
+                }
 
-                // Calcular los turnos disponibles
-                $availableSlots = [];   
+                // Calcular los turnos disponibles. Tomar la fecha y la hora actual, para evitar los turnos pasados.
+                $currentDateTime = Carbon::now('America/Argentina/Buenos_Aires')->format('Y-m-d H:i');
+                $hora_fecha_actual = Carbon::parse($currentDateTime)->format('H:i');
+                $dia_fecha_actual = Carbon::parse($currentDateTime)->format('Y-m-d');
+
+                $availableSlots = [];
                 while ($startTime < $endTime) {
                     $slot = $startTime->format('H:i');
+                    if($startTime < $hora_fecha_actual && $currentDate <= $dia_fecha_actual){
+                        $startTime->add($interval);
+                        continue;
+                    }
+                    
                     if (!in_array($slot, $reservations)) {
-                        $availableSlots[] = $startTime->format('H:i');
+                        $availableSlots[] = [
+                            'hora' => $slot,
+                            'dia' => $currentDate
+                        ];
                     }
                     $startTime->add($interval);
                 }
@@ -145,6 +200,6 @@ class CalendarController extends Controller
              'services' => $services,
              'date' => $date,
              'availability_by_day' => $availability_by_day
-            ]);
+        ]);
     }
 }

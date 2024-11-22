@@ -23,6 +23,8 @@ class ShiftReservation extends Authenticatable{
         'created_at',
         'updated_at',
         'id_professional',
+        'id_service',
+        'id_branch',
     ];
 
     protected function getRervationByProfessional($id_professional, $date){
