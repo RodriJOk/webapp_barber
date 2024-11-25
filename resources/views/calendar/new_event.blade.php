@@ -420,11 +420,85 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="container_select_service" style="display:flex; flex-direction: column; justify-content: center; width:100%; gap:10px; margin:20px 0px; display:none;">
-                            <label style="font-size:18px; font-weight: 700;">Servicio</label>
-                            <select name="service" id="service" class="select_services">
-                            </select>
+
+                        <div class="container_select_service" style="display:flex; flex-direction:column; display:none;">
+                            <label style="font-size:18px; font-weight: 700;">Servicios</label>
+                            <div
+                                class="container_services"
+                                style="
+                                    margin: 10px 0;
+                                    border: 1px solid #ccc;
+                                    width: 100%;
+                                    font-size: 16px;
+                                    outline: none;
+                                    background: transparent;
+                                    border-radius: 15px;
+                                    color: #000;">
+                                <button
+                                    onclick="toggle_mostrar_opciones('opciones_servicios')"
+                                    type="button"
+                                    style="
+                                        height: 40px;
+                                        min-width: 99%;
+                                        max-width: 100%; 
+                                        display: flex; 
+                                        flex-direction: row; 
+                                        justify-content: space-between; 
+                                        align-items: center; 
+                                        padding: 0 10px;
+                                        background: none;
+                                        border: none;">
+                                    <h2 style="font-size: 16px; font-weight: 400; margin: 0;">Seleccione un servicio</h2>
+                                    <img
+                                        class="icon_toggle_options" 
+                                        src="{{ asset('icons/expand_circle_down.png') }}" 
+                                        alt="Abrir" 
+                                        width="20" 
+                                        height="20" />
+                                </button>
+                                <ul
+                                    id="opciones_servicios"
+                                    style="
+                                        display: none; 
+                                        flex-direction: column;
+                                        gap: 10px;
+                                        max-width: 100%;
+                                        list-style: none;
+                                        padding: 0;
+                                        margin: 15px 0px;">
+                                    <li>
+                                        <button 
+                                            onclick="select_services(this)"
+                                            type="button" 
+                                            style="
+                                                min-width: 97%;
+                                                max-width: 100%; 
+                                                background: none; 
+                                                border: none; 
+                                                cursor: pointer; 
+                                                display: flex; 
+                                                justify-content: space-between;
+                                                border:1px solid #ccc;
+                                                font-size:18px;
+                                                text-align: center;
+                                                margin: 0 auto;
+                                                border-radius:15px;
+                                                ">
+                                            <span>Corte de pelo</span>
+                                            <span style="display:flex; flex-direction: row; justify-content:center; gap: 5px">
+                                                <img src="{{ asset('icons/money.png') }}" alt="Pricing" width="20" height="20" />
+                                                <span>7000 ARS</span>
+                                            </span>
+                                            <span style="display:flex; flex-direction: row; justify-content:center; gap: 5px">
+                                                <img src="{{ asset('icons/clock.png') }}" alt="Duration" width="20" height="20" />    
+                                                <span>30 minutos</span>
+                                            </span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
+
                         <div class="container_days_available" style="display:none; margin:15px 0px;">
                             <label style="font-size:18px; font-weight: 700;">Dias disponibles</label>
                             <div class="days_available"></div>
@@ -475,22 +549,66 @@
                 success: function(response){
                     let container_services= document.getElementsByClassName('container_select_service')[0];
                     container_services.style.display = 'block';
-                    let select_services = document.getElementById('service');
+                    let select_services = document.getElementById('opciones_servicios');
                     let services = response;
-                    select_services.innerHTML = '';
                     if(services.length == 0){
-                        select_services.innerHTML = '<option value="">No hay servicios disponibles</option>';
-                        return;
+                        select_services.innerHTML = `
+                            <li>
+                                <button 
+                                    type="button" 
+                                    style="
+                                        min-width: 97%;
+                                        max-width: 100%; 
+                                        background: none; 
+                                        border: none; 
+                                        cursor: pointer; 
+                                        display: flex; 
+                                        justify-content: space-between;
+                                        border:1px solid #ccc;
+                                        font-size:18px;
+                                        text-align: center;
+                                        margin: 0 auto;
+                                        border-radius:15px;
+                                        ">
+                                    <span>No hay servicios disponibles</span>
+                                </button>
+                            </li>`;
                     }
-                    if(services.length > 0){
-                        select_services.innerHTML = '<option value="">Selecciona un servicio</option>';
-                        services.forEach(service => {
-                            select_services.innerHTML += `<option value="${service.id}">${service.name}</option>`;
-                        });
-                    }
-                    else{
-                        select_services.innerHTML = '<option value="">No hay servicios disponibles</option>';
-                    }
+
+                    select_services.innerHTML = '';
+                    services.forEach(service => {
+                        select_services.innerHTML += `
+                            <li>
+                                <button 
+                                    onclick="select_services(this, ${service.id})"
+                                    type="button" 
+                                    style="
+                                        min-width: 97%;
+                                        max-width: 100%; 
+                                        background: none; 
+                                        border: none; 
+                                        cursor: pointer; 
+                                        display: flex; 
+                                        justify-content: space-between;
+                                        border:1px solid #ccc;
+                                        font-size:18px;
+                                        text-align: center;
+                                        margin: 0 auto;
+                                        border-radius:15px;
+                                        ">
+                                    <span class="service_id" style="display:none;">${service.id}</span>
+                                    <span>${service.name}</span>
+                                    <span style="display:flex; flex-direction: row; justify-content:center; gap: 5px">
+                                        <img src="{{ asset('icons/money.png') }}" alt="Pricing" width="20" height="20" />
+                                        <span>${service.price} ARS</span>
+                                    </span>
+                                    <span style="display:flex; flex-direction: row; justify-content:center; gap: 5px">
+                                        <img src="{{ asset('icons/clock.png') }}" alt="Duration" width="20" height="20" />    
+                                        <span>${service.duration} minutos</span>
+                                    </span>
+                                </button>
+                            </li>`;
+                    });
                 },
                 error: function(error){
                     toastr.error('Ha ocurrido un error al obtener los servicios. Por favor, intenta de nuevo.');
@@ -498,12 +616,6 @@
             });
         }
 
-        $('.select_services').on('change', function(){
-            let services = $(this).val();
-            let professional = document.getElementById('professional');
-            let id_professional = professional.options[professional.selectedIndex].value;
-            get_available(services, id_professional);
-        });
         function get_available(services, id_professional){
             $.ajax({
                 url: '{{route('get_availability_day')}}',
@@ -515,7 +627,6 @@
                     date: new Date().toISOString().split('T')[0]
                 },
                 success: function(response){
-                    console.log(response);
                     if(response.availability_by_day == 0){
                         toastr.error('No hay dias disponibles para el profesional seleccionado');
                         return;
@@ -577,7 +688,6 @@
         form_create_event.addEventListener('submit', function(event){
             event.preventDefault();
             let professional = document.getElementById('professional');
-            let service = document.getElementById('service');
             let slots = document.querySelectorAll('.day button');
             let slots_selected = [];
             slots.forEach(slot => {
@@ -594,14 +704,19 @@
                 toastr.error('Debes seleccionar un profesional');
                 return;
             }
-            if(service.value == ''){
+            //Validar que se seleccione un servicio
+            let service = document.querySelectorAll('#opciones_servicios li button');
+            service = Array.from(service).filter(element => element.style.backgroundColor == 'rgb(0, 209, 178)');
+            let service_id = service[0].querySelector('.service_id').innerText;
+            if(service.length == 0){
                 toastr.error('Debes seleccionar un servicio');
                 return;
             }
             if(slots_selected.length == 0){
-                toastr.error('Debes seleccionar al menos un horario');
+                toastr.error('Debes seleccionar un dia y un horario');
                 return;
             }
+
             //Si se selecciona un dia y un horario que es menor a la fecha actual, se muestra un mensaje de error
             let date = new Date();
             let day = slots_selected[0].day.split('-');
@@ -625,6 +740,13 @@
             input_time.name = 'time';
             input_time.value = slots_selected[0].time;
             form_create_event.appendChild(input_time);
+
+            //Crear un input para enviar el servicio seleccionado
+            let input_service = document.createElement('input');
+            input_service.type = 'hidden';
+            input_service.name = 'service';
+            input_service.value = service_id;
+            form_create_event.appendChild(input_service);
 
             form_create_event.submit();
         });
@@ -714,6 +836,31 @@
                     </div>
                 </div>
             `;
+        }
+        function toggle_mostrar_opciones(elemento){
+            let container_options = document.getElementById(elemento); 
+            let image = document.getElementsByClassName('icon_toggle_options')[0];
+            if(container_options.style.display == 'none'){
+                container_options.style.display = 'flex';
+                image.style.transform = 'rotate(180deg)';
+            }
+            else{
+                container_options.style.display = 'none';
+                image.style.transform = 'rotate(0deg)';
+            }
+        }
+        function select_services(element, id){
+            let buttons = document.querySelectorAll('.container_services button');
+            buttons.forEach(button => {
+                button.style.backgroundColor = 'transparent';
+                button.style.color = '#000';
+            });
+            element.style.backgroundColor = '#00d1b2';
+            element.style.color = '#fff';
+
+            let professional = document.getElementById('professional');
+            let services = id;
+            get_available(services, professional.value);
         }
     </script>
 </html>

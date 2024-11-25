@@ -22,7 +22,7 @@ class ProfessionalServices extends Authenticatable{
         $services = DB::table('professional_services')
                        ->join('services', 'professional_services.id_services', '=', 'services.id')
                        ->where('professional_services.id_professional', $id_professional)
-                       ->select('services.id', 'services.name', 'services.description', 'professional_services.id')
+                       ->select('services.id', 'services.name', 'services.description', 'professional_services.id', 'services.price', 'services.duration')
                        ->get();
         return $services ? $services->toArray() : null;
     }

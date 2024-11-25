@@ -57,6 +57,7 @@ class CalendarController extends Controller
 
         //En el caso de que haya un error en la validación, se redirige a la vista anterior
         if (!$validated) {
+            toastr()->error('Error al crear la reserva' . $validated->errors());
             return redirect()->back()->withInput();
         }
 
@@ -122,9 +123,6 @@ class CalendarController extends Controller
         $id_professional = (int)request()->id_professional;
         $services = (int)request()->services;
         $date = request()->date;
-        // $id_professional = 1;
-        // $services = 1;
-        // $date = '2024-11-22';
         $get_days_availability = ProfessionalAvailability::getDaysByProfessional($id_professional);
         $get_reservation = ShiftReservation::getRervationByProfessional($id_professional, $date);
 
