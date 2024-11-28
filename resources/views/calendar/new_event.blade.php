@@ -374,7 +374,7 @@
                                 alt="Membresia"
                                 width="20px"
                                 height="20px">
-                            <a href="{{ route('my_collaborators') }}" class="text_link">Mis colaboradores</a>
+                            <a href="{{ route('my_professionals') }}" class="text_link">Mis profesionales</a>
                         </div>
                     </li>
                     <li>

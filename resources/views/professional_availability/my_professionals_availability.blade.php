@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="https://webappbarber-56b0944e3615.herokuapp.com/icons/cuidado.png" type="image/x-icon">
-    <title>Horarios de mi colaborador</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <title>Horarios del profesional</title>
     <style>
         body{
             font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -338,6 +341,33 @@
             padding: 0;
             font-size: 16px;
         }
+        .container_buttom{
+            display: flex; 
+            flex-direction: row; 
+            margin: 30px 0px; 
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+        .container_buttom .close_modal{
+            padding: 10px 0px;
+            width: 25%; 
+            background-color:#c50f34; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px; 
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .container_buttom .delete_reservation{
+            padding: 10px 0px;
+            width: 25%; 
+            background-color:#00d1b2; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -399,7 +429,7 @@
                             alt="Membresia"
                             width="20px"
                             height="20px">
-                        <a href="{{ route('my_collaborators') }}" class="text_link">Mis colaboradores</a>
+                        <a href="{{ route('my_professionals') }}" class="text_link">Mis profesionales</a>
                     </div>
                 </li>
                 <li>
@@ -440,10 +470,20 @@
                 </div>
             @endif
             <div class="container_title">
-                <h2 class="title">Horarios de colaboradores</h2>
+                <h2 class="title">Horarios de {{$professional_information->surname}}, {{ $professional_information->name }}</h2>
             </div>
-            <form action="{{ route('save_collaborator_availability') }}" method="POST">
+            <form action="{{ route('save_professional_availability') }}" method="POST">
+                <input type="text" name="professional_id" value="{{ $professional_information->id }}" hidden>
                 @csrf
+                @if($errors->any())
+                    <div>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 @php
                     $data = collect($data)->keyBy('day_of_the_week');
                 @endphp
@@ -452,7 +492,7 @@
                     @php
                         // Comprobamos si hay disponibilidad para el día actual
                         $dayAvailability = $data->get($day);
-                        $isChecked = !is_null($dayAvailability);
+                        $isChecked = $dayAvailability['active'] ?? false;
                         $startTime = $dayAvailability['start_time'] ?? '08:00';
                         $endTime = $dayAvailability['end_time'] ?? '23:00';
                         $startRestTime = $dayAvailability['start_rest_time'] ?? '13:00';
@@ -463,11 +503,24 @@
                         <section class="day_information">
                             <div class="day">
                                 <span>{{ $day }}</span>
-                                <input type="text" name="{{ strtolower($day) }}[dia]" value="{{ strtolower($day) }}" hidden>
+                                <input 
+                                    type="text" 
+                                    name="availability[{{ strtolower($day) }}][dia]" 
+                                    value="{{ strtolower($day) }}" 
+                                    hidden>
                             </div>
                             <div class="checkbox_{{ strtolower($day) }}">
-                                <input type="checkbox" id="input_{{ strtolower($day) }}" name="{{ strtolower($day) }}[checked]" {{ $isChecked ? 'checked' : '' }}/>
-                                <label id="label_{{ strtolower($day) }}" for="input_{{ strtolower($day) }}">{{ $day }}</label>
+                                <input 
+                                    type="checkbox" 
+                                    id="input_{{ strtolower($day) }}" 
+                                    name="availability[{{ strtolower($day) }}][checked]" 
+                                    {{ $isChecked ? 'checked' : '' }}
+                                />
+                                <label 
+                                    id="label_{{ strtolower($day) }}" 
+                                    for="input_{{ strtolower($day) }}">
+                                    {{ $day }}
+                                </label>
                             </div>
                         </section>
 
@@ -478,11 +531,11 @@
                                     type="time" 
                                     step="1800" 
                                     id="disponibilidad_{{ strtolower($day) }}_inicio" 
-                                    name="{{ strtolower($day) }}[disponibilidad_inicio]"
+                                    name="availability[{{ strtolower($day) }}][disponibilidad_inicio]"
                                     value="{{ $startTime }}"
                                     min="08:00"
                                     max="23:00"
-                                    {{ $isChecked ? '' : 'disabled' }} />
+                                    {{ $isChecked ? '' : '' }} />
                             </div>
                             <div class="disponibilidad_{{ strtolower($day) }}_fin">
                                 <label for="disponibilidad_{{ strtolower($day) }}_fin">Fin</label>
@@ -490,11 +543,11 @@
                                     type="time" 
                                     step="1800" 
                                     id="disponibilidad_{{ strtolower($day) }}_fin" 
-                                    name="{{ strtolower($day) }}[disponibilidad_fin]"
+                                    name="availability[{{ strtolower($day) }}][disponibilidad_fin]"
                                     value="{{ $endTime }}"
                                     min="08:00"
                                     max="23:00"
-                                    {{ $isChecked ? '' : 'disabled' }} />
+                                    {{ $isChecked ? '' : '' }} />
                             </div>
                         </div>
 
@@ -505,11 +558,11 @@
                                     type="time" 
                                     step="1800" 
                                     id="descanso_{{ strtolower($day) }}_inicio" 
-                                    name="{{ strtolower($day) }}[descanso_inicio]"
+                                    name="availability[{{ strtolower($day) }}][descanso_inicio]"
                                     value="{{ $startRestTime }}"
                                     min="08:00"
                                     max="23:00"
-                                    {{ $isChecked ? '' : 'disabled' }} />
+                                />
                             </div>
                             <div class="descanso_{{ strtolower($day) }}_fin">
                                 <label for="descanso_{{ strtolower($day) }}_fin">Fin</label>
@@ -517,11 +570,11 @@
                                     type="time" 
                                     step="1800" 
                                     id="descanso_{{ strtolower($day) }}_fin" 
-                                    name="{{ strtolower($day) }}[descanso_fin]"
+                                    name="availability[{{ strtolower($day) }}][descanso_fin]"
                                     value="{{ $endRestTime }}"
                                     min="08:00"
                                     max="23:00"
-                                    {{ $isChecked ? '' : 'disabled' }} />
+                                />
                             </div>
                         </div>
 
@@ -539,8 +592,40 @@
                         </div>
                     </div>
                 @endforeach
+
+                <div class="container_buttom">
+                    <button type="button" class="close_modal" onclick="window.history.back()">
+                        Volver atras
+                    </button>
+                    <button type="submit" class="delete_reservation">
+                        Guardar cambios
+                    </button>
+                </div>
             </form>
         </div>
     </main>
+    <script>
+        let data = <?php echo json_encode($data); ?>;
+        if(data == ""){
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "0",
+                "extendedTimeOut": "0",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            toastr["warning"]("El profesional no tiene horarios asignados. Por favor, seleccione los horarios de disponibilidad.");
+        }
+    </script>
 </body>
 </html>

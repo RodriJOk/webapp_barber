@@ -7,6 +7,9 @@
     <link rel="shortcut icon" href="https://webappbarber-56b0944e3615.herokuapp.com/icons/cuidado.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <title>Mis colaboradores</title>
     <style>
         body{
@@ -200,9 +203,55 @@
             cursor: pointer;
             padding:10px;
         }
-        .modal_header .close_modal img{
-            width: 35px;
-            height: 35px;
+        .modal_body{
+            display: flex; 
+            flex-direction:column;
+        }
+        .modal_body .items{
+            display: flex; 
+            flex-direction: column; 
+            margin: 10px 0px;
+        }
+        .modal_body .container_buttom{
+            display: flex; 
+            flex-direction: row; 
+            margin: 10px 0px; 
+            width:100%;
+        }
+        .modal_body .container_buttom .close_modal{
+            padding: 10px 0px;
+            width: 50%; 
+            background-color:#c50f34; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px; 
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .modal_body .container_buttom .delete_reservation{
+            padding: 10px 0px;
+            width: 50%; 
+            background-color:#00d1b2; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .items .input_name,
+        .items .input_surname,
+        .items .input_phone,
+        .items .input_email{
+            margin: 10px auto;
+            border: 1px solid #ccc; 
+            color: #000; 
+            width: 100%; 
+            font-size: 16px; 
+            height: 40px;
+            outline: none; 
+            text-decoration: none; 
+            background: transparent;
+            border-radius: 15px;
+            padding: 0px 5px;
         }
         .close_session{
             background: none;
@@ -280,7 +329,7 @@
                             alt="Membresia"
                             width="20px"
                             height="20px">
-                        <a href="{{ route('my_collaborators') }}" class="text_link">Mis colaboradores</a>
+                        <a href="{{ route('my_professionals') }}" class="text_link">Mis colaboradores</a>
                     </div>
                 </li>
                 <li>
@@ -321,45 +370,56 @@
                 </div>
             @endif
             <div class="container_title">
-                <h2 class="title">Mis colaboradores</h2>
+                <h2 class="title">Profesionales</h2>
                 <div class="container_button">
-                    <button onclick="open_modal('modal')">Agregar un nuevo colaborador</button>
+                    <button onclick="open_modal('modal')">Agregar un nuevo profesional</button>
                 </div>
             </div>
-            @if (count($all_collaborators) == 0)
-                <p>No tienes colaboradores registrados</p>
-            {{-- Agregar un else --}}
-            @elseif($all_collaborators->isNoyEmpty())
-                <p>Listado de los colaboradores</p>
+            @if (count($all_professional) == 0)
+                <p>No tienes profesional registrados</p>
+            @elseif($all_professional > 0)
+                <p>Listado de los profesionales</p>
                 <table class="table">
                     <thead class="table_header">
                         <tr>
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Email</th>
-                            <th>Celular/Telefono</th>
+                            <th>Celular</th>
                             <th>Acciones</th>
                             <th>Horarios</th>
                         </tr>
                     </thead>
                     <tbody class="table_body">
-                        @foreach ($all_collaborators as $collaborator)
+                        @foreach ($all_professional as $professional)
                             <tr>
-                                <td>{{$collaborator->name}}</td>
-                                <td>{{$collaborator->surname}}</td>
-                                <td>{{$collaborator->email}}</td>
-                                <td>{{$collaborator->phone}}</td>
+                                <td>{{$professional->name}}</td>
+                                <td>{{$professional->surname}}</td>
+                                <td>{{$professional->email}}</td>
+                                <td>{{$professional->phone}}</td>
                                 <td>
                                     <div class="container_button_actions">
-                                        <button class="button_edit" onclick="open_modal('modal_editar')">
+                                        <button 
+                                            class="button_edit"
+                                            onclick="edit_professional({{$professional->id}})">
                                             <span>
-                                                <img src="{{asset('icons/edit.png')}}" alt="Editar datos del colaborador" width="20px" height="20px"/>
+                                                <img 
+                                                    src="{{asset('icons/edit.png')}}" 
+                                                    alt="Editar datos del profesional" 
+                                                    width="20px" 
+                                                    height="20px"/>
                                             </span>
                                             <span>Editar</span>
                                         </button>
-                                        <button class="button_delete" onclick="delete_collaborator({{$collaborator->id}})">
+                                        <button 
+                                            class="button_delete" 
+                                            onclick="delete_professional({{$professional->id}})">
                                             <span>
-                                                <img src="{{asset('icons/delete.png')}}" alt="Eliminar colaborador" width="20px" height="20px"/>
+                                                <img 
+                                                    src="{{asset('icons/delete.png')}}" 
+                                                    alt="Eliminar datos del profesional" 
+                                                    width="20px" 
+                                                    height="20px"/>
                                             </span>
                                             <span>
                                                 Eliminar
@@ -369,8 +429,7 @@
                                 </td>
                                 <td colspan="6">
                                     <div class="container_button_schedule">
-                                        {{-- <button onclick="open_modal('modal_horarios')"> --}}
-                                        <button onclick="window.location.href='{{ route('my_collaborators_availability', ['id' => $collaborator->id]) }}'">
+                                        <button onclick="window.location.href='{{ route('my_professionals_availability', ['id' => $professional->id]) }}'">
                                             <span>Ver horarios</span>
                                         </button>
                                     </div>
@@ -382,55 +441,62 @@
             @endif
         </div>
 
-
-        {{-- Seccion de modal para crear un nuevo colaborador--}}
+        {{-- Seccion de modal para crear un nuevo profesional--}}
         <dialog id="modal" class="modal">
             <div class="modal_header">
-                <h2>Agregar un colaborador</h2>
+                <h2>Agregar un profesional</h2>
                 <button class="close_modal" onclick="close_modal('modal')">
-                    <img src="{{asset('icons/close.png')}}" alt="Close Modal">
+                    <img 
+                        src="{{asset('icons/close.png')}}" 
+                        alt="Cerrar el modal"
+                        width="20px" 
+                        height="20px">
                 </button>
             </div>
             <section class="modal_body">
-                <form action="{{ route('save_collaborator') }}" method="POST" >
+                <form action="{{ route('save_professional') }}" method="POST">
                     @csrf
                     <div class="items">
                         <label for="name">Nombre</label>
                         <input 
+                            id="name"
+                            class="input_name"
                             type="text" 
                             name="name" 
-                            value="" 
                             autocomplete="off" 
-                            placeholder="Nombre del colaborador">
+                            placeholder="Nombre">
                     </div>
                     <div class="items">
                         <label for="surname">Apellido</label>
                         <input 
+                            id="surname"
+                            class="input_surname"
                             type="text" 
                             name="surname" 
-                            value="" 
                             autocomplete="off" 
-                            placeholder="Apellido del colaborador">
+                            placeholder="Apellido">
                     </div>
                     <div class="items">
                         <label for="email">Email</label>
                         <input 
+                            id="email"
+                            class="input_email"
                             type="text" 
                             name="email" 
-                            value="" 
                             autocomplete="off" 
-                            placeholder="Email de contacto">
+                            placeholder="Email">
                     </div>
                     <div class="items">
                         <label for="phone">Celular/Whatsapp</label>
                         <input 
+                            id="phone"
+                            class="input_phone"
                             type="text" 
-                            name="phone" 
-                            value="" 
+                            name="phone"
                             autocomplete="off" 
-                            placeholder="Celular/Telefono">
+                            placeholder="Celular">
                     </div>
-                    <div class="items">
+                    {{-- <div class="items">
                         <label for="phone">Selecciona los dias de disponibilidad</label>
                         <input 
                             type="text" 
@@ -438,16 +504,7 @@
                             value="" 
                             autocomplete="off" 
                             placeholder="Celular/Telefono">
-                    </div>
-                    <div class="items">
-                        <label for="phone">Celular/Whatsapp</label>
-                        <input 
-                            type="text" 
-                            name="phone" 
-                            value="" 
-                            autocomplete="off" 
-                            placeholder="Celular/Telefono">
-                    </div>
+                    </div> --}}
                     <div class="container_buttom">
                         <button type="button" class="close_modal" onclick="close_modal('modal')">
                             Cerrar modal
@@ -459,65 +516,7 @@
                 </form>
             </section>
         </dialog> 
-        
-        {{-- Seccion de modal para editar la info de un colaborador--}}
-        {{-- <dialog id="modal_editar" class="modal_editar">
-            <div class="modal_header">
-                <h2>Editar documentacion de un colaborador</h2>
-                <button class="close_modal" onclick="close_modal('modal_editar')">
-                    <img src="{{asset('icons/close.png')}}" alt="Close Modal">
-                </button>
-            </div>
-            <section class="modal_body">
-                <form action="{{ route('update_collaborator') }}" method="POST" >
-                    @csrf
-                    <div class="items">
-                        <label for="name">Nombre</label>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            value="<?php echo $collaborator->name; ?>"
-                            autocomplete="off" 
-                            placeholder="Nombre del colaborador">
-                    </div>
-                    <div class="items">
-                        <label for="surname">Apellido</label>
-                        <input 
-                            type="text" 
-                            name="surname" 
-                            value="<?php echo $collaborator->surname; ?>"
-                            autocomplete="off" 
-                            placeholder="Apellido del colaborador">
-                    </div>
-                    <div class="items">
-                        <label for="email">Email</label>
-                        <input 
-                            type="text" 
-                            name="email" 
-                            value="<?php echo $collaborator->email; ?>"
-                            autocomplete="off" 
-                            placeholder="Email de contacto">
-                    </div>
-                    <div class="items">
-                        <label for="phone">Celular/Whatsapp</label>
-                        <input 
-                            type="text" 
-                            name="phone" 
-                            value="<?php echo $collaborator->phone; ?>"
-                            autocomplete="off" 
-                            placeholder="Celular/Telefono">
-                    </div>
-                    <div class="container_buttom">
-                        <button type="button" class="close_modal" onclick="close_modal('modal')">
-                            Cerrar modal
-                        </button>
-                        <button type="submit" class="delete_reservation">
-                            Guardar cambios
-                        </button>
-                    </div>
-                </form>
-            </section>
-        </dialog> --}}
+    </main>
     <script>
         function toggle_navbar(){
             let navbar = document.querySelector('.navbar');
@@ -555,12 +554,16 @@
             let modal = document.getElementById('modal');
             modal.style.display = 'flex';
         }
-        function delete_collaborator(id){
+        function delete_professional(id){
             let confirm_delete = confirm('¿Estas seguro de eliminar este colaborador?');
             if(confirm_delete){
-                window.location.href = '/delete_collaborator/'+id;
+                window.location.href = '/delete_professional/'+id;
             }
         }
+        function edit_professional(id){
+            window.location.href = '/edit_professional/'+id;
+        }
+
         function add_break(elemento){
             console.log(elemento);
             //Crear un elemento que sea variable 

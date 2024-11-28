@@ -15,15 +15,20 @@ class ProfessionalServices extends Authenticatable{
 
     protected $fillable = [
         'id_professional',
-        'id_services'
+        'id_services',
     ];
 
     protected function getServicesByProfessional($id_professional){
         $services = DB::table('professional_services')
-                       ->join('services', 'professional_services.id_services', '=', 'services.id')
-                       ->where('professional_services.id_professional', $id_professional)
-                       ->select('services.id', 'services.name', 'services.description', 'professional_services.id', 'services.price', 'services.duration')
-                       ->get();
+                      ->join('services', 'professional_services.id_services', '=', 'services.id')
+                      ->where('professional_services.id_professional', $id_professional)
+                      ->select('services.id', 
+                               'services.name', 
+                               'services.description', 
+                               'services.price', 
+                               'services.duration',
+                               'professional_services.id')
+                      ->get();
         return $services ? $services->toArray() : null;
     }
 }

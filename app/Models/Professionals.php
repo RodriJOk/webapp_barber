@@ -26,4 +26,32 @@ class Professionals extends Authenticatable{
         $all_professionals = DB::table('professionals')->where('branch_id', $id_branch)->get();
         return $all_professionals ? $all_professionals->toArray() : null;
     }
+    protected function getAllProfessionalByIdBranch($id_branch){
+        $all_collaborators = DB::table('professionals')->where('branch_id', $id_branch)->get();
+        return $all_collaborators ? $all_collaborators->toArray() : null;
+    }
+    protected function saveNewProfessional($data){
+        return DB::table('professionals')->insert($data);
+    }
+    protected function searchProfessionalById($id_professional){
+        return DB::table('professionals')->where('id', $id_professional)->first();
+    }
+    protected function searchProfessionalByEmail($email){
+        return DB::table('professionals')->where('email', $email)->first();
+    }
+    protected function getNewId(){
+        $id = DB::table('professionals')->max('id');
+        return $id + 1;
+    }
+    protected function getProfessionalById($id){
+        $professional = DB::table('professionals')
+                          ->join('branch', 'professionals.branch_id', '=', 'branch.id')
+                          ->select('professionals.*', 'branch.name as branch_name')
+                          ->where('professionals.id', $id)
+                          ->first();
+        return $professional;
+    }
+    protected function deleteProfessionalById($id){
+        return DB::table('professionals')->where('id', $id)->delete();
+    }
 }

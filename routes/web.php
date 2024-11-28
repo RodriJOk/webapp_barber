@@ -8,8 +8,9 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\SuscriptionController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\CollaboratorsController;
 use App\Http\Controllers\CollaboratorAvailableController;
+use App\Http\Controllers\ProfessionalsController;
+use App\Http\Controllers\ProfessionalAvailabilityController;
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth', 'rol:admin,colaborador,cliente');
 
@@ -60,17 +61,20 @@ Route::controller(ClientController::class)->group(function () {
     Route::get('/search_client', 'search_client')->name('search_client')->middleware('auth', 'rol:admin');
 });
 
-Route::controller(CollaboratorsController::class)->group(function () {
-    Route::get('/my_collaborators', 'index')->name('my_collaborators')->middleware('auth', 'rol:admin');
-    Route::post('/save_collaborator', 'save_collaborator')->name('save_collaborator')->middleware('auth', 'rol:admin');
-    Route::get('/delete_collaborator/{id}', 'delete_collaborator')->name('delete_collaborator')->middleware('auth', 'rol:admin');
-    Route::post('/update_collaborator', 'update_collaborator')->name('update_collaborator')->middleware('auth', 'rol:admin');
-    Route::post('/update_schedules_collaborator', 'update_schedules_collaborator')->name('update_schedules_collaborator')->middleware('auth', 'rol:admin');
+Route::controller(ProfessionalsController::class)->group(function () {
+    Route::get('/my_professionals', 'index')->name('my_professionals')->middleware('auth', 'rol:admin');
+    Route::post('/save_professional', 'save_professional')->name('save_professional')->middleware('auth', 'rol:admin');
+    Route::get('/delete_professional/{id}', 'delete_professional')->name('delete_professional')->middleware('auth', 'rol:admin');
+    Route::post('/update_profesional', 'update_profesional')->name('update_profesional')->middleware('auth', 'rol:admin');
+    Route::post('/update_schedules_professional', 'update_schedules_professional')->name('update_schedules_professional')->middleware('auth', 'rol:admin');
+    
+    Route::get('/edit_professional/{id}', 'edit_professional')->name('edit_professional')->middleware('auth', 'rol:admin');
+    Route::post('/update_profesional/{id}', 'update_profesional')->name('update_profesional')->middleware('auth', 'rol:admin');
 });
 
-Route::controller(CollaboratorAvailableController::class)->group(function () {
-    Route::get('/my_collaborators_availability/{id}', 'my_collaborators_availability')->name('my_collaborators_availability')->middleware('auth', 'rol:admin');
-    Route::post('/save_collaborator_availability', 'save_collaborator_availability')->name('save_collaborator_availability')->middleware('auth', 'rol:admin');
-    Route::get('/delete_collaborator_availability/{id}', 'delete_collaborator_availability')->name('delete_collaborator_availability')->middleware('auth', 'rol:admin');
-    Route::post('/update_collaborator_availability', 'update_collaborator_availability')->name('update_collaborator_availability')->middleware('auth', 'rol:admin');
+Route::controller(ProfessionalAvailabilityController::class)->group(function () {
+    Route::get('/my_professionals_availability/{id}', 'my_professionals_availability')->name('my_professionals_availability')->middleware('auth', 'rol:admin');
+    Route::post('/save_professional_availability', 'save_professional_availability')->name('save_professional_availability')->middleware('auth', 'rol:admin');
+    Route::get('/delete_professional_availability/{id}', 'delete_professional_availability')->name('delete_professional_availability')->middleware('auth', 'rol:admin');
+    Route::post('/update_professional_availability', 'update_professional_availability')->name('update_professional_availability')->middleware('auth', 'rol:admin');
 });

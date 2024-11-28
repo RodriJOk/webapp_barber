@@ -96,6 +96,7 @@
                 gap: 20px; 
                 justify-content:center; 
                 margin: 40px 0px;
+                flex-wrap: wrap;
             }
             /* Estilos del modal de informacion */
             .section_information{
@@ -198,6 +199,7 @@
                 flex-direction: row; 
                 margin: 10px 0px; 
                 width:100%;
+                font-size: 18px;
             }
 
             .modal_information_body .container_buttom .close_modal{
@@ -368,7 +370,7 @@
                                 alt="Membresia"
                                 width="20px"
                                 height="20px">
-                            <a href="{{ route('my_collaborators') }}" class="text_link">Mis colaboradores</a>
+                            <a href="{{ route('my_professionals') }}" class="text_link">Mis profesionales</a>
                         </div>
                     </li>
                     <li>
@@ -401,7 +403,7 @@
             <div class="container">
                 <h1 class="title_page">Mi perfil</h1>
                 <main class="section">
-                    <section class="section_information" style="width: 450px;">
+                    <section class="section_information">
                         <div class="header_information">
                             <h2 class="title">Datos de tu sucursal</h2>
                             <button class="edit_buttom" onclick="open_modal('modal_information')">
@@ -448,7 +450,7 @@
                         </div>
                     </section>
     
-                    <section class="section_information" style="width: 450px;">
+                    <section class="section_information">
                         <div class="header_information">
                             <h2 class="title">Information del usuario</h2>
                         </div>
@@ -492,30 +494,53 @@
                 <div class="modal_information_header">
                     <h2>Datos de tu sucursal</h2>
                     <button class="close_modal" onclick="close_modal('modal_information')">
-                        <img class="navbar_image" src="{{asset('icons/close.png')}}" alt="Close Modal" width="35px" height="35px">
+                        <img 
+                            class="navbar_image" 
+                            src="{{asset('icons/close.png')}}" 
+                            alt="Close Modal" 
+                            width="35px" 
+                            height="35px">
                     </button>
                 </div>
                 <section class="modal_information_body">
-                    <form action="{{ route('update_profile') }}" method="POST" >
+                    <form action="{{ route('update_profile') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id" value="{{ $branch['id'] }}">
                         <div class="items">
                             <label for="nombre">Nombre</label>
-                            <input type="text" name="nombre" value="<?php echo $branch['name']; ?>" autocomplete="off" placeholder="Nombre">
+                            <input 
+                                type="text" 
+                                name="nombre" 
+                                value="<?php echo $branch['name']; ?>" 
+                                autocomplete="off" 
+                                placeholder="Nombre">
                         </div>
                         <div class="items">
                             <label for="direccion">Direccion</label>
-                            <input type="text" name="direccion" value="<?php echo $branch['address']; ?>" autocomplete="off" placeholder="Direccion">
+                            <input 
+                                type="text" 
+                                name="direccion" 
+                                value="<?php echo $branch['address']; ?>" 
+                                autocomplete="off" 
+                                placeholder="Direccion">
                         </div>
                         <div class="items">
-                            <label for="celular_telefono">Celular/Telefono</label>
-                            <input type="text" name="celular_telefono" value="<?php echo $branch['phone']; ?>" autocomplete="off" placeholder="Celular/Telefono">
+                            <label for="celular_telefono">Celular</label>
+                            <input 
+                                type="text" 
+                                name="celular_telefono" 
+                                value="<?php echo $branch['phone']; ?>" 
+                                autocomplete="off" 
+                                placeholder="Celular">
                         </div>
                         <div class="container_buttom">
-                            <button type="button" class="close_modal" onclick="close_modal('modal_information')" style="font-size: 18px;">
+                            <button 
+                                type="button" 
+                                class="close_modal" 
+                                onclick="close_modal('modal_information')">
                                 Cerrar modal
                             </button>
-                            <button type="submit" class="delete_reservation" style="font-size: 18px;">
+                            <button type="submit" class="delete_reservation">
                                 Guardar cambios
                             </button>
                         </div>
