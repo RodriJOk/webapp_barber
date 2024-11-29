@@ -65,11 +65,10 @@ Route::controller(ProfessionalsController::class)->group(function () {
     Route::get('/my_professionals', 'index')->name('my_professionals')->middleware('auth', 'rol:admin');
     Route::post('/save_professional', 'save_professional')->name('save_professional')->middleware('auth', 'rol:admin');
     Route::get('/delete_professional/{id}', 'delete_professional')->name('delete_professional')->middleware('auth', 'rol:admin');
-    Route::post('/update_profesional', 'update_profesional')->name('update_profesional')->middleware('auth', 'rol:admin');
     Route::post('/update_schedules_professional', 'update_schedules_professional')->name('update_schedules_professional')->middleware('auth', 'rol:admin');
     
     Route::get('/edit_professional/{id}', 'edit_professional')->name('edit_professional')->middleware('auth', 'rol:admin');
-    Route::post('/update_profesional/{id}', 'update_profesional')->name('update_profesional')->middleware('auth', 'rol:admin');
+    Route::post('/update_profesional', 'update_profesional')->name('update_profesional')->middleware('auth', 'rol:admin');
 });
 
 Route::controller(ProfessionalAvailabilityController::class)->group(function () {
