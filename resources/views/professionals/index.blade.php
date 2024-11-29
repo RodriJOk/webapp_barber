@@ -227,6 +227,7 @@
             border-radius: 5px; 
             margin-right: 10px;
             font-size: 18px;
+            cursor: pointer;
         }
         .modal_body .container_buttom .delete_reservation{
             padding: 10px 0px;
@@ -236,6 +237,7 @@
             border:none; 
             border-radius: 5px;
             font-size: 18px;
+            cursor: pointer;
         }
         .items .input_name,
         .items .input_surname,
@@ -496,15 +498,6 @@
                             autocomplete="off" 
                             placeholder="Celular">
                     </div>
-                    {{-- <div class="items">
-                        <label for="phone">Selecciona los dias de disponibilidad</label>
-                        <input 
-                            type="text" 
-                            name="phone" 
-                            value="" 
-                            autocomplete="off" 
-                            placeholder="Celular/Telefono">
-                    </div> --}}
                     <div class="container_buttom">
                         <button type="button" class="close_modal" onclick="close_modal('modal')">
                             Cerrar modal
