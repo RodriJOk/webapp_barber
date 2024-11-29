@@ -198,6 +198,11 @@ class ProfessionalsController extends Controller
             return redirect()->route('my_professionals');
         }
 
+        if(Professionals::alreadyExistPhoneNumber($celular, $id_professional)){
+            toastr()->error('El celular ya está registrado');
+            return redirect()->route('my_professionals');
+        }
+
         $professional_information = [
             'name' => $nombre,
             'surname' => $apellido,

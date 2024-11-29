@@ -61,4 +61,7 @@ class Professionals extends Authenticatable{
     protected function alreadyExistProfessionalEmail($email, $id_professional){
         return DB::table('professionals')->where('email', $email)->where('id', '!=', $id_professional)->first();
     }
+    protected function alreadyExistPhoneNumber($phone, $id_professional){
+        return DB::table('professionals')->where('phone', $phone)->where('id', '!=', $id_professional)->first();
+    }
 }
