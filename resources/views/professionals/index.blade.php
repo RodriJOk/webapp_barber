@@ -125,6 +125,8 @@
         .table .table_body tr td{
             border-bottom: 1px solid #ccc;
         }
+        .table .table_body tr:nth-child(odd) td {
+            background-color: #fff;        }
         .table .table_body tr td .container_button_actions{
             display: flex; 
             flex-direction: row; 
@@ -380,7 +382,6 @@
             @if (count($all_professional) == 0)
                 <p>No tienes profesional registrados</p>
             @elseif($all_professional > 0)
-                <p>Listado de los profesionales</p>
                 <table class="table">
                     <thead class="table_header">
                         <tr>
