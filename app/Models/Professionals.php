@@ -54,4 +54,10 @@ class Professionals extends Authenticatable{
     protected function deleteProfessionalById($id){
         return DB::table('professionals')->where('id', $id)->delete();
     }
+    protected function updateProfessionalById($data, $id){
+        return DB::table('professionals')->where('id', $id)->update($data);
+    }
+    protected function alreadyExistProfessionalEmail($email, $id_professional){
+        return DB::table('professionals')->where('email', $email)->where('id', '!=', $id_professional)->first();
+    }
 }

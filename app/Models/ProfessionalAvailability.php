@@ -65,4 +65,15 @@ class ProfessionalAvailability extends Authenticatable{
 
         return true;
     }
+    protected function getLastId(){
+        $last_id = DB::table('professional_availability')
+                    ->orderBy('id', 'desc')
+                    ->first();
+        return $last_id ? $last_id->id : null;
+    }
+    protected function saveProfessionalAvailability($data){
+        $save = DB::table('professional_availability')
+                ->insert($data);
+        return $save;
+    }
 }

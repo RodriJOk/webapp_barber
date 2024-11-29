@@ -10,16 +10,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ProfessionalsController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         $id_branch = session()->get('id_branch');
         $all_professional = Professionals::getAllProfessionalByIdBranch($id_branch);
         $all_professional_availability = ProfessionalAvailability::getProfessionalAvailability($id_branch);
 
         return view('professionals.index', compact('all_professional', 'all_professional_availability'));
     }
-    public function save_professional()
-    {
+    public function save_professional(){
         $data = request()->all();
         
         $nombre = $data['name'];
@@ -70,6 +68,27 @@ class ProfessionalsController extends Controller
             return redirect()->route('my_professionals');
         }
 
+        $days_of_the_week = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        foreach ($days_of_the_week as $day) {
+            $data = [
+                // 'id' => ProfessionalAvailability::getLastId(),
+                'professional_id' => $professional_information['id'],
+                'day_of_the_week' => ucfirst($day),
+                'start_time' => '08:00',
+                'end_time' => '18:00',
+                'created_at' => date('Y-m-d H:i:s'),
+                'update_at' => date('Y-m-d H:i:s'),
+                'rest_start_time' => '12:00',
+                'rest_end_time' => '13:00',
+                'active' => 1
+            ];
+            
+            if(!ProfessionalAvailability::saveProfessionalAvailability($data)){
+                toastr()->error('Error al guardar los horarios del profesional');
+                return redirect()->route('my_professionals');
+            }
+        }
+
         toastr()->success('Profesional guardado correctamente');
         return redirect()->route('my_professionals');
     }
@@ -90,6 +109,7 @@ class ProfessionalsController extends Controller
             toastr()->error('Error al eliminar el profesional');    
             return redirect()->route('my_professionals');
         }
+        
         toastr()->success('Profesional eliminado correctamente');
         return redirect()->route('my_professionals');
     }
@@ -134,7 +154,70 @@ class ProfessionalsController extends Controller
             return redirect()->route('my_professionals');
         }
 
-        // dd($professional);
-        return view('professionals.edit', compact('professional'));
+        return view('professionals.edit', compact('professional', 'id_professional'));
+    }
+    public function update_professional($id_professional){
+        $data = request()->all();
+        $nombre = $data['name'];
+        $apellido = $data['surname'];
+        $branch_id = $data['branch_id'];
+        $email = $data['email'];
+        $celular = $data['phone'];
+
+        $rules = [
+            'name' => 'required|regex:/^[\pL\s]+$/u',
+            'surname' => 'required|regex:/^[\pL\s]+$/u',
+            'branch_id' => 'required|numeric',
+            'email' => 'required|email',
+            'phone' => 'required|numeric|digits:10'
+        ];
+
+        $messages = [
+            'name.required' => 'El campo nombre es requerido',
+            'name.regex' => 'El campo nombre debe ser alfabético',
+            'surname.required' => 'El campo apellido es requerido',
+            'surname.regex' => 'El campo apellido debe ser alfabético',
+            'branch_id.required' => 'El campo sucursal es requerido',
+            'branch_id.numeric' => 'El campo sucursal debe ser numérico',
+            'email.required' => 'El campo email es requerido',
+            'email.email' => 'El campo email debe ser un email',
+            'phone.required' => 'El campo celular es requerido',
+            'phone.numeric' => 'El campo celular debe ser numérico',
+            'phone.digits' => 'El campo celular debe tener 10 dígitos'
+        ];
+
+        $validator = Validator::make($data, $rules, $messages);
+
+        if ($validator->fails()) {
+            toastr()->error('Error al guardar un profesional.' . $validator->errors());
+            return redirect()->route('my_professionals');
+        }
+
+        if (Professionals::alreadyExistProfessionalEmail($email, $id_professional)) {
+            toastr()->error('El email ya está registrado');
+            return redirect()->route('my_professionals');
+        }
+
+        $professional_information = [
+            'name' => $nombre,
+            'surname' => $apellido,
+            'email' => $email,
+            'phone' => $celular,
+            'branch_id' => $branch_id,
+            'update_at' => date('Y-m-d H:i:s')
+        ];
+
+        if (!preg_match('/^[0-9]+$/', $id_professional)) {
+            toastr()->error('El ID del profesional no es válido');
+            return redirect()->route('my_professionals');
+        }
+
+        if(!Professionals::updateProfessionalById($professional_information, $id_professional)){
+            toastr()->error('Error al actualizar un profesional.');
+            return redirect()->route('my_professionals');
+        }
+
+        toastr()->success('Profesional actualizado correctamente');
+        return redirect()->route('my_professionals');
     }
 }

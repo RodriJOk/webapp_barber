@@ -3,10 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-        <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.15/index.global.min.js'></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        
         <title>Editar los datos de un profesional</title>
         <style>
             body{
@@ -95,6 +98,7 @@
             }
             .container_form{
                 max-width: 500px;
+                margin: 0 auto;
             }
             .form-group{
                 margin: 10px 0px;
@@ -124,7 +128,7 @@
             .container_buttom{
                 display: flex; 
                 flex-direction: row; 
-                margin: 10px 0px; 
+                margin-top: 20px;
                 width:100%;
                 font-size: 18px;
             }
@@ -136,6 +140,7 @@
                 border:none; 
                 border-radius: 5px; 
                 margin-right: 10px;
+                cursor: pointer;
             }
             .container_buttom .create_event{
                 padding: 10px 0px;
@@ -143,7 +148,28 @@
                 color:#fff; 
                 border:none; 
                 border-radius: 5px;
-                background-color: #ccc;
+                background-color: #28a745;
+                cursor: pointer;
+            }
+            .select_branch_id{
+                margin: 10px auto;
+                border: 1px solid #ccc; 
+                width: 100%;
+                font-size: 16px; 
+                height: 40px;
+                outline: none; 
+                text-decoration: none; 
+                background: transparent;
+                border-radius: 15px;
+                color: #000;
+            }
+            .select_branch_id option{
+                background-color: #fff;
+                color: #000;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0px 10px;
             }
         </style>
     </head>
@@ -250,14 +276,18 @@
                     <h2 class="title">Editar los datos de un profesional</h2>
                 </div>
 
-                <main>
+                <main style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;">
                     <div class="container_form">
-                        <form action="{{ route('update_profesional', $professional->id) }}" method="POST">
+                        <form action="{{ route('update_professional', ['id' => $id_professional]) }}" method="POST">
                             @csrf
-                            @method('PUT')
                             <div class="form-group">
-                                <label for="name">Nombre:</label>
+                                <label for="name">
+                                    <strong>
+                                        Nombre:
+                                    </strong>
+                                </label>
                                 <input 
+                                    autocomplete="off"
                                     type="text" 
                                     class="input_name" 
                                     id="name" 
@@ -265,8 +295,13 @@
                                     value="{{ $professional->name }}">
                             </div>
                             <div class="form-group">
-                                <label for="surname">Apellido:</label>
+                                <label for="surname">
+                                    <strong>
+                                        Apellido:
+                                    </strong>
+                                </label>
                                 <input 
+                                    autocomplete="off"
                                     type="text" 
                                     class="input_surname"
                                     id="surname" 
@@ -274,35 +309,26 @@
                                     value="{{ $professional->surname }}">
                             </div>
                             <div class="form-group">
-                                <label for="branch_name">Sucursal en la que trabaja:</label>
-                                <input 
-                                    type="text" 
-                                    class="input_branch_name"
-                                    id="branch_name" 
-                                    name="branch_name" 
-                                    value="{{ $professional->branch_name }}">
+                                <label for="branch_id">
+                                    <strong>
+                                        Sucursal en la que trabaja:
+                                    </strong>
+                                </label>
+                                <select 
+                                    class="select_branch_id" 
+                                    id="branch_id" 
+                                    name="branch_id">
+                                    <option value="<?php echo $professional->branch_id; ?>"><?php echo $professional->branch_name; ?></option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="created_at">Fecha de creacion:</label>
+                                <label for="phone">
+                                    <strong>
+                                        Celular:
+                                    </strong>
+                                </label>
                                 <input 
-                                    type="text" 
-                                    class="input_created_at" 
-                                    id="created_at" 
-                                    name="created_at"
-                                    value="{{ $professional->created_at }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="update_at">Ultima actualizacion:</label>
-                                <input 
-                                    type="text" 
-                                    class="input_update_at" 
-                                    id="update_at" 
-                                    name="update_at" 
-                                    value="{{ $professional->update_at }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Celular:</label>
-                                <input 
+                                    autocomplete="off"
                                     type="text" 
                                     class="input_phone" 
                                     id="phone" 
@@ -310,8 +336,13 @@
                                     value="{{ $professional->phone }}">
                             </div>
                             <div class="form-group">
-                                <label for="email">Email:</label>
+                                <label for="email">
+                                    <strong>
+                                        Email:
+                                    </strong>
+                                </label>
                                 <input 
+                                    autocomplete="off"
                                     type="text" 
                                     class="input_email" 
                                     id="email" 
@@ -326,10 +357,10 @@
                                     Cancelar
                                 </button>
                                 <button 
-                                    type="submit" 
-                                    class="create_event"
-                                    disabled>
-                                    Reservar
+                                    type="button"
+                                    onclick="validate_professional()"
+                                    class="create_event">
+                                    Actualizar
                                 </button>
                             </div>
                         </form>
@@ -337,5 +368,61 @@
                 </main>
             </div>
         </main>
+        <script>
+            function toggle_navbar(){
+                const navbar = document.querySelector('.navbar');
+                const section_main = document.querySelector('.section_main');
+                const toggle_navbar = document.querySelector('.toggle_navbar');
+                if(navbar.classList.contains('close')){
+                    navbar.classList.remove('close');
+                    section_main.style.marginLeft = '350px';
+                    toggle_navbar.style.transform = 'rotate(180deg)';
+                }else{
+                    navbar.classList.add('close');
+                    section_main.style.marginLeft = '60px';
+                    toggle_navbar.style.transform = 'rotate(0deg)';
+                }
+            }
+            function cancel_event(){
+                window.history.back();
+            }
+            function validate_professional(){
+                let input_name = document.getElementById('name').value;
+                let input_surname = document.getElementById('surname').value;
+                let input_branch_id = document.getElementById('branch_id').value;
+                let input_phone = document.getElementById('phone').value;
+                let input_email = document.getElementById('email').value;
+
+                if(input_name === '' || 
+                   input_surname === '' || 
+                   input_branch_id === '' ||
+                   input_phone === '' || 
+                   input_email === ''){
+                    toastr.error('Todos los campos son obligatorios');
+                }
+
+                if(!validatePhone(input_phone)){
+                    toastr.error('El telefono no es valido');
+                    return;
+                }
+
+                if(!validateEmail(input_email)){
+                    toastr.error('El email no es valido');
+                    return;
+                }
+                
+                document.querySelector('.create_event').type = 'submit';
+            }
+            function validateEmail(email) {
+                var re = /\S+@\S+\.\S+/;
+                return re.test(email);
+            }
+            function validatePhone(phone){
+                if(phone.length < 10){
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </body>
 </html>
