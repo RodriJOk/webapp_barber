@@ -19,7 +19,8 @@ class Professionals extends Authenticatable{
         'branch_id',
         'created_at',
         'update_at',
-        'phone'
+        'phone',
+        'email',
     ];
 
     protected function getProfessionalsById($id_branch){
