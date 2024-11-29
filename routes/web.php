@@ -68,7 +68,7 @@ Route::controller(ProfessionalsController::class)->group(function () {
     Route::post('/update_schedules_professional', 'update_schedules_professional')->name('update_schedules_professional')->middleware('auth', 'rol:admin');
     
     Route::get('/edit_professional/{id}', 'edit_professional')->name('edit_professional')->middleware('auth', 'rol:admin');
-    Route::post('/update_profesional', 'update_profesional')->name('update_profesional')->middleware('auth', 'rol:admin');
+    Route::post('/update_professional/{id}', 'update_professional')->name('update_professional')->middleware('auth', 'rol:admin');
 });
 
 Route::controller(ProfessionalAvailabilityController::class)->group(function () {
