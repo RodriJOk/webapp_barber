@@ -19,7 +19,10 @@ class ProfessionalAvailability extends Authenticatable{
         'start_time',
         'end_time',
         'created_at',
-        'update_at'
+        'update_at',
+        'rest_start_time',
+        'rest_end_time',
+        'active',
     ];
 
     protected function getDaysByProfessional($professional_id){
@@ -37,19 +40,29 @@ class ProfessionalAvailability extends Authenticatable{
     }
     protected function updateProfessionalAvailability($professional_id, $availability){
         foreach ($availability as $day => $availability) {
-            if($availability['checked'] == 'on'){
-                DB::table('professional_availability')
-                    ->where('professional_id', $professional_id)
-                    ->where('day_of_the_week', $day)
-                    ->update([
-                        'start_time' => $availability['disponibilidad_inicio'],
-                        'end_time' => $availability['disponibilidad_fin'],
-                        'rest_start_time' => $availability['descanso_inicio'],
-                        'rest_end_time' => $availability['descanso_fin'],
-                        'update_at' => date('Y-m-d H:i:s'),
-                    ]);
+            $day = ucfirst($day);
+            $checked = "";
+            if(isset($availability['checked'])){
+                if($availability['checked'] == "on"){
+                    $checked = 1;
+                }else{
+                    $checked = 0;
+                }
+            }else{
+                $checked = 0;
             }
+            DB::table('professional_availability')
+                ->where('professional_id', $professional_id)
+                ->where('day_of_the_week', $day)
+                ->update([
+                    'start_time' => $availability['disponibilidad_inicio'],
+                    'end_time' => $availability['disponibilidad_fin'],
+                    'rest_start_time' => $availability['descanso_inicio'],
+                    'rest_end_time' => $availability['descanso_fin'],
+                    'active' => $checked
+                ]);
         }
-        return true; 
+
+        return true;
     }
 }
