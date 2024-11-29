@@ -371,7 +371,7 @@
     </style>
 </head>
 <body>
-<main class="main">
+    <main class="main">
         <navbar class="navbar">
             <header class="header">
                 <h2 class="header_title">
