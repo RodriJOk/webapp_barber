@@ -28,4 +28,11 @@ class Suscription extends Authenticatable{
             ->get();
         return $susc;
     }
+    protected function getLastSuscriptionByUser($id_user) {
+        $susc = DB::table('suscription')
+            ->where('id_cliente', $id_user)
+            ->orderBy('id', 'desc')
+            ->first();
+        return $susc;
+    }
 }
