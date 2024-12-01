@@ -70,7 +70,27 @@
             .navbar.close .navbar_image{
                 margin: 0px auto;
             }
-
+            .close_session{
+                background: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+                font-size: 16px;
+            }
+            .section{
+                min-width: 60%; 
+                padding: 10px; 
+                margin: 0 auto; 
+                position: relative; 
+                margin-left: 350px; 
+            }
+            .section_form{
+                border: 1px solid #ccc; 
+                padding: 15px; 
+                border-radius: 10px; 
+                max-width: 600px; 
+                margin: 0 auto;
+            }
             /* Estilos de la seccion de informacion y ABM*/
             .section_main{
                 min-width: 70%; 
@@ -88,17 +108,19 @@
                 border-radius: 5px;
             }
             .container_title{
-                display: flex; 
-                flex-direction:row; 
-                justify-content: space-between; 
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
                 align-items: center;
+                max-width: 600px;
+                margin: 0 auto;
             }
             .container_title .title{
                 font-size: 26px;
             }
             .container_form{
                 max-width: 500px;
-                margin: 0 auto;
+                margin: 20px auto;
             }
             .form-group{
                 margin: 10px 0px;
@@ -276,7 +298,7 @@
                     <h2 class="title">Editar los datos de un profesional</h2>
                 </div>
 
-                <main style="border: 1px solid #ccc; padding: 15px; border-radius: 10px;">
+                <main class="section_form">
                     <div class="container_form">
                         <form action="{{ route('update_professional', ['id' => $id_professional]) }}" method="POST">
                             @csrf
