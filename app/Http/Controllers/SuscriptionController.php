@@ -8,10 +8,12 @@ use MercadoPago\MercadoPagoConfig;
 // use MercadoPago\RequestOptions\RequestOptions;
 use MercadoPago\RequestOptions\Payment\PaymentCreateRequestOptions;
 use MercadoPago\Client\Common\RequestOptions;
+use DateTime;
 
 class SuscriptionController extends Controller
 {
     public function suscription(){
+        $suscriptions = Suscription::getSuscriptions();
         return view('suscription/index', ['suscriptions' => $suscriptions]);
     }
     public function index(){
@@ -45,6 +47,10 @@ class SuscriptionController extends Controller
         $suscriptions = Suscription::getSuscriptionByUser($id_usuario);
 
         $last_suscription = Suscription::getLastSuscriptionByUser($id_usuario);
+        if($last_suscription){
+            $last_suscription->start_date = date('d/m/Y', strtotime($last_suscription->start_date));
+            $last_suscription->end_date = date('d/m/Y', strtotime($last_suscription->end_date));
+        }
         $date_now = date('Y-m-d');
         $suscription_status = 'active';
     
@@ -55,7 +61,7 @@ class SuscriptionController extends Controller
         ];
 
         if($last_suscription){
-            if($date_now > date('Y-m-d', strtotime($last_suscription->end_date))){
+            if($date_now > DateTime::createFromFormat('d/m/Y', $last_suscription->end_date)){
                 $suscription_status = 'interrupted';
             }
         }else{
