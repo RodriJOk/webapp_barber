@@ -99,12 +99,11 @@
             flex-direction: column; 
             justify-content: space-between; 
             align-items: center; 
-            margin-top: 20px; 
             border: 2px solid #012e46; 
             padding: 10px; 
             border-radius: 5px; 
             max-width: 70%; 
-            margin: 0 auto; 
+            margin: 30px auto 10px;
             background-color: #fff;
             width: 70%;
         }
@@ -185,6 +184,86 @@
             margin: 0;
             padding: 0;
             font-size: 16px;
+        }
+        .wallet_container{
+            height: 50px;
+            margin-bottom: 60px;
+        }
+        .button_payment_history_mobile{
+            display: none;
+        }
+
+        @media screen and (max-width: 768px){
+            .navbar{
+                padding: 20px 5px;
+                z-index: 1000;
+            }
+            .navbar.close .button_toggle_navbar{
+                text-align: center;
+                margin: 0px auto;
+            }
+            .navbar.close .navbar_image{
+                margin: 0px auto;
+            }
+            .main_section{
+                margin-left: 80px;
+            }
+            .container_title .button_payment_history{
+                display: none;
+            }
+            .section-status_suscription{
+                margin: 0px;
+                flex-direction: column;
+                min-width: 90%;
+                max-width: 92%;
+                margin-top: 40px;
+            }
+            .section-status_suscription .status-suscription_item{
+                flex-direction: column;
+            }
+            .section-status_suscription .status-suscription_item .status_black{
+                display: none;
+            }
+            .section-status_suscription .status-suscription_item .status_text{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .section-status_suscription .status-suscription_item p .success_tag{
+                margin: 10px 0px;
+            }
+            .container_status_suscription{
+                flex-direction: row;
+                gap: 5px;
+                margin: 20px 0px 5px;
+            }
+            .container_status_suscription .status-suscription_item{
+                flex-direction: column;
+                gap: 10px;
+                width: 50%;
+            }
+            .container_status_suscription .status-suscription_item img{
+                width: 30px;
+                height: 30px;
+            }
+            .container_status_suscription .status-suscription_item .init_date{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;    
+            }
+            .button_payment_history_mobile{
+                display: block;
+                width: 100%;
+                background-color:#00d1b2; 
+                color:#fff; 
+                border:none; 
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 40px auto 5px; 
+                font-size: 18px;
+                padding: 16px;
+            }
         }
     </style>
 </head>
@@ -289,15 +368,17 @@
                 if($suscription_message){ ?>
                     <div class="status-suscription_item">
                         <img 
+                            class="status_black"
                             src="{{asset('icons/status_black.png')}}" 
                             alt="Estado"
                             width="20px"
                             height="20px">
-                        <p>Estado de la suscripcion: 
+                        <div class="status_text">
+                            <p>Estado de la suscripcion: </p> 
                             <span class="<?php echo $suscription_status == 'active' ? 'success_tag' : 'danger_tag'; ?>">
                                 <?php echo $suscription_message; ?>
                             </span>
-                        </p>
+                        </div>
                     </div><?php 
                 }
                 if($last_suscription){ ?>
@@ -308,7 +389,10 @@
                                 alt="Fecha de inicio de la suscripcion"
                                 width="20px"
                                 height="20px">
-                            <p>Fecha de inicio: <?php echo $last_suscription->start_date; ?></p>
+                            <div class="init_date">
+                                <p>Fecha de inicio: </p>
+                                <span><?php echo $last_suscription->start_date; ?></span>
+                            </div>
                         </div>
                         <div class="status-suscription_item">
                             <img
@@ -316,12 +400,19 @@
                                 alt="Fecha de fin de la suscripcion"
                                 width="20px"
                                 height="20px">
-                            <p>Fecha de fin: <?php echo $last_suscription->end_date; ?></p>
+                            <div class="init_date">
+                                <p>Fecha de fin: </p>
+                                <span><?php echo $last_suscription->end_date; ?></span>
+                            </div>
                         </div>
                     </div><?php 
                 } ?>
             </div>
             <div class="wallet_container" id="wallet_container"></div>
+        
+            <button class="button_payment_history_mobile" type="button" onclick="subscription_history()">
+                Ver historial de suscripciones
+            </button>
         </div>
     </main>
 
