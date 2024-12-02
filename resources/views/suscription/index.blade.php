@@ -62,6 +62,30 @@
         .navbar.close .navbar_image{
             margin: 0px auto;
         }
+        .main_section{
+            min-width: 70%; 
+            padding: 10px; 
+            margin: 0 auto; 
+            position: relative; 
+            margin-left: 350px;
+        }
+        .container_title{
+            display: flex; 
+            flex-direction:row; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        .container_title .title{
+            font-size: 26px
+        }
+        .container_title .button_toggle_navbar{
+            padding: 10px; 
+            width: 100%; 
+            background-color:#00d1b2; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px;
+        }
         .section-status_suscription{
             display: flex; 
             flex-direction: column; 
@@ -245,16 +269,12 @@
                 </li>
             </ul>
         </navbar>
-        <div style="min-width: 70%; padding: 10px; margin: 0 auto; position: relative; margin-left: 350px;">
-            <div style="display: flex; flex-direction:row; justify-content: space-between; align-items: center;">
-                <h2 style="font-size: 26px">Mi suscripcion</h2>
-                <div>
-                    <button 
-                        onclick="open_modal()"
-                        style="padding: 10px; width: 100%; background-color:#00d1b2; color:#fff; border:none; border-radius: 5px;">
-                        Pagar suscripcion
-                    </button>
-                </div>
+        <div class="main_section">
+            <div class="container_title">
+                <h2 class="title">Mi suscripcion</h2>
+                <button class="button_payment_history">
+                    Ver historial de pagos
+                </button>
             </div>
 
             <div class="section-status_suscription"><?php 
