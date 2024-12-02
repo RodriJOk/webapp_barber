@@ -77,4 +77,10 @@ class SuscriptionController extends Controller
             'suscription_message' => $suscription_message[$suscription_status]
         ]);
     }
+    public function subscription_history(){
+        $id_usuario = session('id_usuario');
+        $suscriptions = Suscription::getSuscriptionByUser($id_usuario);
+
+        return view('suscription/subscription_history', ['suscriptions' => $suscriptions]);
+    }   
 }

@@ -49,6 +49,7 @@ Route::controller(SuscriptionController::class)->group(function () {
     Route::post('/create_suscription', 'create_suscription')->name('create_suscription')->middleware('auth', 'rol:admin');
     Route::get('/edit_suscription', 'edit_suscription')->middleware('auth', 'rol:admin');
     Route::get('/delete_suscription', 'delete_suscription')->middleware('auth', 'rol:admin');
+    Route::get('/subscription_history', 'subscription_history')->name('subscription_history')->middleware('auth', 'rol:admin');
 });
 
 Route::controller(BranchController::class)->group(function () {

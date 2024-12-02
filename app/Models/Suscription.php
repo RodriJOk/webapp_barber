@@ -25,6 +25,7 @@ class Suscription extends Authenticatable{
     protected function getSuscriptionByUser($id_user) {
         $susc = DB::table('suscription')
             ->where('id_cliente', $id_user)
+            ->orderBy('id', 'asc')
             ->get();
         return $susc;
     }
