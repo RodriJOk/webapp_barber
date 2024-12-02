@@ -78,6 +78,14 @@
         .container_title .title{
             font-size: 26px
         }
+        .container_title .button_payment_history{
+            padding: 10px; 
+            background-color:#00d1b2; 
+            color:#fff; 
+            border:none; 
+            border-radius: 5px;
+            cursor: pointer;
+        }
         .container_title .button_toggle_navbar{
             padding: 10px; 
             width: 100%; 
@@ -272,8 +280,8 @@
         <div class="main_section">
             <div class="container_title">
                 <h2 class="title">Mi suscripcion</h2>
-                <button class="button_payment_history">
-                    Ver historial de pagos
+                <button class="button_payment_history" type="button" onclick="subscription_history()">
+                    Ver historial de suscripciones
                 </button>
             </div>
 
@@ -313,36 +321,6 @@
                     </div><?php 
                 } ?>
             </div>
-
-            <p>Listado del historia de suscripcion</p>
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead style="background-color: #012e46; color: #fff; text-align: center;">
-                    <tr>
-                        <th style="padding: 10px; border-bottom: 1px solid #ccc;">Id</th>
-                        <th style="padding: 10px; border-bottom: 1px solid #ccc;">
-                            Tipo de suscripcion
-                        </th>
-                        <th style="padding: 10px; border-bottom: 1px solid #ccc;">
-                            Fecha de inicio
-                        </th>
-                        <th style="padding: 10px; border-bottom: 1px solid #ccc;">
-                            Fecha de fin
-                        </th>
-                    </tr>
-                </thead>
-                <tbody style="text-align: center;"><?php
-                    if($suscriptions){
-                        foreach($suscriptions as $suscription){
-                            echo "<tr>";
-                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->id."</td>";
-                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->type."</td>";
-                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->start_date."</td>";
-                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->end_date."</td>";
-                            echo "</tr>";
-                        }
-                    } ?>
-                </tbody>
-            </table>
             <div class="wallet_container" id="wallet_container"></div>
         </div>
     </main>
@@ -410,7 +388,9 @@
                 toggle_navbar.style.transform = 'rotate(0deg)';
             }
         }
-
+        function subscription_history(){
+            window.location.href = "{{ route('subscription_history') }}";
+        }
         </script>
         <script type="text/javascript">
             (function() {
