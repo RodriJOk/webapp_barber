@@ -66,15 +66,15 @@
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
-            align-items: start; 
+            align-items: center; 
             margin-top: 20px; 
             border: 2px solid #012e46; 
             padding: 10px; 
             border-radius: 5px; 
-            max-width: 300px; 
+            max-width: 70%; 
             margin: 0 auto; 
             background-color: #fff;
-            width: 50%;
+            width: 70%;
         }
         .section-status_suscription .status-suscription_item{
             display: flex; 
@@ -82,7 +82,33 @@
             gap: 10px; 
             align-items: center;
         }
-
+        .section-status_suscription .status-suscription_item .danger_tag{
+            background-color: red; 
+            color:white; 
+            border-radius:5px; 
+            padding: 5px;
+        }
+        .section-status_suscription .status-suscription_item .success_tag{
+            background-color: green; 
+            color:white; 
+            border-radius:5px; 
+            padding: 5px;
+        }
+        .container_status_suscription{
+            display: flex; 
+            flex-direction: row; 
+            gap: 30px; 
+            padding: 10px; 
+            min-width: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+        .container_status_suscription .status-suscription_item{
+            display: flex; 
+            flex-direction: row; 
+            gap: 10px; 
+            align-items: center;
+        }
         .modal{
             background-color: #fff;
             z-index: 9999;
@@ -231,36 +257,41 @@
                 </div>
             </div>
 
-            <div style="max-width:100%; border:5px solid blue; display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 20px;">
-                <div class="section-status_suscription">
+            <div class="section-status_suscription"><?php 
+                if($suscription_message){ ?>
                     <div class="status-suscription_item">
                         <img 
                             src="{{asset('icons/status_black.png')}}" 
                             alt="Estado"
                             width="20px"
                             height="20px">
-                        <p>Estado de la suscripcion: <?php echo $suscription_message; ?></p>
-                    </div>
-                    <div class="status-suscription_item">
-                        <img 
-                            src="{{asset('icons/calendar_black.png')}}"
-                            alt="Fecha de inicio de la suscripcion"
-                            width="20px"
-                            height="20px">
-                        <p>Fecha de inicio:</p>
-                    </div>
-                    <div class="status-suscription_item">
-                        <img
-                            src="{{asset('icons/renew_suscription.png')}}" 
-                            alt="Fecha de fin de la suscripcion"
-                            width="20px"
-                            height="20px">
-                        <p>Fecha de fin: </p>
-                    </div>
-                </div>
-                <div style="border:2px solid red; width: 50%; padding: 10px;">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea quaerat iste mollitia. Possimus, enim aperiam numquam consectetur laudantium, harum placeat, nihil deleniti voluptatem consequatur provident ad dicta eum repellendus nam?</p>
-                </div>
+                        <p>Estado de la suscripcion: 
+                            <span class="<?php echo $suscription_status == 'active' ? 'success_tag' : 'danger_tag'; ?>">
+                                <?php echo $suscription_message; ?>
+                            </span>
+                        </p>
+                    </div><?php 
+                }
+                if($last_suscription){ ?>
+                    <div class="container_status_suscription">
+                        <div class="status-suscription_item">
+                            <img 
+                                src="{{asset('icons/calendar_black.png')}}"
+                                alt="Fecha de inicio de la suscripcion"
+                                width="20px"
+                                height="20px">
+                            <p>Fecha de inicio: <?php echo $last_suscription->start_date; ?></p>
+                        </div>
+                        <div class="status-suscription_item">
+                            <img
+                                src="{{asset('icons/renew_suscription.png')}}" 
+                                alt="Fecha de fin de la suscripcion"
+                                width="20px"
+                                height="20px">
+                            <p>Fecha de fin: <?php echo $last_suscription->end_date; ?></p>
+                        </div>
+                    </div><?php 
+                } ?>
             </div>
 
             <p>Listado del historia de suscripcion</p>
@@ -297,12 +328,10 @@
     </main>
 
     <script>
-        console.log(<?php echo json_encode($preference); ?>);
         const preferenceId = '<?php echo $preferenceId; ?>';
         const mp = new MercadoPago("APP_USR-b5942e2b-aaeb-46d9-ba0f-57c3745eb5ea", { locale: "en-US" });
         const walletBuilder = mp.bricks();
     
-        // Renderiza el componente con bricks
         const renderComponent = async (walletBuilder) => {
             const settings = {
                 initialization: {
