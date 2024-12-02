@@ -102,10 +102,10 @@
             border: 2px solid #012e46; 
             padding: 10px; 
             border-radius: 5px; 
-            max-width: 70%; 
+            max-width: 97%; 
             margin: 30px auto 10px;
             background-color: #fff;
-            width: 70%;
+            width: 98%;
         }
         .section-status_suscription .status-suscription_item{
             display: flex; 
