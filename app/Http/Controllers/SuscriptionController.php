@@ -12,10 +12,6 @@ use DateTime;
 
 class SuscriptionController extends Controller
 {
-    public function suscription(){
-        $suscriptions = Suscription::getSuscriptions();
-        return view('suscription/index', ['suscriptions' => $suscriptions]);
-    }
     public function index(){
         MercadoPagoConfig::setAccessToken('APP_USR-4245916803958684-100314-c8773e08b4ca9d58a840006b8bcbfef8-218698516');
         MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
