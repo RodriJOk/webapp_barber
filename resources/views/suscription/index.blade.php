@@ -62,6 +62,27 @@
         .navbar.close .navbar_image{
             margin: 0px auto;
         }
+        .section-status_suscription{
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-items: start; 
+            margin-top: 20px; 
+            border: 2px solid #012e46; 
+            padding: 10px; 
+            border-radius: 5px; 
+            max-width: 300px; 
+            margin: 0 auto; 
+            background-color: #fff;
+            width: 50%;
+        }
+        .section-status_suscription .status-suscription_item{
+            display: flex; 
+            flex-direction: row; 
+            gap: 10px; 
+            align-items: center;
+        }
+
         .modal{
             background-color: #fff;
             z-index: 9999;
@@ -209,6 +230,39 @@
                     </button>
                 </div>
             </div>
+
+            <div style="max-width:100%; border:5px solid blue; display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 20px;">
+                <div class="section-status_suscription">
+                    <div class="status-suscription_item">
+                        <img 
+                            src="{{asset('icons/status_black.png')}}" 
+                            alt="Estado"
+                            width="20px"
+                            height="20px">
+                        <p>Estado de la suscripcion: <?php echo $suscription_message; ?></p>
+                    </div>
+                    <div class="status-suscription_item">
+                        <img 
+                            src="{{asset('icons/calendar_black.png')}}"
+                            alt="Fecha de inicio de la suscripcion"
+                            width="20px"
+                            height="20px">
+                        <p>Fecha de inicio:</p>
+                    </div>
+                    <div class="status-suscription_item">
+                        <img
+                            src="{{asset('icons/renew_suscription.png')}}" 
+                            alt="Fecha de fin de la suscripcion"
+                            width="20px"
+                            height="20px">
+                        <p>Fecha de fin: </p>
+                    </div>
+                </div>
+                <div style="border:2px solid red; width: 50%; padding: 10px;">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea quaerat iste mollitia. Possimus, enim aperiam numquam consectetur laudantium, harum placeat, nihil deleniti voluptatem consequatur provident ad dicta eum repellendus nam?</p>
+                </div>
+            </div>
+
             <p>Listado del historia de suscripcion</p>
             <table style="width: 100%; border-collapse: collapse;">
                 <thead style="background-color: #012e46; color: #fff; text-align: center;">
@@ -225,28 +279,26 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody style="text-align: center;">
-                    @foreach ($suscriptions as $suscription)
-                        <tr>
-                            <td style="border-bottom: 1px solid #ccc;">{{$suscription->id}}</td>
-                            <td style="border-bottom: 1px solid #ccc;">{{$suscription->type}}</td>
-                            <td style="border-bottom: 1px solid #ccc;">{{$suscription->start_date}}</td>
-                            <td style="border-bottom: 1px solid #ccc;">{{$suscription->end_date}}</td>
-                        </tr>
-                    @endforeach
+                <tbody style="text-align: center;"><?php
+                    if($suscriptions){
+                        foreach($suscriptions as $suscription){
+                            echo "<tr>";
+                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->id."</td>";
+                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->type."</td>";
+                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->start_date."</td>";
+                            echo "<td style='padding: 10px; border-bottom: 1px solid #ccc;'>".$suscription->end_date."</td>";
+                            echo "</tr>";
+                        }
+                    } ?>
                 </tbody>
             </table>
             <div class="wallet_container" id="wallet_container"></div>
-            <a 
-                href="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c93808492715acc01927c5fbf230410" 
-                name="MP-payButton" 
-                class='blue-ar-l-rn-none'>
-                Renovar suscripcion
-            </a>
         </div>
     </main>
 
     <script>
+        console.log(<?php echo json_encode($preference); ?>);
+        const preferenceId = '<?php echo $preferenceId; ?>';
         const mp = new MercadoPago("APP_USR-b5942e2b-aaeb-46d9-ba0f-57c3745eb5ea", { locale: "en-US" });
         const walletBuilder = mp.bricks();
     
@@ -254,7 +306,7 @@
         const renderComponent = async (walletBuilder) => {
             const settings = {
                 initialization: {
-                    preferenceId: '<?php echo $preference->id; ?>',              
+                    preferenceId: preferenceId,     
                 },
                 style: {
                     base: {
@@ -271,9 +323,11 @@
                 },
             };
     
+            console.log(settings);   
             try {
                 await walletBuilder.create("wallet", "wallet_container", settings);
             } catch (error) {
+                console.error("Entre en el error");
                 console.error("Error al montar el brick:", error);
             }
         };
