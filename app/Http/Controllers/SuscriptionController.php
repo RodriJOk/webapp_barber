@@ -76,7 +76,6 @@ class SuscriptionController extends Controller
     public function subscription_history(){
         $id_usuario = session('id_usuario');
         $suscriptions = Suscription::getSuscriptionByUser($id_usuario);
-
         return view('suscription/subscription_history', ['suscriptions' => $suscriptions]);
     }   
 }

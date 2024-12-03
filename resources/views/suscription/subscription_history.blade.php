@@ -124,6 +124,62 @@
         .table .table_body tr:nth-child(even) td{
             background-color: #ebeced;
         }
+        .container_information_empty{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ccccccd0;
+            padding: 20px 10px;
+            width: 50%;
+            margin: 30px auto 15px;
+        }
+        .container_information_empty .image_empty_information{
+            width: 60px;
+            height: 60px;
+        }
+        .container_information_empty .title_empty_information{
+            font-size: 24px;
+            text-align: center;
+            font-weight: 500;
+        }
+        @media (max-width: 768px){
+            .navbar{
+                padding: 20px 5px;
+                z-index: 1000;
+            }
+            .navbar.close .button_toggle_navbar{
+                text-align: center;
+                margin: 0px auto;
+            }
+            .navbar.close .navbar_image{
+                margin: 0px auto;
+            }
+            .main_section{
+                margin-left: 80px;
+            }
+            .main_section .container_title .title{
+                font-size: 20px;
+                text-wrap: balance;
+            }
+            .table_header tr .id,
+            .table_body tr .id_text{
+                display: none;
+            }
+            .container_information_empty{
+                width: 92%;
+            }
+            .container_information_empty .image_empty_information{
+                width: 30px;
+                height: 30px;
+            }
+            .container_information_empty .title_empty_information{
+                font-size: 16px;
+                text-align: center;
+                font-weight: 500;
+            }
+        }
     </style>
 </head>
 <body>
@@ -218,30 +274,37 @@
         <div class="main_section">
             <div class="container_title">
                 <h2 class="title">Mi historial de suscripciones</h2>
-            </div>
-
-            <table class="table">
-                <thead class="table_header">
-                    <tr>
-                        <th>Id</th>
-                        <th>Tipo de suscripcion</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de fin</th>
-                    </tr>
-                </thead>
-                <tbody class="table_body"><?php
-                    if($suscriptions){
+            </div><?php 
+            if($suscriptions){ ?>
+                <table class="table">
+                    <thead class="table_header">
+                        <tr>
+                            <th class="id">Id</th>
+                            <th>Tipo de suscripcion</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha de fin</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table_body"><?php
                         foreach($suscriptions as $suscription){ ?>
                             <tr>
-                                <td><?php echo $suscription->id; ?></td>
+                                <td class="id_text"><?php echo $suscription->id; ?></td>
                                 <td><?php echo $suscription->type; ?></td>
                                 <td><?php echo $suscription->start_date; ?></td>
                                 <td><?php echo $suscription->end_date; ?></td>
                             </tr><?php
-                        }
-                    } ?>
-                </tbody>
-            </table>
+                        } ?>
+                    </tbody>
+                </table><?php 
+            }else{ ?>
+                <div class="container_information_empty">
+                    <img 
+                        class="image_empty_information"
+                        src="{{asset('icons/quick_reference_black.png')}}"
+                        alt="No hay un historia de suscripciones">
+                    <h3 class="title_empty_information">No hay suscripciones que mostrar hasta el momento</h3>
+                </div><?php
+            } ?>
         </div>
     </main>
 
