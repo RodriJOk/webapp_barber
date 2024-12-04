@@ -67,7 +67,7 @@ class LoginController extends Controller
         session(['id_usuario' => $user_information->id]);
         session(['nombre_usuario' => $user_information->name]);
         session(['email_usuario' => $user_information->email]);
-        session(['id_branch' => $branch['id']]);
+        session(['id_branch' => $branch['id'] ?? null]);
         session(['rol' => $user_information->rol]);
 
         return redirect('/home');
