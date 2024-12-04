@@ -248,6 +248,17 @@
                     </li>
                     <li>
                         <div class="item">
+                            <img 
+                                class="navbar_image"
+                                src="{{asset('icons/groups.png')}}" 
+                                alt="Sucursales"
+                                width="20px"
+                                height="20px">
+                            <a href="{{ route('my_branch') }}" class="text_link">Mis sucursales</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
                             <img
                                 class="navbar_image"
                                 src="{{asset('icons/logout.png')}}" 
