@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class BranchController extends Controller
 {
+    public function index()
+    {
+        $branches = Branch::all();
+        return view('branch.index', compact('branches'));
+    }
     public function update_profile(Request $request)
     {
         $id_branch = $request->id;

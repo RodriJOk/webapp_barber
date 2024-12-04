@@ -53,6 +53,7 @@ Route::controller(SuscriptionController::class)->group(function () {
 });
 
 Route::controller(BranchController::class)->group(function () {
+    Route::get('/my_branch', 'index')->name('my_branch')->middleware('auth', 'rol:admin');
     Route::post('/update_profile', 'update_profile')->name('update_profile')->middleware('auth', 'rol:admin');
 });
 
