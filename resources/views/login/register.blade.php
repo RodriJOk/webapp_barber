@@ -109,6 +109,17 @@
                 height: 100%; 
                 background-size: cover;
             }
+            .container_password{
+                position: relative;
+            }
+            .container_password .view_password_button{
+                position: absolute; 
+                right:10px; 
+                top: 55%; 
+                text-decoration:none; 
+                border:none; 
+                background-color:transparent;
+            }
             @media screen and (max-width: 768px){
                 .container_image{
                     display: none;
@@ -164,7 +175,7 @@
                             required
                             autocomplete="off">
                     </div>
-                    <div class="form_item">
+                    <div class="form_item container_password">
                         <label for="password">Contraseña</label>
                         <input 
                             type="password" 
@@ -174,6 +185,17 @@
                             placeholder="Contraseña"
                             required
                             autocomplete="off">
+                        <button
+                            class="view_password_button" 
+                            onclick="toggle_visibility('password', 'password_icon')"
+                            type="button">
+                            <img 
+                                id="repeat_password_icon" 
+                                src="{{asset('icons/visibility.png')}}" 
+                                alt="Mirar la repeticion de la contraseña" 
+                                width="15" 
+                                height="15">
+                        </button>
                     </div>
                     <div class="form_item">
                         <label for="rol">Seleccione el usuario</label>
@@ -199,4 +221,25 @@
             </section>
         </main>
     </body>
+    <script>
+        function toggle_visibility(id, id_icon){
+            let form = document.getElementsByClassName('form')[0];
+            form.addEventListener('submit', function(event){
+                event.preventDefault();
+            });
+
+            let input = document.getElementById(id);
+            let icon = document.getElementById(id_icon);
+            
+            if(input.value != ""){
+                if(input.type == "password"){
+                    input.type = "text";
+                    icon.src = "{{asset('icons/visibility_off.png')}}";
+                }else{
+                    input.type = "password";
+                    icon.src = "{{asset('icons/visibility.png')}}";
+                }
+            }
+        }
+    </script>
 </html>
