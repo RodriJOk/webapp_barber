@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email', 255)->nullable(false)->unique();
             $table->timestamp('email_verified_at')->nullable(); // Campo separado, sin el uso de timestamps
             $table->string('password', 255)->nullable(false);
-            $table->string('remember_token', 100)->nullable(false);
+            $table->string('remember_token', 100)->nullable();
             $table->timestamps(); // Agrega created_at y updated_at automáticamente
             $table->unsignedInteger('rol_id')->nullable(false);
         });
