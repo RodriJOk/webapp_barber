@@ -4,10 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{ asset('icons/cuidado.png') }}" type="image/x-icon">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <title>Inicio de Session</title>
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <style>
             body{
@@ -209,8 +212,9 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="container_button">
                         <button 
+                            onclick="enviar_formulario()"
                             class="crear"
-                            type="submit">
+                            type="button">
                             Crear usuario
                         </button>
                     </div>
@@ -240,6 +244,36 @@
                     icon.src = "{{asset('icons/visibility.png')}}";
                 }
             }
+        }
+        function enviar_formulario(){
+            let form = document.getElementsByClassName('form')[0];
+            
+            let nombre = document.getElementById('nombre');
+            let email = document.getElementById('email');
+            let password = document.getElementById('password');
+            let rol = document.getElementById('rol');
+
+            if(nombre.value == "" || email.value == "" || password.value == "" || rol.value == 0){
+                toastr.error('Todos los campos son obligatorios');
+                return false;
+            }
+
+            if(nombre.value.length < 3){
+                toastr.error('El nombre debe tener al menos 3 caracteres');
+                return false;
+            }
+
+            if(email.value.indexOf('@') == -1 || email.value.indexOf('.') == -1){
+                toastr.error('El email no es valido');
+                return false;
+            }
+
+            if(password.value.length < 3){
+                toastr.error('La contraseña debe tener al menos 3 caracteres');
+                return false;
+            }
+
+            form.submit();
         }
     </script>
 </html>
