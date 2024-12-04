@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password', 255)->nullable(false);
             $table->string('remember_token', 100)->nullable(false);
             $table->timestamps(); // Agrega created_at y updated_at automáticamente
+            $table->unsignedInteger('rol_id')->nullable(false);
         });
     }
 
