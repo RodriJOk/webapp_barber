@@ -54,7 +54,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'require', // Asegúrate de mantener esto
+            'sslmode' => 'prefer', // Asegúrate de mantener esto
         ],
 
 
