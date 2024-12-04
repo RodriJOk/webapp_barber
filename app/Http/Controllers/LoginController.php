@@ -204,8 +204,8 @@ class LoginController extends Controller
             'email_verified_at' => now(),
             'password' => $password_hash,
             'remember_token' => null,
+            'created_at' => now(),
             'rol' => $data['rol'],
-            'created_at' => now()
         ];
 
         $save_user = User::saveUser($data);

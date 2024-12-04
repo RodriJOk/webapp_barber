@@ -20,10 +20,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
-        'rol_id',
+        'remember_token',
         'created_at',
         'updated_at',
+        'rol_id',
     ];
 
     /**
@@ -96,6 +98,7 @@ class User extends Authenticatable
         $user->password = $data['password'];
         $user->remember_token = $data['remember_token'];
         $user->created_at = $data['created_at'];
+        $user->rol_id = $data['rol'];
         $user->save();
         return $user;
     }
