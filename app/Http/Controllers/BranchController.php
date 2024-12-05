@@ -12,7 +12,6 @@ class BranchController extends Controller
     {
         $id_user = session('id_usuario');
         $branches = Branch::getBranchById($id_user);
-        
         return view('branch.index', compact('branches'));
     }
     public function new_branch()

@@ -83,7 +83,7 @@
             .navbar.close .navbar_image{
                 margin: 0px auto;
             }
-            .calendar_container{
+            .branches_container{
                 min-width: 70%; 
                 padding: 10px; 
                 margin: 0 auto; 
@@ -100,14 +100,18 @@
                 font-size: 26px;
             }
             .container_button .create_event{
-                padding: 10px; 
-                width: 100%; 
+                padding: 10px;
+                width: 100%;
                 background-color:#00d1b2; 
                 color:#fff; 
                 border:none; 
                 border-radius: 5px;
+                cursor: pointer;
+                text-decoration: none;
+                text-align: center;
+                font-size: 14px;
             }
-            .calendar{
+            .branches{
                 margin: 10px 0px;
             }
             .close_session{
@@ -131,46 +135,89 @@
                 min-width: 500px;
                 display: none;
             }
+            .table{
+                width: 100%; 
+                border-collapse: collapse; 
+                margin: 36px 0px;
+            }
+            .thead{
+                background-color: #012e46; 
+                color: #fff; 
+                text-align: center;
+            }
+            .row_header .column_name,
+            .row_header .column_address,
+            .row_header .column_phone,
+            .row_header .column_action{
+                padding: 10px; 
+                border-bottom: 1px solid #ccc;
+            }
+            .tbody{
+                text-align: center;
+            }
+            .row_content .content_name,
+            .row_content .content_address,
+            .row_content .content_phone,
+            .row_content .content_action{
+                border-bottom: 1px solid #ccc;
+            }
+            .container_buttom{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+            }
+            .container_buttom .edit_buttom,
+            .container_buttom .delete_buttom{
+                display: flex; 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+                gap: 15px; 
+                background: none; 
+                border: none; 
+                cursor: pointer;
+            }
+            .container_buttom .edit_buttom{
+                background-color: #007bff; 
+                color: #fff; 
+                padding: 5px 10px; 
+                border:none; 
+                border-radius: 5px;
+            }
+            .container_buttom .delete_buttom{
+                background-color: #dc3545; 
+                color: #fff; 
+                padding: 5px 10px; 
+                border:none; 
+                border-radius: 5px;
+            }
+            .container_information_empty{
+                max-width: 60%; 
+                text-align: center; 
+                border:2px solid #ccc; 
+                border-radius: 10px; 
+                margin: 20px auto 15px; 
+                padding: 20px;
+            }
+            .container_information_empty .information_empty_title{
+                font-size: 20px; 
+                font-weight:500;
+            }
+            .container_information_empty .information_empty_description{
+                font-size: 16px;
+            }
             @media (max-width: 768px){
                 .header .title{
                     font-size: 18px;
                 }
-                .calendar_container{
+                .branches_container{
                     margin-left: 70px;
                     min-width: 78%;
                 }
-                .calendar{
+                .branches{
                     height: 600px;
                 }
-                .fc-header-toolbar{
-                    display: flex;
-                    flex-direction: column-reverse;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(1){
-                    width: 100%;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(1) .fc-button-group{
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    gap: 40px;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) .fc-toolbar-title{
-                    font-size: 18px;
-                    font-family: Verdana, Geneva, Tahoma, sans-serif;
-                    margin: 10px 0px;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(3){
-                    width: 100%;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(3) .fc-button-group{
-                    width: 100%;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    gap: 10px;
-                }
-
             }
         </style>
     </head>
@@ -274,7 +321,7 @@
                     </li>
                 </ul>
             </navbar>
-            <section class="calendar_container">
+            <section class="branches_container">
                 <header class="header">
                     <h2 class="title">Mis sucursales</h2>
                     <div class="container_button">
@@ -283,40 +330,58 @@
                         </a>
                     </div>
                 </header>
-                <div class="calendar">
-                    <?php if($branches){ ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Direccion</th>
-                                <th>Telefono</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($branches as $branch)
-                                <tr>
-                                    <td>{{ $branch['name'] }}</td>
-                                    <td>{{ $branch['address'] }}</td>
-                                    <td>{{ $branch['phone'] }}</td>
-                                    <td>
-                                        <a href="{{ route('edit_branch', ['id' => $branch['id']]) }}">Editar</a>
-                                        <a href="{{ route('delete_branch', ['id' => $branch['id']]) }}">Eliminar</a>
-                                    </td>
+                <div class="branches"><?php 
+                    if($branches){ ?>
+                        <table class="table">
+                            <thead class="thead">
+                                <tr class="row_header">
+                                    <th class="column_name">Nombre</th>
+                                    <th class="column_address">Direccion</th>
+                                    <th class="column_phone">Celular</th>
+                                    <th class="column_action">Acciones</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <?php }else{ ?>
-                        <h2>No tienes sucursales registradas</h2>
-                    <?php } ?>
+                            </thead>
+                            <tbody class="tbody">
+                                @foreach($branches as $branch)
+                                    <tr class="row_content">
+                                        <td class="content_name">{{ $branch['name'] }}</td>
+                                        <td class="content_address">{{ $branch['address'] }}</td>
+                                        <td class="content_phone">{{ $branch['phone'] }}</td>
+                                        <td class="content_action">
+                                            <div class="container_buttom">
+                                                <button class="edit_buttom" onclick="open_modal('modal_information')">
+                                                    <img 
+                                                        src="{{asset('icons/edit.png')}}"
+                                                        alt="Editar" 
+                                                        width="20px" 
+                                                        height="20px">
+                                                    <span class="buttom_text">Editar</span>
+                                                </button>
+                                                <button class="delete_buttom" onclick="open_modal('modal_information')">
+                                                    <img 
+                                                        src="{{asset('icons/delete.png')}}"
+                                                        alt="Eliminar"
+                                                        width="20px" 
+                                                        height="20px">
+                                                    <span class="buttom_text">Eliminar</span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table><?php 
+                    }else{ ?>
+                        <div class="container_information_empty">
+                            <h2 class="information_empty_title">No tienes sucursales registradas</h2>
+                            <p class="information_empty_description">Por favor, registra una sucursal para poder gestionar tus reservas</p>
+                        </div><?php 
+                    } ?>
+                </div>
             </section>
         </main>
     </body>
     <script>
-
-        // Codigo del navbar
         function toggle_navbar(){
             let navbar = document.querySelector('.navbar');
             if(navbar.classList.contains('close')){
@@ -341,114 +406,5 @@
                 toggle_navbar.style.transform = 'rotate(0deg)';
             }
         }
-   
-        // let formulario = document.querySelector('form');
-        // formulario.addEventListener('submit', function(event){
-        //     event.preventDefault();
-        //     //Tomar los valores que se quisieron enviar por el formulario, con el name
-        //     let fecha_inicio = document.getElementById('fecha_reserva').value;
-        //     let hora_inicio = document.getElementById('hora_reserva').value;
-        //     let reserva_inicio = new Date(fecha_inicio + 'T' + hora_inicio);
-        //     let reserva_fin = new Date(fecha_inicio + 'T' + hora_inicio);
-        //     reserva_fin.setMinutes(reserva_fin.getMinutes() + 30);
-            
-        //     if(crear_evento(observaciones_reserva, fecha_inicio, reserva_fin) == false){
-        //         toastr.error('No se puede reservar en ese dia y  horario', 'Error');
-        //         formulario.reset();
-        //         return false;
-        //     }
-        //     formulario.submit();
-        //     let modal = document.getElementById('modal');
-        //     modal.style.display = 'none';
-
-        // });
-
-        // function crear_evento(titulo, fecha_inicio, fecha_fin){
-        //     let evento = {
-        //         title: titulo,
-        //         start: fecha_inicio,
-        //         end: fecha_fin,
-        //         allDay: false
-        //     };
-
-        //     //Recorrer el array de reservas, y ver si el nuevo evento se cruza con alguna reserva
-        //     let reservas_array = JSON.parse(reservas);
-        //     let colision = false;
-        //     reservas_array.forEach(reserva => {
-        //         let fecha_reserva = new Date(reserva.date + 'T' + reserva.time);
-        //         let fecha_fin_reserva = new Date(reserva.date + 'T' + reserva.time);
-        //         fecha_fin_reserva.setMinutes(fecha_fin_reserva.getMinutes() + 30);
-        //         if(fecha_inicio >= fecha_reserva && fecha_inicio <= fecha_fin_reserva){
-        //             colision = true;
-        //         }
-        //         if(fecha_fin >= fecha_reserva && fecha_fin <= fecha_fin_reserva){
-        //             colision = true;
-        //         }
-        //         if(colision == true){
-        //             return false;
-        //         }
-
-        //         return true;
-        //     });
-
-        //     if(colision == true){
-        //         return false;
-        //     }
-
-        //     let calendarEl = document.getElementById('calendar');
-        //     let calendar = new FullCalendar.Calendar(calendarEl, {
-                
-        //         locale: 'es',
-        //         headerToolbar: {
-        //             right: 'timeGridWeek,timeGridDay,listWeek',
-        //             center: 'title',
-        //             left: 'prev,next'
-        //         },
-        //         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        //         events: [evento]
-        //     });
-        //     //Si es la vista en mobile, que la vista inicial sea la de dia
-        //     if(window.innerWidth < 768){
-        //         calendar.setOption('initialView', 'dayGridWeek');
-        //     }else{
-        //         calendar.setOption('initialView', 'timeGridWeek');
-        //     }
-
-        //     calendar.render();
-        // }
-
-        // function open_modal(){
-        //     let modal = document.getElementById('modal');
-        //     modal.style.display = 'flex';
-        // }
-
-        // function setear_valores_input(nombre, apellido, title, date, time){
-        //     date = date.split('/');
-        //     let nueva_fecha = date[2] + '-' + date[1] + '-' + date[0]; 
-        //     let nombre_element = document.getElementById('details_name');
-        //     let apellido_element = document.getElementById('details_lastname');
-        //     let fecha_reserva = document.getElementById('fecha_reserva_information');
-        //     let hora_reserva = document.getElementById('hora_reserva_information');
-        //     let observaciones_reserva = document.getElementById('observaciones_reserva_information');
-        //     let modal_information = document.getElementById('modal_information');
-        //     fecha_reserva.value = nueva_fecha;
-        //     hora_reserva.value = time;
-        //     observaciones_reserva.value = title;
-        //     nombre_element.value = nombre;
-        //     apellido_element.value = apellido;
-
-        //     modal_information.style.display = 'flex';
-        // }
-
-        // function close_modal(element){
-        //     let modal = document.getElementById(element);
-        //     modal.style.display = 'none';
-        // }
-
-        // function cerrar_session(){
-        //     let form_close_session = document.getElementsByClassName('form_close_session')[0];
-        //     form_close_session.submit();
-        //     toastr.success('Sesion cerrada correctamente', 'Exito');
-        // }
     </script>
 </html>
