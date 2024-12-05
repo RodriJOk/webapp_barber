@@ -158,6 +158,10 @@
             .row_content .content_action{
                 border-bottom: 1px solid #ccc;
             }
+            .row_content .content_name{
+                text-align: left;
+                padding-left: 10px;
+            }
             .container_buttom{
                 display: flex;
                 flex-direction: row;
@@ -344,7 +348,14 @@
                                 @foreach($branches as $branch)
                                     <tr class="row_content">
                                         <td class="content_name">{{ $branch['name'] }}</td>
-                                        <td class="content_address">{{ $branch['address'] }}</td>
+                                        <td class="content_address"><?php 
+                                            if(strlen($branch['address']) > 30){
+                                                echo substr($branch['address'], 0, 30).'...';
+                                            }else{
+                                                echo $branch['address'];
+                                            }
+                                        ?>
+                                        </td>
                                         <td class="content_phone">{{ $branch['phone'] }}</td>
                                         <td class="content_action">
                                             <div class="container_buttom">
