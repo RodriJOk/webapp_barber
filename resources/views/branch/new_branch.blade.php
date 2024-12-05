@@ -101,6 +101,7 @@
                 min-width: 500px;
                 max-width: 60%;
                 border: 1px solid #ccc;
+                border-radius: 20px;
             }
             .close_session{
                 background: none;
@@ -141,6 +142,7 @@
                 flex-direction: row;
                 justify-content: center;
                 gap: 10px;
+                margin: 20px 0px;
             }
             .container_buttom .save_buttom,
             .container_buttom .cancel_buttom{
@@ -298,6 +300,7 @@
                                 name="name" 
                                 id="name" 
                                 placeholder="Nombre de la sucursal"
+                                autocomplete="off"
                                 required>
                         </div>
                         <div class="form_group">
@@ -308,6 +311,7 @@
                                 name="address" 
                                 id="address" 
                                 placeholder="Direccion"
+                                autocomplete="off"
                                 required>
                         </div>
                         <div class="form_group">
@@ -318,6 +322,7 @@
                                 name="phone"
                                 id="phone"
                                 placeholder="Celular"
+                                autocomplete="off"
                                 required>
                         </div>
                         <div class="container_buttom">
@@ -334,7 +339,8 @@
                             </button>
                             <button 
                                 class="save_buttom"
-                                type="submit">
+                                onclick="validate_form()"
+                                type="button">
                                 <img 
                                     src="{{asset('icons/save.png')}}"
                                     alt="Eliminar"
@@ -377,6 +383,32 @@
         }
         function cancel_branch(){
             window.location.href = "{{route('my_branch')}}";
+        }
+        function validate_form(){
+            let form = document.querySelector('.form_create_branch');
+            let name = document.getElementById('name').value.trim();
+            let address = document.getElementById('address').value.trim();
+            let phone = document.getElementById('phone').value.trim();
+
+            if(name === '' || address === '' || phone === ''){
+                toastr.error('Todos los campos son obligatorios');
+                return 
+            }
+
+            if(phone.length < 10){
+                toastr.error('El numero de celular debe tener al menos 10 digitos');
+                return
+            }
+            if(name.length < 3){
+                toastr.error('El nombre de la sucursal debe tener al menos 3 caracteres');
+                return
+            }
+            if(address.length < 4){
+                toastr.error('Por favor, ingrese una direccion valida');
+                return
+            }
+
+            form.submit();
         }
     </script>
 </html>
