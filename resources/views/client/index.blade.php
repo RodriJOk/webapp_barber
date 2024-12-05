@@ -295,55 +295,6 @@
             .filter_search .button_search{
                 width: 50%;
             }
-            /* Estilos de la tabla */
-            .table{
-                width: 100%; 
-                border-collapse: collapse; 
-                margin: 36px 0px;
-            }
-            .table .thead .row_header .column_created_at,
-            .table .thead .row_header .column_updated_at,
-            .table .thead .row_header .column_name_branch,
-            .table .thead .row_header .column_email{
-                display: none;
-            }
-
-            .table .tbody .row_content .content_created_at,
-            .table .tbody .row_content .content_updated_at,
-            .table .tbody .row_content .content_name_branch,
-            .table .tbody .row_content .content_email{
-                display: none;
-            }
-
-            .modal{
-                z-index: 1001;
-                top: 50px;
-                width: 88%;
-                min-height: 400px;
-                min-width: 300px;
-            }
-            .modal_body .items{
-                margin: 10px 0px;
-                gap: 5px;
-            }
-            .items .input_name,
-            .items .input_surname,
-            .items .input_phone,
-            .items .input_email{
-                border: 1px solid #ccc; 
-                width: 98%; 
-                font-size: 16px; 
-                height: 26px;
-                outline: none; 
-                text-decoration: none; 
-                background: transparent;
-                border-radius: 15px;
-                padding: 0px 5px;
-                color: #000;
-            }
-            .modal_body .container_buttom{
-                margin: 20px 0px;
-            }
         }
     </style>
 </head>
@@ -592,7 +543,6 @@
             <section class="modal_body">
                 <form action="{{ route('create_client') }}" method="POST" >
                     @csrf
-                    {{-- <input type="hidden" name="id_branch" value="{{ $branch['id'] }}"> --}}
                     <div class="items">
                         <label for="nombre">Nombre</label>
                         <input 
