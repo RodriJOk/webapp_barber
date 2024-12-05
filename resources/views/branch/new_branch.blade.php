@@ -66,6 +66,7 @@
                 display: flex; 
                 flex-direction: row; 
                 gap: 10px;
+                cursor: pointer;
             }
             .text_link{
                 text-decoration: none;
@@ -170,6 +171,7 @@
             }
             @media (max-width: 768px){
                 .header .title{
+                    margin-bottom: 10px;
                     font-size: 18px;
                 }
                 .new_branches_container{
@@ -178,6 +180,21 @@
                 }
                 .branch_information{
                     height: 600px;
+                    border:none;
+                    max-width: 300px;
+                    min-width: 295px;
+                }
+                .form_create_branch{
+                    margin: 16px 0px 0px;
+                    padding: 0px;
+                }
+                .container_buttom{
+                    flex-direction: column;
+                    gap: 10px;
+                }
+                .container_buttom .save_buttom,
+                .container_buttom .cancel_buttom{
+                    width: 100%;
                 }
             }
         </style>
@@ -187,7 +204,11 @@
             <navbar class="navbar">
                 <header class="header">
                     <h2 class="header_title">
-                        <a href="{{route('home')}}" class="text_link">Menu</a>
+                        <a 
+                            href="{{route('home')}}" 
+                            class="text_link">
+                            Menu
+                        </a>
                     </h2>
                     <button class="button_toggle_navbar" onclick="toggle_navbar()">
                         <img 
@@ -208,7 +229,11 @@
                                 alt="Abrir"
                                 width="20px"
                                 height="20px">
-                            <a href="{{route('my_profile')}}" class="text_link">Mi perfil</a>
+                            <a 
+                                href="{{route('my_profile')}}" 
+                                class="text_link">
+                                Mi perfil
+                            </a>
                         </div>
                     </li>
                     <li>
@@ -332,7 +357,7 @@
                                 type="button">
                                 <img
                                     src="{{asset('icons/delete.png')}}"
-                                    alt="Editar" 
+                                    alt="Cancelar la creacion de la sucursal"
                                     width="20px" 
                                     height="20px">
                                 <span class="buttom_text">Cancelar</span>
@@ -343,7 +368,7 @@
                                 type="button">
                                 <img 
                                     src="{{asset('icons/save.png')}}"
-                                    alt="Eliminar"
+                                    alt="Guardar los cambios realizados"
                                     width="20px" 
                                     height="20px">
                                 <span class="buttom_text">Guardar</span>
