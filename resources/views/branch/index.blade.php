@@ -9,8 +9,6 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-
         <title>Mis sucursales</title>
         <style>
             body{
@@ -73,7 +71,6 @@
                 text-decoration: none;
                 color: #fff;
             }
-
             .navbar.close .button_toggle_navbar{
                 text-align: center;
                 margin: 0px auto;
@@ -325,7 +322,9 @@
                 <header class="header">
                     <h2 class="title">Mis sucursales</h2>
                     <div class="container_button">
-                        <a href="{{ route('new_branch') }}" class="create_event">
+                        <a 
+                            href="{{ route('new_branch') }}" 
+                            class="create_event">
                             Crear una nueva sucursal
                         </a>
                     </div>
@@ -349,7 +348,10 @@
                                         <td class="content_phone">{{ $branch['phone'] }}</td>
                                         <td class="content_action">
                                             <div class="container_buttom">
-                                                <button class="edit_buttom" onclick="open_modal('modal_information')">
+                                                <button 
+                                                    class="edit_buttom" 
+                                                    onclick="edit_branch()"
+                                                    type="button">
                                                     <img 
                                                         src="{{asset('icons/edit.png')}}"
                                                         alt="Editar" 
@@ -357,7 +359,10 @@
                                                         height="20px">
                                                     <span class="buttom_text">Editar</span>
                                                 </button>
-                                                <button class="delete_buttom" onclick="open_modal('modal_information')">
+                                                <button 
+                                                    class="delete_buttom" 
+                                                    onclick="delete_branch()"
+                                                    type="button">
                                                     <img 
                                                         src="{{asset('icons/delete.png')}}"
                                                         alt="Eliminar"
@@ -385,26 +390,34 @@
         function toggle_navbar(){
             let navbar = document.querySelector('.navbar');
             if(navbar.classList.contains('close')){
-                navbar.classList.remove('close');
+                let header_title = document.getElementsByClassName('header_title')[0];
                 let text_link = document.querySelectorAll('.text_link');
+                let toggle_navbar = document.getElementsByClassName('toggle_navbar')[0];
+                
+                navbar.classList.remove('close');
                 text_link.forEach(element => {
                     element.style.display = 'block';
                 });
-                let header_title = document.getElementsByClassName('header_title')[0];
                 header_title.style.display = 'block';
-                let toggle_navbar = document.getElementsByClassName('toggle_navbar')[0];
                 toggle_navbar.style.transform = 'rotate(180deg)';
             }else{
-                navbar.classList.add('close');
                 let text_link = document.querySelectorAll('.text_link');
+                let header_title = document.getElementsByClassName('header_title')[0];
+                let toggle_navbar = document.getElementsByClassName('toggle_navbar')[0];
+                
+                navbar.classList.add('close');
                 text_link.forEach(element => {
                     element.style.display = 'none';
                 });
-                let header_title = document.getElementsByClassName('header_title')[0];
                 header_title.style.display = 'none';
-                let toggle_navbar = document.getElementsByClassName('toggle_navbar')[0];
                 toggle_navbar.style.transform = 'rotate(0deg)';
             }
+        }
+        function edit_branch(){
+            window.location.href = "{{ route('edit_branch') }}";
+        }
+        function delete_branch(){
+            window.location.href = "{{ route('delete_branch') }}";
         }
     </script>
 </html>
