@@ -249,7 +249,7 @@
                         <div class="item">
                             <img 
                                 class="navbar_image"
-                                src="{{asset('icons/groups.png')}}" 
+                                src="{{asset('icons/add_home.png')}}"
                                 alt="Sucursales"
                                 width="20px"
                                 height="20px">
