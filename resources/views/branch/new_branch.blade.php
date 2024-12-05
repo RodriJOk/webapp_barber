@@ -323,10 +323,10 @@
                         <div class="container_buttom">
                             <button 
                                 class="cancel_buttom" 
-                                onclick="edit_branch()"
+                                onclick="cancel_branch()"
                                 type="button">
-                                <img 
-                                    src="{{asset('icons/edit.png')}}"
+                                <img
+                                    src="{{asset('icons/delete.png')}}"
                                     alt="Editar" 
                                     width="20px" 
                                     height="20px">
@@ -336,7 +336,7 @@
                                 class="save_buttom"
                                 type="submit">
                                 <img 
-                                    src="{{asset('icons/delete.png')}}"
+                                    src="{{asset('icons/save.png')}}"
                                     alt="Eliminar"
                                     width="20px" 
                                     height="20px">
@@ -375,11 +375,8 @@
                 toggle_navbar.style.transform = 'rotate(0deg)';
             }
         }
-        function edit_branch(){
-            window.location.href = "{{ route('edit_branch') }}";
-        }
-        function delete_branch(){
-            window.location.href = "{{ route('delete_branch') }}";
+        function cancel_branch(){
+            window.location.href = "{{route('my_branch')}}";
         }
     </script>
 </html>
