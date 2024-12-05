@@ -216,8 +216,25 @@
                     margin-left: 70px;
                     min-width: 78%;
                 }
+                .branches_container .header{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    align-items: center;
+                }
                 .branches{
                     height: 600px;
+                }
+                /* Estilos de la tabla */
+                .column_address,
+                .column_phone,
+                .content_address,
+                .content_phone{
+                    display: none;
+                }
+                .edit_buttom .buttom_text,
+                .delete_buttom .buttom_text{
+                    display: none;
                 }
             }
         </style>
