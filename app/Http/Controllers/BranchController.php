@@ -10,8 +10,18 @@ class BranchController extends Controller
 {
     public function index()
     {
-        $branches = Branch::all();
+        $id_user = session('id_usuario');
+        $branches = Branch::getBranchById($id_user);
+        
         return view('branch.index', compact('branches'));
+    }
+    public function new_branch()
+    {
+        return view('branch.new_branch');
+    }
+    public function create_branch()
+    {
+
     }
     public function update_profile(Request $request)
     {

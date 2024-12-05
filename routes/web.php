@@ -54,6 +54,11 @@ Route::controller(SuscriptionController::class)->group(function () {
 
 Route::controller(BranchController::class)->group(function () {
     Route::get('/my_branch', 'index')->name('my_branch')->middleware('auth', 'rol:admin');
+    Route::get('/new_branch', 'new_branch')->name('new_branch')->middleware('auth', 'rol:admin');
+    Route::post('/create_branch', 'create_branch')->name('create_branch')->middleware('auth', 'rol:admin');
+    Route::get('/edit_branch', 'edit_branch')->name('edit_branch')->middleware('auth', 'rol:admin');
+    Route::post('/update_branch', 'update_branch')->name('update_branch')->middleware('auth', 'rol:admin');
+    Route::get('/delete_branch', 'delete_branch')->name('delete_branch')->middleware('auth', 'rol:admin');
     Route::post('/update_profile', 'update_profile')->name('update_profile')->middleware('auth', 'rol:admin');
 });
 

@@ -26,4 +26,8 @@ class Branch extends Authenticatable{
         $branch = Branch::select('*')->where('id_user', $id_user)->first();
         return $branch ? $branch->toArray() : null;
     }
+    protected function getBranchById($id){
+        $branch = Branch::select('*')->where('id_user', $id)->get();
+        return $branch ? $branch->toArray() : null;
+    }
 }
