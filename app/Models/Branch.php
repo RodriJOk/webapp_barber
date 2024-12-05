@@ -19,7 +19,7 @@ class Branch extends Authenticatable{
         'id_user',
         'phone',
         'created_at',
-        'update_at'
+        'updated_at'
     ];
 
     protected function getBranchByUserId($id_user){
@@ -29,5 +29,16 @@ class Branch extends Authenticatable{
     protected function getBranchById($id){
         $branch = Branch::select('*')->where('id_user', $id)->get();
         return $branch ? $branch->toArray() : null;
+    }
+    protected function createBranch($data){
+        $branch = new Branch();
+        $branch->name = $data['name'];
+        $branch->address = $data['address'];
+        $branch->phone = $data['phone'];
+        $branch->id_user = $data['id_user'];
+        $branch->created_at = $data['created_at'];
+        $branch->updated_at = $data['updated_at'];
+        $branch->save();
+        return $branch->id;
     }
 }
