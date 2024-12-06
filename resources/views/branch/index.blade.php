@@ -389,7 +389,8 @@
                                                 </button>
                                                 <button 
                                                     class="delete_buttom" 
-                                                    onclick="delete_branch()"
+                                                    onclick="window.location.href='{{ route('delete_branch', ['id' => $branch['id']]) }}'"
+                                                    {{-- onclick="delete_branch()" --}}
                                                     type="button">
                                                     <img 
                                                         src="{{asset('icons/delete.png')}}"
@@ -444,7 +445,7 @@
         function edit_branch(){
             window.location.href = "{{ route('edit_branch') }}";
         }
-        function delete_branch(){
+        function delete_branch(branch_id){
             window.location.href = "{{ route('delete_branch') }}";
         }
     </script>

@@ -19,8 +19,7 @@ class BranchController extends Controller
     {
         return view('branch.new_branch');
     }
-    public function create_branch()
-    {
+    public function create_branch(){
         $data = request()->all();
         
         $rules = [
@@ -68,8 +67,7 @@ class BranchController extends Controller
         return redirect()->route('my_branch');
 
     }
-    public function update_profile(Request $request)
-    {
+    public function update_profile(Request $request){
         $id_branch = $request->id;
         $branch = Branch::find($id_branch);
         $branch->name = $request->nombre;
@@ -79,5 +77,13 @@ class BranchController extends Controller
         $branch->save();
         toastr()->success('Datos de la sucursal actualizados correctamente');
         return redirect()->route('my_profile');
+    }
+    public function delete_branch($branch_id){
+        dd($branch_id);
+        $id_branch = $branch_id;
+        $branch = Branch::find($id_branch);
+        $branch->delete();
+        toastr()->success('Sucursal eliminada correctamente');
+        return redirect()->route('my_branch');
     }
 }
