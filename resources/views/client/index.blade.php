@@ -117,7 +117,7 @@
             width: 25%;
         }
         .filter_search .select_search{
-            width: 50%;
+            width: 75%;
         }
         .filter_search .button_search{
             width: 50%;
@@ -133,6 +133,7 @@
             height: 35px; 
             border-radius: 5px; 
             border: 1px solid #ccc;
+            padding: 0px 0px 0px 10px;
         }
         .clear_search_button{
             background-color: transparent; 
@@ -418,7 +419,7 @@
                                 name="name_search" 
                                 id="search" 
                                 placeholder="Buscar un cliente"
-                                value="{{request()->search}}"
+                                value="<?php echo isset($search_name) ? $search_name : '' ?>"
                                 onchange="validate_name_search('search')"
                                 onfocus="validate_name_search('search')">
                                 <button type="button" onclick="clear_search()" class="clear_search_button">
@@ -428,8 +429,8 @@
                         <div class="filter_search">
                             <select name="order" id="order" class="select_search">
                                 <option value="0">Ordenar por</option>
-                                <option value="asc">Mas reciente</option>
-                                <option value="desc">Mas antiguo</option>
+                                <option value="asc" <?php echo isset($search_order) && $search_order == 'asc' ? 'selected' : '' ?>>Mas reciente</option>
+                                <option value="desc" <?php echo isset($search_order) && $search_order == 'desc' ? 'selected' : '' ?>>Mas antiguo</option>
                             </select>
                             <button type="submit" class="button_search">Buscar</button>
                         </div>
@@ -457,9 +458,6 @@
                                 <th class="column_updated_at">
                                     Actualizacion
                                 </th>
-                                <th class="column_name_branch">
-                                    Nombre sucursal
-                                </th>
                                 <th class="column_phone">
                                     Celular
                                 </th>
@@ -475,7 +473,6 @@
                                     <td class="content_surname">{{$client['surname']}}</td>
                                     <td class="content_created_at">{{$client['created_at']}}</td>
                                     <td class="content_updated_at">{{$client['update_at'] ?? 'No actualizado'}}</td>
-                                    <td class="content_name_branch">{{$client['name_branch']}}</td>
                                     <td class="content_phone">{{$client['phone']}}</td>
                                     <td class="content_email">{{$client['email']}}</td>
                                 </tr>
@@ -517,7 +514,7 @@
                                     <td class="content_surname">{{$client['surname']}}</td>
                                     <td class="content_created_at">{{$client['created_at']}}</td>
                                     <td class="content_updated_at">{{$client['update_at'] ?? 'No actualizado'}}</td>
-                                    <td class="content_name_branch">{{$client['name_branch']}}</td>
+                                    <!-- <td class="content_name_branch">{{$client['name_branch']}}</td> -->
                                     <td class="content_phone">{{$client['phone']}}</td>
                                     <td class="content_email">{{$client['email']}}</td>
                                 </tr>
@@ -621,7 +618,7 @@
         }
         function validate_name_search(id){
             let input = document.getElementById(id);
-            let boton_limpiar_busqueda = document.getElementById('clear_search');
+            let boton_limpiar_busqueda = document.getElementsByClassName('clear_search_button')[0];
             if(input.value.length > 0){
                 boton_limpiar_busqueda.style.display = 'block';
             }else{

@@ -91,11 +91,9 @@ class ClientController extends Controller
         if($search_order != 'asc' && $search_order != 'desc'){
             $search_order = null;
         }
-
         $id_branch = session('id_branch');
         $search_result = Client::searchClient($search_name, $search_order, $id_branch);
         $id_usuario = session('id_usuario');
-
         return view('client/index', compact('id_usuario', 'id_branch', 'search_result', 'search_name', 'search_order'));
     }
 }
