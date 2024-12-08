@@ -496,9 +496,6 @@
                                 <th class="column_updated_at">
                                     Actualizacion
                                 </th>
-                                <th class="column_name_branch">
-                                    Nombre sucursal
-                                </th>
                                 <th class="column_phone">
                                     Celular
                                 </th>
@@ -514,7 +511,6 @@
                                     <td class="content_surname">{{$client['surname']}}</td>
                                     <td class="content_created_at">{{$client['created_at']}}</td>
                                     <td class="content_updated_at">{{$client['update_at'] ?? 'No actualizado'}}</td>
-                                    <!-- <td class="content_name_branch">{{$client['name_branch']}}</td> -->
                                     <td class="content_phone">{{$client['phone']}}</td>
                                     <td class="content_email">{{$client['email']}}</td>
                                 </tr>

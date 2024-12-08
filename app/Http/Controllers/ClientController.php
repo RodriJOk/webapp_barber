@@ -15,6 +15,7 @@ class ClientController extends Controller
         $clients = Client::getClientsByBranchId($id_branch);
         foreach ($clients as $key => $client) {
             $clients[$key]['created_at'] = date('d-m-Y', strtotime($client['created_at']));
+            $clients[$key]['update_at'] = date('d-m-Y', strtotime($client['update_at']));
         }
 
         $search_name = null;
