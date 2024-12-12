@@ -222,4 +222,18 @@ class LoginController extends Controller
         session()->flush();
         return redirect('/login');
     }
+    public function notifications(){
+        $data = request()->all();
+        dd($data);
+    }
+    public function success(){
+        return 'Pago exitoso';
+    }
+    public function failure(){
+        dd('El pago ha fallado');
+    }
+    public function pending(){
+        return 'Pago pendiente';
+    }
+
 }

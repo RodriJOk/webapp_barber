@@ -31,10 +31,17 @@ class SuscriptionController extends Controller
                         'unit_price' => 10.0
                     ]
                 ],
+                'back_urls' => [
+                    'success' => route('success'),
+                    'failure' => route('failure'),
+                    'pending' => route('pending'),
+                ],
+                'notification_url' => "https://reservatucorte.com.ar/notifications"
             ], $request_options);
         } catch (\Exception $e) {
             \Log::error('Error al crear preferencia: ' . $e->getMessage());
-            return response()->json(['error' => 'No se pudo crear la preferencia. Intenta nuevamente.'], 500);
+            return response()->json(['error' => 'No se pudo crear la preferencia. Intenta nuevamente.' . $e->getMessage()
+        ], 500);
         }            
         $preferenceId = $preference->id;
 

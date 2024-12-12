@@ -26,6 +26,10 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/new_password', 'new_password')->name('new_password');
     Route::post('/save_new_password', 'save_new_password')->name('save_new_password');
     Route::post('/close_session', 'close_session')->name('close_session');
+    Route::post('/notifications', 'notifications')->name('notifications');
+    Route::get('/success', 'success')->name('success');
+    Route::get('/failure', 'failure')->name('failure');
+    Route::get('/pending', 'pending')->name('pending');
 });
 
 Route::controller(UserController::class)->group(function () {
