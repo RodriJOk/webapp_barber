@@ -14,12 +14,16 @@ class myEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $data;
+    public $viewTemplate;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($data, $viewTemplate)
     {
-        //
+        $this->data = $data;
+        $this->viewTemplate = $viewTemplate;
     }
 
     /**
@@ -28,8 +32,8 @@ class myEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'My Email',
-            from: new Address('hi@demomailtrap.com', 'Rodrigo Juarez'),
+            subject: $this->data['subject'] ?? 'App Barber',
+            from: new Address('noreply@appbarber.com.ar', 'App Barber'),
         );
     }
 
@@ -39,7 +43,8 @@ class myEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.reseteo_contraseña',
+            view: $this->viewTemplate,
+            with: $this->data,
         );
     }
 
@@ -52,12 +57,4 @@ class myEmail extends Mailable
     {
         return [];
     }
-
-    /**
-     * Send the email
-     */
-    // public function send($template)
-    // {
-    //     return $this->send($template);
-    // }
 }

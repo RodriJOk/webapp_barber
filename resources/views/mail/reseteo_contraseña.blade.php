@@ -193,7 +193,7 @@
             <td class="container_image">
                 <div>
                     <img 
-                        src="<?= site_url('img/notificacion.png'); ?>"
+                        {{-- src="{{ $message->embed(public_path() . '/icons/cuidado.png') }}" --}}
                         alt="Notificacion de solicitud de reestablecimiento de contraseña"
                         class="alert_image">
                 </div>
@@ -207,16 +207,20 @@
         <tr class="container_date">
             <td>
                 <span class="text_date">
-                    <?= $fecha_actual; ?>
+                    Fecha: <?php echo $date; ?>
+                    Informacion: 
                 </span>
             </td>
         </tr>
         <tr class="container_description">
             <td>
-                <p>¡Hola {{name}}! </p>
+                <p>¡Hola <?php echo $name; ?>!</p>
                 <p>Se ha solicitado el reestablecimiento de la contraseña. </br> 
-                   Por favor, pulse <a href="#">aqui</a> para poder hacerlo
+                   Por favor, pulse <a href="<?php echo $resetLink; ?>">aqui</a> para poder hacerlo
                 </p>
+                <p>Si no has solicitado el reestablecimiento de la contraseña, por favor ignora este mensaje.</p>
+
+                <p>Gracias por confiar en nosotros.</p>
             </td>
         </tr>
         <tr class="footer">

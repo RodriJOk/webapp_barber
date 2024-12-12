@@ -30,6 +30,8 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/success', 'success')->name('success');
     Route::get('/failure', 'failure')->name('failure');
     Route::get('/pending', 'pending')->name('pending');
+    Route::get('/test_email', 'test_email')->name('test_email');
+    Route::get('/template_email', 'template_email')->name('template_email');
 });
 
 Route::controller(UserController::class)->group(function () {
