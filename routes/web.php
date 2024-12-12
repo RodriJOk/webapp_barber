@@ -26,6 +26,8 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/new_password', 'new_password')->name('new_password');
     Route::post('/save_new_password', 'save_new_password')->name('save_new_password');
     Route::post('/close_session', 'close_session')->name('close_session');
+    Route::get('/test_email', 'test_email')->name('test_email');
+    Route::get('/template_email', 'template_email')->name('template_email');
 });
 
 Route::controller(UserController::class)->group(function () {

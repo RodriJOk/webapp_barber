@@ -80,7 +80,27 @@ class LoginController extends Controller
     public function reset_password()
     {
         $email = request()->input('email');
-        //Valido que el email del usuario exista en la BD
+
+        $rules = [
+            'email' => 'required|email|min:3|max:255', 
+        ];
+
+        $messages = [
+            'email.required' => 'El campo email es requerido',
+            'email.email' => 'El campo email debe ser un email valido',
+            'email.min' => 'El campo email debe tener al menos 3 caracteres',
+            'email.max' => 'El campo email debe tener como máximo 255 caracteres'
+        ];
+
+        $validator = Validator::make(request()->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            toastr()->error('Error en los datos ingresados.' . $validator->errors());
+            return redirect('/forget_password')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $exit_user = User::exitUser($email);
         if(!$exit_user){
             toastr()->error('El email no se encuentra registrado. Contactese con el administrador del sistema.');
@@ -89,16 +109,27 @@ class LoginController extends Controller
                 ->withInput();
         }
 
-        //Envio de los emails
-        $send_email = Mail::to('juarezrodrigo59@gmail.com')->send(new myEmail());
-        if(!$send_email){
-            toastr()->error('Error al enviar el email');
+        $data_user = User::getUserByEmail($email);
+        if(!$data_user){
+            toastr()->error('Error al obtener los datos del usuario');
             return redirect('/forget_password');
         }
 
-        //Envio un email para que le llegue al usuario con un link para resetear la contraseña
+        //Envio de los emails
+        $data = [
+            'name' => $data_user->name,
+            'date' => now(),
+            'subject' => 'Solicitud de reestablecimiento de contraseña',
+            'resetLink' => route('new_password'),
+        ];
+
+        $send_email = Mail::to('juarezrodrigo59@gmail.com')->send(new myEmail($data, 'mail.reseteo_contraseña'));
+        if(!$send_email){
+            toastr()->error('Error al enviar el email');
+            return redirect('/login');
+        }
         toastr()->success('Se ha enviado un email a su casilla de correo para resetear la contraseña');
-        return view('login/index');
+        return redirect('/login');
     }
     public function new_password()
     {
@@ -221,5 +252,24 @@ class LoginController extends Controller
         Auth::logout();
         session()->flush();
         return redirect('/login');
+    }
+    public function test_email(){
+        $data = [
+            'name' => 'Rodrigo',
+            'date' => now(),
+            'subject' => 'Solicitud de reestablecimiento de contraseña',
+            'resetLink' => 'http://localhost:8000/new_password',
+        ];
+
+        $send_email = Mail::to('juarezrodrigo59@gmail.com')->send(new myEmail($data, 'mail.reseteo_contraseña'));
+        if(!$send_email){
+            toastr()->error('Error al enviar el email');
+            return redirect('/login');
+        }
+        toastr()->success('Email enviado correctamente');
+        return redirect('/login');
+    }
+    public function template_email(){
+        return view('mail/reseteo_contraseña');
     }
 }
