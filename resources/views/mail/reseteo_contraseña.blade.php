@@ -26,8 +26,8 @@
             font-family: 'Open Sans', sans-serif; 
             color: #333; 
             background-color: #f9f9f9;
-            border-top: #415CF2;
-            border-bottom: #415CF2;
+            border-top: #012e46;
+            border-bottom: #012e46;
             user-select: none;
         }
         .header{
@@ -36,7 +36,7 @@
             display: table; 
             width: 100%;
             height: 100%; 
-            background-color: #415CF2;
+            background-color: #012e46;
         }
         .header .container_logo{
             overflow-wrap:break-word;
@@ -66,8 +66,10 @@
             font-size: 14px;
         }
         .image{
-            width: 40px; 
-            height: 40px;
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            border:none;
         }
         .title_company{
             line-height: 45.1px;
@@ -82,8 +84,8 @@
             font-size: 14px;
         }
         .container{
-            background-color: #415CF2; 
-            border-bottom: #415CF2;
+            background-color: #012e46; 
+            border-bottom: #012e46;
             text-align: center;
         }
         .title{
@@ -95,7 +97,7 @@
         }
         .container_date{
             text-align: center; 
-            background-color: #415CF2;
+            background-color: #012e46;
         }
         .container_date td{
             padding: 15px 0px;
@@ -151,7 +153,7 @@
             text-align: center;
         }
         .footer{
-            background-color: #415CF2; 
+            background-color: #012e46; 
             font-family: 'Raleway', sans-serif; 
             font-optical-sizing: auto; 
             font-weight: 400; 
@@ -168,35 +170,12 @@
 </head>
 <body class="body">
     <table class="table" cellspacing="0" cellpadding="0">
-        <tr>
-            <td>
-                <div class="header">
-                    <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
-                        <tbody>
-                            <tr>
-                                <td class="container_logo" align="left">
-                                </td>
-                                <td class="container" align="left">
-                                    <h1>
-                                        <span class="title_company">
-                                            <strong>App Barber</strong>
-                                        </span>
-                                    </h1>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </td>
-        </tr>
         <tr class="container">
-            <td class="container_image">
-                <div>
-                    <img 
-                        {{-- src="{{ $message->embed(public_path() . '/icons/cuidado.png') }}" --}}
-                        alt="Notificacion de solicitud de reestablecimiento de contraseña"
-                        class="alert_image">
-                </div>
+            <td>
+                <img
+                    src="{{ $message->embed(asset('images/scissors.jpg')) }}"
+                    alt="Header - Email para restablecer contraseña"
+                    class="image">
             </td>
         </tr>
         <tr class="container">
@@ -207,16 +186,21 @@
         <tr class="container_date">
             <td>
                 <span class="text_date">
-                    Fecha: <?php echo $date; ?>
-                    Informacion: 
+                    Fecha: <?php echo $date ?? date('d/m/Y'); ?>
                 </span>
+                <br/><?php 
+                if(isset($browser) && $browser != null) { ?>
+                    <span class="text_date">
+                        Navegador: <?php echo $browser ?? 'Chrome'; ?>
+                    </span><?php
+                } ?>
             </td>
         </tr>
         <tr class="container_description">
             <td>
-                <p>¡Hola <?php echo $name; ?>!</p>
+                <p>¡Hola <?php echo $name ?? 'estimad@ usuari@'; ?>!</p>
                 <p>Se ha solicitado el reestablecimiento de la contraseña. </br> 
-                   Por favor, pulse <a href="<?php echo $resetLink; ?>">aqui</a> para poder hacerlo
+                   Por favor, pulse <strong><a style="color:#000;" href="<?php echo $resetLink ?? '/login'; ?>">aqui</a></strong> para poder realizarlo.
                 </p>
                 <p>Si no has solicitado el reestablecimiento de la contraseña, por favor ignora este mensaje.</p>
 
