@@ -111,6 +111,29 @@
                 height: 100%; 
                 background-size: cover;
             }
+            @media (max-width: 768px){
+                .main{
+                    flex-direction: column;
+                }
+                .form_new_password{
+                    width: 98%;
+                    padding: 5px;
+                    height: 100vh;
+                }
+                .form_header{
+                    margin: 26px 0px;
+                }
+                .form_body .validation_rules{
+                    padding: 0px;
+                    margin: 40px auto;
+                }
+                .form_body .container_items{
+                    margin: 40px 0px;
+                }
+                .container_image{
+                    display: none;
+                }
+            }
         </style>
     </head>
     <body>
@@ -159,7 +182,7 @@
                             </span>
                         </li>
                     </ul>
-                    <div>
+                    <div class="container_items">
                         <div class="item">
                             <label for="password">Email</label>
                             <input 

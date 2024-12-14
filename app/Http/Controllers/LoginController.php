@@ -266,24 +266,4 @@ class LoginController extends Controller
     public function pending(){
         return 'Pago pendiente';
     }
-
-    public function test_email(){
-        $data = [
-            'name' => 'Rodrigo',
-            'date' => now(),
-            'subject' => 'Solicitud de reestablecimiento de contraseña',
-            'resetLink' => 'http://localhost:8000/new_password',
-        ];
-
-        $send_email = Mail::to('juarezrodrigo59@gmail.com')->send(new myEmail($data, 'mail.reseteo_contraseña'));
-        if(!$send_email){
-            toastr()->error('Error al enviar el email');
-            return redirect('/login');
-        }
-        toastr()->success('Email enviado correctamente');
-        return redirect('/login');
-    }
-    public function template_email(){
-        return view('mail/reseteo_contraseña');
-    }
 }
