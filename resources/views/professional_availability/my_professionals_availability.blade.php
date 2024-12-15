@@ -99,6 +99,91 @@
             font-size: 26px;
             margin-bottom: 30px;
         }
+        /* Estilos de la tabla */
+        .table{
+            width: 100%; 
+            border-collapse: collapse;
+        }
+        .table .table_header{
+            background-color: #012e46; 
+            color: #fff; 
+            text-align: center;
+        }
+        .table .table_header tr th{
+            padding: 10px; 
+            border-bottom: 1px solid #ccc;
+        }
+        .table .table_body{
+            text-align: center;
+        }
+        .table .table_body th {
+            background-color: whithe;
+            font-weight: bold;
+        }          
+        .table .table_body tr{
+            margin: 10px 0px;
+        }
+        .table .table_body tr:nth-child(odd) td {
+            background-color: #fff;
+        }
+        .table .table_body tr:nth-child(even) td {
+            background-color: #ebeced;        
+        }
+        .table .table_body tr td{
+            border-bottom: 1px solid #ccc;
+        }
+        .table .table_body tr:nth-child(odd) td {
+            background-color: #fff;        }
+        .table .table_body tr td .container_button_actions{
+            display: flex; 
+            flex-direction: row; 
+            justify-content: center; 
+            gap: 15px; 
+            align-items: end;
+        }
+        .table .table_body tr td .container_button_actions .button_edit{
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 15px; 
+            background-color: #007bff; 
+            color: #fff; 
+            padding: 5px 10px; 
+            border:none; 
+            border-radius: 5px;
+        }
+        .table .table_body tr td .container_button_actions .button_delete{
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 15px;
+            background-color: #c50f34; 
+            color: #fff; 
+            padding: 5px 10px; 
+            border:none;
+            border-radius: 5px;
+        }
+        .table .table_body tr .container_button_schedule{
+            display: flex; 
+            flex-direction: row; 
+            justify-content: center; 
+            gap: 15px; 
+            align-items: end;
+        }
+        .table .table_body tr .container_button_schedule button{
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 15px; 
+            background-color: #007bff; 
+            color: #fff; 
+            padding: 5px 10px; 
+            border:none; 
+            border-radius: 5px;
+        }
 
         .modal_body{
             max-width: 850px;
@@ -164,6 +249,7 @@
             display: block;
             border-radius: 100px;
             position: relative;
+            margin: 8px auto;
         }
         #label_lunes:after,
         #label_martes:after,
@@ -495,120 +581,106 @@
                         </ul>
                     </div>
                 @endif
-                @php
-                    $data = collect($data)->keyBy('day_of_the_week');
-                @endphp
+                <table class="table">
+                    <thead class="table_header">
+                        <tr>
+                            <th>Dia</th>
+                            <th>Activo</th>
+                            <th>Inicio</th>
+                            <th>Fin</th>
+                            <th>Inicio descanso</th>
+                            <th>Fin descanso</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table_body">
+                        @php
+                            $data = collect($data)->keyBy('day_of_the_week');
+                        @endphp
 
-                @foreach (['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] as $day)
-                    @php
-                        // Comprobamos si hay disponibilidad para el día actual
-                        $dayAvailability = $data->get($day);
-                        $isChecked = $dayAvailability['active'] ?? false;
-                        $startTime = $dayAvailability['start_time'] ?? '08:00';
-                        $endTime = $dayAvailability['end_time'] ?? '23:00';
-                        $startRestTime = $dayAvailability['start_rest_time'] ?? '13:00';
-                        $endRestTime = $dayAvailability['end_rest_time'] ?? '14:00';
-                    @endphp
-
-                    <div class="day_available">
-                        <section class="day_information">
-                            <div class="day">
-                                <span>{{ $day }}</span>
-                                <input 
-                                    type="text" 
-                                    name="availability[{{ strtolower($day) }}][dia]" 
-                                    value="{{ strtolower($day) }}" 
-                                    hidden>
-                            </div>
-                            <div class="checkbox_{{ strtolower($day) }}">
-                                <input 
-                                    type="checkbox" 
-                                    id="input_{{ strtolower($day) }}" 
-                                    name="availability[{{ strtolower($day) }}][checked]" 
-                                    {{ $isChecked ? 'checked' : '' }}
-                                />
-                                <label 
-                                    id="label_{{ strtolower($day) }}" 
-                                    for="input_{{ strtolower($day) }}">
-                                    {{ $day }}
-                                </label>
-                            </div>
-                        </section>
-
-                        <div class="disponibilidad_{{ strtolower($day) }}">
-                            <div class="disponibilidad_{{ strtolower($day) }}_inicio">
-                                <label for="disponibilidad_{{ strtolower($day) }}_inicio">Inicio</label>
-                                <input 
-                                    type="time" 
-                                    step="1800" 
-                                    id="disponibilidad_{{ strtolower($day) }}_inicio" 
-                                    name="availability[{{ strtolower($day) }}][disponibilidad_inicio]"
-                                    value="{{ $startTime }}"
-                                    min="08:00"
-                                    max="23:00"
-                                    {{ $isChecked ? '' : '' }} />
-                            </div>
-                            <div class="disponibilidad_{{ strtolower($day) }}_fin">
-                                <label for="disponibilidad_{{ strtolower($day) }}_fin">Fin</label>
-                                <input 
-                                    type="time" 
-                                    step="1800" 
-                                    id="disponibilidad_{{ strtolower($day) }}_fin" 
-                                    name="availability[{{ strtolower($day) }}][disponibilidad_fin]"
-                                    value="{{ $endTime }}"
-                                    min="08:00"
-                                    max="23:00"
-                                    {{ $isChecked ? '' : '' }} />
-                            </div>
-                        </div>
-
-                        <div class="descanso_{{ strtolower($day) }}">
-                            <div class="descanso_{{ strtolower($day) }}_inicio">
-                                <label for="descanso_{{ strtolower($day) }}_inicio">Inicio</label>
-                                <input 
-                                    type="time" 
-                                    step="1800" 
-                                    id="descanso_{{ strtolower($day) }}_inicio" 
-                                    name="availability[{{ strtolower($day) }}][descanso_inicio]"
-                                    value="{{ $startRestTime }}"
-                                    min="08:00"
-                                    max="23:00"
-                                />
-                            </div>
-                            <div class="descanso_{{ strtolower($day) }}_fin">
-                                <label for="descanso_{{ strtolower($day) }}_fin">Fin</label>
-                                <input 
-                                    type="time" 
-                                    step="1800" 
-                                    id="descanso_{{ strtolower($day) }}_fin" 
-                                    name="availability[{{ strtolower($day) }}][descanso_fin]"
-                                    value="{{ $endRestTime }}"
-                                    min="08:00"
-                                    max="23:00"
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <button 
-                                class="boton_descanso_{{ strtolower($day) }}"
-                                onclick="add_break({{ 'descanso_' . strtolower($day) }})">
-                                <img
-                                    src="{{ asset('icons/add_circle.png') }}" 
-                                    alt="Agregar sección de descanso" 
-                                    width="20px" 
-                                    height="20px"/>
-                                <span>Agregar descanso</span>
-                            </button>
-                        </div>
-                    </div>
-                @endforeach
-
+                        @foreach (['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] as $day)
+                            @php
+                                // Comprobamos si hay disponibilidad para el día actual
+                                $dayAvailability = $data->get($day);
+                                $isChecked = $dayAvailability['active'] ?? false;
+                                $startTime = $dayAvailability['start_time'] ?? '08:00';
+                                $endTime = $dayAvailability['end_time'] ?? '23:00';
+                                $startRestTime = $dayAvailability['start_rest_time'] ?? '00:00';
+                                $endRestTime = $dayAvailability['end_rest_time'] ?? '00:00';
+                            @endphp
+                            <tr>
+                                <td>{{ $day }}</td>
+                                <td>
+                                    <div style="display:flex; flex-direction:row;">
+                                        <input 
+                                            type="checkbox" 
+                                            id="input_{{ strtolower($day) }}" 
+                                            name="availability[{{ strtolower($day) }}][checked]" 
+                                            {{ $isChecked ? 'checked' : '' }}
+                                        />
+                                        <label 
+                                            id="label_{{ strtolower($day) }}" 
+                                            for="input_{{ strtolower($day) }}">
+                                            {{ $day }}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input 
+                                        type="time" 
+                                        step="1800" 
+                                        id="disponibilidad_{{ strtolower($day) }}_inicio" 
+                                        name="availability[{{ strtolower($day) }}][disponibilidad_inicio]"
+                                        value="{{ $startTime }}"
+                                        min="08:00"
+                                        max="23:00"
+                                        {{ $isChecked ? '' : '' }} />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="time" 
+                                        step="1800" 
+                                        id="disponibilidad_{{ strtolower($day) }}_fin" 
+                                        name="availability[{{ strtolower($day) }}][disponibilidad_fin]"
+                                        value="{{ $endTime }}"
+                                        min="08:00"
+                                        max="23:00"
+                                        {{ $isChecked ? '' : '' }} />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="time" 
+                                        step="1800" 
+                                        id="descanso_{{ strtolower($day) }}_inicio" 
+                                        name="availability[{{ strtolower($day) }}][descanso_inicio]"
+                                        value="{{ $startRestTime }}"
+                                        min="08:00"
+                                        max="23:00"
+                                    />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="time" 
+                                        step="1800" 
+                                        id="descanso_{{ strtolower($day) }}_fin" 
+                                        name="availability[{{ strtolower($day) }}][descanso_fin]"
+                                        value="{{ $endRestTime }}"
+                                        min="08:00"
+                                        max="23:00"
+                                    />
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <!-- <div>
+                    <input type="checked">
+                    <label for="checked">Notificar al profesional del cambio en el esquema de los horarios</label>
+                </div> -->
                 <div class="container_buttom">
                     <button type="button" class="close_modal" onclick="window.history.back()">
                         Volver atras
                     </button>
-                    <button type="submit" class="delete_reservation">
+                    <button type="button" class="delete_reservation" onclick="validate_form()">
                         Guardar cambios
                     </button>
                 </div>
@@ -636,6 +708,55 @@
                 "hideMethod": "fadeOut"
             }
             toastr["warning"]("El profesional no tiene horarios asignados. Por favor, seleccione los horarios de disponibilidad.");
+        }
+
+        function validate_form(){
+            let form = document.querySelector('form');
+            let checked = form.querySelectorAll('input[type="checkbox"]');
+            
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+            let checkedCheckboxes = [];
+            allCheckboxes.forEach(checkbox => {
+                if(checkbox.checked){
+                    checkedCheckboxes.push(checkbox);
+                }
+            });
+
+            if(checkedCheckboxes.length == 0){
+                toastr.error("Debe seleccionar al menos un día de la semana para guardar los cambios.");
+                return;
+            }
+
+            //Obtener todas las horas de inicio y las horas de fin. Evaluar si alguna de ellas es mayor a la otra
+            let allStartTimes = document.querySelectorAll('input[name^="availability["][name$="][disponibilidad_inicio]"]');
+            let allEndTimes = document.querySelectorAll('input[name^="availability["][name$="][disponibilidad_fin]"]');
+            let allStartRestTimes = document.querySelectorAll('input[name^="availability["][name$="][descanso_inicio]"]');
+            let allEndRestTimes = document.querySelectorAll('input[name^="availability["][name$="][descanso_fin]');
+            let errors = [];
+
+            for(let i = 0; i < allStartTimes.length; i++){
+                let startTime = allStartTimes[i].value;
+                let endTime = allEndTimes[i].value;
+                let startRestTime = allStartRestTimes[i].value;
+                let endRestTime = allEndRestTimes[i].value;
+
+                if(startTime >= endTime){
+                    errors.push(`La hora de inicio de disponibilidad del día ${allStartTimes[i].name.split('[')[1].split(']')[0]} no puede ser mayor o igual a la hora de fin.`);
+                }
+
+                if(startRestTime >= endRestTime){
+                    errors.push(`La hora de inicio de descanso del día ${allStartTimes[i].name.split('[')[1].split(']')[0]} no puede ser mayor o igual a la hora de fin.`);
+                }
+            }
+
+            if(errors.length > 0){
+                errors.forEach(error => {
+                    toastr.error(error);
+                });
+                return;
+            }
+
+            form.submit();
         }
     </script>
 </body>

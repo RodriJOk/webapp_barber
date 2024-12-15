@@ -32,13 +32,13 @@ class ProfessionalAvailabilityController extends Controller
                 'active' => $availability->active,
             ];
         }
+
         return view('professional_availability.my_professionals_availability', compact('data', 'professional_information'));
     }
     public function save_professional_availability()
     {
         $data = request()->all();
 
-        // Validaciones
         $rules = [
             'professional_id' => 'required|regex:/^[0-9]+$/',
             'availability' => 'required',
