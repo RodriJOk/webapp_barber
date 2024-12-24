@@ -86,7 +86,7 @@ Route::controller(ProfessionalsController::class)->group(function () {
 
 Route::controller(ProfessionalAvailabilityController::class)->group(function () {
     Route::get('/my_professionals_availability/{id}', 'my_professionals_availability')->name('my_professionals_availability')->middleware('auth', 'rol:admin');
-    Route::post('/save_professional_availability', 'save_professional_availability')->name('save_professional_availability')->middleware('auth', 'rol:admin');
+    Route::post('/store_professional_availability', 'store_professional_availability')->name('store_professional_availability')->middleware('auth', 'rol:admin, colaborador, cliente');
     Route::get('/delete_professional_availability/{id}', 'delete_professional_availability')->name('delete_professional_availability')->middleware('auth', 'rol:admin');
     Route::post('/update_professional_availability', 'update_professional_availability')->name('update_professional_availability')->middleware('auth', 'rol:admin');
 });

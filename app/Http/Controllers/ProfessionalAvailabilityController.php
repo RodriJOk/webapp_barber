@@ -35,18 +35,20 @@ class ProfessionalAvailabilityController extends Controller
 
         return view('professional_availability.my_professionals_availability', compact('data', 'professional_information'));
     }
-    public function save_professional_availability()
-    {
+    public function store_professional_availability(){
         $data = request()->all();
 
         $rules = [
-            'professional_id' => 'required|regex:/^[0-9]+$/',
+            'professional_id' => 'required|integer',
             'availability' => 'required',
-        ];
+            'notification' => 'in:off,on',
+        ];        
         $messages = [
             'professional_id.required' => 'El id del profesional es requerido',
             'professional_id.regex' => 'El id del profesional debe ser un valor numérico',
             'availability.required' => 'La disponibilidad del profesional es requerida',
+            // 'notification.required' => 'La notificación es requerida',
+            'notification.regex' => 'La notificación debe ser un valor on u off',
         ];
 
         $validator = Validator::make($data, $rules, $messages);
@@ -58,12 +60,17 @@ class ProfessionalAvailabilityController extends Controller
 
         $professional_id = request('professional_id');
         $professional_availability = request('availability');
+        $notification = request('notification');
 
         $update_professional = ProfessionalAvailability::updateProfessionalAvailability($professional_id, $professional_availability);
         
         if(!$update_professional){
             toastr()->error('Error al actualizar la disponibilidad del profesional');
             return redirect()->route('my_professionals_availability', ['id' => $professional_id]);
+        }
+
+        if($notification == 'on'){
+            // $this->send_email($professional_availability);
         }
 
         toastr()->success('Disponibilidad actualizada correctamente');

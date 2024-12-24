@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="https://webappbarber-56b0944e3615.herokuapp.com/icons/cuidado.png" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -569,9 +570,14 @@
             <div class="container_title">
                 <h2 class="title">Horarios de {{$professional_information->surname}}, {{ $professional_information->name }}</h2>
             </div>
-            <form action="{{ route('save_professional_availability') }}" method="POST">
-                <input type="text" name="professional_id" value="{{ $professional_information->id }}" hidden>
+            <form 
+                action="{{ route('store_professional_availability') }}" 
+                method="POST"
+                onsubmit="return validate_form();"
+            >
                 @csrf
+                <input type="text" name="professional_id" value="{{ $professional_information->id }}" hidden>
+
                 @if($errors->any())
                     <div>
                         <ul>
@@ -581,6 +587,7 @@
                         </ul>
                     </div>
                 @endif
+
                 <table class="table">
                     <thead class="table_header">
                         <tr>
@@ -599,7 +606,6 @@
 
                         @foreach (['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] as $day)
                             @php
-                                // Comprobamos si hay disponibilidad para el día actual
                                 $dayAvailability = $data->get($day);
                                 $isChecked = $dayAvailability['active'] ?? false;
                                 $startTime = $dayAvailability['start_time'] ?? '08:00';
@@ -619,9 +625,7 @@
                                         />
                                         <label 
                                             id="label_{{ strtolower($day) }}" 
-                                            for="input_{{ strtolower($day) }}">
-                                            {{ $day }}
-                                        </label>
+                                            for="input_{{ strtolower($day) }}">{{ $day }}</label>
                                     </div>
                                 </td>
                                 <td>
@@ -633,7 +637,7 @@
                                         value="{{ $startTime }}"
                                         min="08:00"
                                         max="23:00"
-                                        {{ $isChecked ? '' : '' }} />
+                                    />
                                 </td>
                                 <td>
                                     <input 
@@ -644,7 +648,7 @@
                                         value="{{ $endTime }}"
                                         min="08:00"
                                         max="23:00"
-                                        {{ $isChecked ? '' : '' }} />
+                                    />
                                 </td>
                                 <td>
                                     <input 
@@ -672,19 +676,22 @@
                         @endforeach
                     </tbody>
                 </table>
-                <!-- <div>
-                    <input type="checked">
+
+                <section style="display:flex; flex-direction: row; justify-content:center;margin-top: 20px;">
+                    <input type="checkbox" id="checked" name="notification"/>
                     <label for="checked">Notificar al profesional del cambio en el esquema de los horarios</label>
-                </div> -->
+                </section>
+
                 <div class="container_buttom">
                     <button type="button" class="close_modal" onclick="window.history.back()">
                         Volver atras
                     </button>
-                    <button type="button" class="delete_reservation" onclick="validate_form()">
+                    <button type="submit" class="delete_reservation">
                         Guardar cambios
                     </button>
                 </div>
             </form>
+
         </div>
     </main>
     <script>
@@ -724,7 +731,7 @@
 
             if(checkedCheckboxes.length == 0){
                 toastr.error("Debe seleccionar al menos un día de la semana para guardar los cambios.");
-                return;
+                return false;
             }
 
             //Obtener todas las horas de inicio y las horas de fin. Evaluar si alguna de ellas es mayor a la otra
@@ -753,10 +760,9 @@
                 errors.forEach(error => {
                     toastr.error(error);
                 });
-                return;
+                return false;
             }
-
-            form.submit();
+            return true;
         }
     </script>
 </body>

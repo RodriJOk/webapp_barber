@@ -42,6 +42,9 @@ class Professionals extends Authenticatable{
     }
     protected function getNewId(){
         $id = DB::table('professionals')->max('id');
+        if(!$id){
+            return 1;
+        }
         return $id + 1;
     }
     protected function getProfessionalById($id){
