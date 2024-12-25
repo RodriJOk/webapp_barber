@@ -186,43 +186,6 @@
             border-radius: 5px;
         }
 
-        .modal_body{
-            max-width: 850px;
-            display: flex; 
-            flex-direction:column;
-            margin: 0 auto;
-        }
-        .modal_body .items{
-            display: flex; 
-            flex-direction: column; 
-            margin: 10px 0px;
-        }
-        .modal_body .container_buttom{
-            display: flex; 
-            flex-direction: row; 
-            margin: 10px 0px; 
-            width:100%;
-        }
-        .modal_body .container_buttom .close_modal{
-            padding: 10px 0px;
-            width: 50%; 
-            background-color:#c50f34; 
-            color:#fff; 
-            border:none; 
-            border-radius: 5px; 
-            margin-right: 10px;
-            font-size: 18px;
-        }
-        .modal_body .container_buttom .delete_reservation{
-            padding: 10px 0px;
-            width: 50%; 
-            background-color:#00d1b2; 
-            color:#fff; 
-            border:none; 
-            border-radius: 5px;
-            font-size: 18px;
-        }
-
         /* Modal para setear los horarios de los colaboradores */
         #input_lunes, 
         #input_martes,
@@ -428,6 +391,12 @@
             padding: 0;
             font-size: 16px;
         }
+        .container_checkbox{
+            display:flex; 
+            flex-direction: row; 
+            justify-content:center;
+            margin-top: 20px;
+        }
         .container_buttom{
             display: flex; 
             flex-direction: row; 
@@ -436,7 +405,7 @@
             text-align: center;
             justify-content: center;
         }
-        .container_buttom .close_modal{
+        .container_buttom .go_back{
             padding: 10px 0px;
             width: 25%; 
             background-color:#c50f34; 
@@ -446,7 +415,7 @@
             margin-right: 10px;
             font-size: 18px;
         }
-        .container_buttom .delete_reservation{
+        .container_buttom .save_changes{
             padding: 10px 0px;
             width: 25%; 
             background-color:#00d1b2; 
@@ -677,16 +646,28 @@
                     </tbody>
                 </table>
 
-                <section style="display:flex; flex-direction: row; justify-content:center;margin-top: 20px;">
-                    <input type="checkbox" id="checked" name="notification"/>
-                    <label for="checked">Notificar al profesional del cambio en el esquema de los horarios</label>
-                </section>
+                <?php if($mostrar_boton_notificaciones){ ?>
+                    <section class="container_checkbox">
+                        <input 
+                            type="checkbox" 
+                            id="checked" 
+                            name="notification"/>
+                        <label for="checked">
+                            Notificar al profesional del cambio en el esquema de los horarios
+                        </label>
+                    </section>
+                <?php } ?>
 
                 <div class="container_buttom">
-                    <button type="button" class="close_modal" onclick="window.history.back()">
+                    <button 
+                        type="button" 
+                        class="go_back" 
+                        onclick="window.history.back()">
                         Volver atras
                     </button>
-                    <button type="submit" class="delete_reservation">
+                    <button 
+                        type="submit" 
+                        class="save_changes">
                         Guardar cambios
                     </button>
                 </div>

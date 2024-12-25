@@ -179,7 +179,7 @@
         </tr>
         <tr class="container">
             <td class="container_title">
-                <h1 class="title">Solicitud de reestablecimiento de contraseña</h1>
+                <h1 class="title">Notificacion en tu esquema de horarios</h1>
             </td>
         </tr>
         <tr class="container_date">
@@ -199,7 +199,7 @@
             <td>
                 <p>¡Hola <?php echo $name ?? 'estimad@ usuari@'; ?>!</p>
                 <p>Se han realizado cambios en tu esquema de horarios de trabajo. </br> 
-                   Por favor, pulse <strong><a style="color:#000;" href="<?php echo $resetLink ?? '/login'; ?>">aqui</a></strong> para poder visualizarlos.
+                   Por favor, pulse <strong><a style="color:#000;" href="<?php echo $link ?? '/login'; ?>">aqui</a></strong> para poder visualizarlos.
                 </p>
 
                 <p>Gracias por confiar en nosotros.</p>
