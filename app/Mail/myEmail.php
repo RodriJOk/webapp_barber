@@ -55,6 +55,9 @@ class myEmail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [ 
+            //Atachar la imagen que esta en public/storage/login.jpg
+            Attachment::fromStorage('login.jpg', 'login.jpg', 'public'),
+        ];
     }
 }
