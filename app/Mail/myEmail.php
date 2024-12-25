@@ -56,9 +56,18 @@ class myEmail extends Mailable
      */
     public function attachments(): array
     {
-        return [ 
-            //Atachar la imagen que esta en public/storage/login.jpg
-            Attachment::fromStorage('login.jpg', 'login.jpg', 'public'),
-        ];
+        // Ruta completa del archivo en el directorio public
+        $filePath = public_path('storage/login.jpg');
+
+        // Verificar si el archivo existe antes de adjuntarlo
+        if (file_exists($filePath)) {
+            return [
+                Attachment::fromPath($filePath)->as('login.jpg')->withMime('image/jpeg'),
+            ];
+        }
+
+        // Si el archivo no existe, no adjunta nada
+        return [];
     }
+
 }
