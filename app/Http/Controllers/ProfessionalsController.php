@@ -7,15 +7,26 @@ use App\Models\Professionals;
 use App\Models\ProfessionalAvailability;
 use App\Http\Requests\CollaboratorRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Rol;
+use App\Models\Branch;
 
 class ProfessionalsController extends Controller
 {
     public function index(){
+        $rol = Rol::getRolById(Auth::user()->rol_id);
+        $all_branches = [];
+        if($rol['name'] == 'Admin'){
+            $id_user = Auth::user()->id;
+            $all_branches = Branch::getAllBranchesByIdUser($id_user);
+        }else{
+            $all_branches = Branch::myBranch(Auth::user()->id);
+        }
         $id_branch = session()->get('id_branch');
         $all_professional = Professionals::getAllProfessionalByIdBranch($id_branch);
         $all_professional_availability = ProfessionalAvailability::getProfessionalAvailability($id_branch);
 
-        return view('professionals.index', compact('all_professional', 'all_professional_availability'));
+        return view('professionals.index', compact('all_professional', 'all_professional_availability', 'all_branches'));
     }
     public function save_professional(){
         $data = request()->all();
@@ -224,5 +235,15 @@ class ProfessionalsController extends Controller
 
         toastr()->success('Profesional actualizado correctamente');
         return redirect()->route('my_professionals');
+    }
+    public function get_professional_by_branch($id_branch){
+        if (!preg_match('/^[0-9]+$/', $id_branch)) {
+            return response()->json(['success' => false, 'message' => 'El ID de la sucursal no es válido']);
+        }
+        $all_professional = Professionals::getAllProfessionalByIdBranch($id_branch);
+        if(!$all_professional){
+            return response()->json(['success' => false, 'message' => 'No se encontraron profesionales']);
+        }
+        return response()->json(['success' => true, 'all_professional' => $all_professional]);
     }
 }

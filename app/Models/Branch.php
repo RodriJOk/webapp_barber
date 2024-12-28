@@ -41,4 +41,8 @@ class Branch extends Authenticatable{
         $branch->save();
         return $branch->id;
     }
+    protected function getAllBranchesByIdUser($id_user){
+        $branches = Branch::select('*')->where('id_user', $id_user)->get();
+        return $branches ? $branches->toArray() : null;
+    }
 }

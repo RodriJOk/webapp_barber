@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mis colaboradores</title>
     <style>
         body{
@@ -99,11 +100,13 @@
         .table{
             width: 100%; 
             border-collapse: collapse;
+            display: none;
         }
         .table .table_header{
             background-color: #012e46; 
             color: #fff; 
             text-align: center;
+            width: 100%;
         }
         .table .table_header tr th{
             padding: 10px; 
@@ -111,6 +114,7 @@
         }
         .table .table_body{
             text-align: center;
+            width: 100%;
         }
         .table .table_body th {
             background-color: whithe;
@@ -264,6 +268,24 @@
             padding: 0;
             font-size: 16px;
         }
+        .select_branch{
+            margin: 25px auto;
+            border: 1px solid #000; 
+            width: 100%;
+            font-size: 16px; 
+            height: 40px;
+            outline: none; 
+            text-decoration: none; 
+            background: transparent;
+            border-radius: 15px;
+            padding: 0px 16px;
+            color: #000;
+        }
+        .select_branch option{
+            border: 1px solid #f3f3f3;
+            background-color: #f1f1f1;
+            color: #000;
+        }
         @media (max-width: 768px){
             .section_main{
                 margin-left: 70px;
@@ -390,72 +412,40 @@
                     <button onclick="open_modal('modal')">Agregar un nuevo profesional</button>
                 </div>
             </div>
+            @if(count($all_branches) > 0)
+                <select 
+                    name="branch" 
+                    id="branch" 
+                    class="select_branch" 
+                    onchange="search_professional_by_branch(this.value)">
+                    <option value="0">Seleccione una sucursal</option>
+                    @foreach ($all_branches as $branch)
+                        <option value="{{$branch['id']}}">{{$branch['name']}}</option>
+                    @endforeach
+                </select>
+            @endif
+
+            <table class="table">
+                <thead class="table_header">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Celular</th>
+                        <th>Acciones</th>
+                        <th>Horarios</th>
+                    </tr>
+                </thead>
+                <tbody class="table_body">
+
+                </tbody>
+            </table>
+
             @if (count($all_professional) == 0)
                 <p>No tienes profesional registrados</p>
-            @elseif($all_professional > 0)
-                <table class="table">
-                    <thead class="table_header">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Email</th>
-                            <th>Celular</th>
-                            <th>Acciones</th>
-                            <th>Horarios</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table_body">
-                        @foreach ($all_professional as $professional)
-                            <tr>
-                                <td>{{$professional->name}}</td>
-                                <td>{{$professional->surname}}</td>
-                                <td>{{$professional->email}}</td>
-                                <td>{{$professional->phone}}</td>
-                                <td>
-                                    <div class="container_button_actions">
-                                        <button 
-                                            class="button_edit"
-                                            onclick="edit_professional({{$professional->id}})">
-                                            <span>
-                                                <img 
-                                                    src="{{asset('icons/edit.png')}}" 
-                                                    alt="Editar datos del profesional" 
-                                                    width="20px" 
-                                                    height="20px"/>
-                                            </span>
-                                            <span>Editar</span>
-                                        </button>
-                                        <button 
-                                            class="button_delete" 
-                                            onclick="delete_professional({{$professional->id}})">
-                                            <span>
-                                                <img 
-                                                    src="{{asset('icons/delete.png')}}" 
-                                                    alt="Eliminar datos del profesional" 
-                                                    width="20px" 
-                                                    height="20px"/>
-                                            </span>
-                                            <span>
-                                                Eliminar
-                                            </span>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td colspan="6">
-                                    <div class="container_button_schedule">
-                                        <button onclick="window.location.href='{{ route('my_professionals_availability', ['id' => $professional->id]) }}'">
-                                            <span>Ver horarios</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
             @endif
         </div>
 
-        {{-- Seccion de modal para crear un nuevo profesional--}}
         <dialog id="modal" class="modal">
             <div class="modal_header">
                 <h2>Agregar un profesional</h2>
@@ -570,10 +560,80 @@
         }
 
         function add_break(elemento){
-            console.log(elemento);
-            //Crear un elemento que sea variable 
             let descanso_dia = docuement.getElementById(elemento);
-            console.log(descanso_dia);
+        }
+        function search_professional_by_branch($id){
+            fetch('/get_professional_by_branch/'+$id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                let table = document.querySelector('.table');
+                table.style.display = 'table';
+                let all_professional = data.all_professional;
+                let table_body = document.querySelector('.table_body');
+
+                if(all_professional.length > 0){
+                    table_body.innerHTML = '';
+                    all_professional.forEach(professional => {
+                        let tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${professional.name}</td>
+                            <td>${professional.surname}</td>
+                            <td style="min-width:100%;">${professional.email}</td>
+                            <td>${professional.phone}</td>
+                            <td>
+                                <div class="container_button_actions">
+                                    <button 
+                                        class="button_edit"
+                                        onclick="edit_professional(${professional.id})">
+                                        <span>
+                                            <img 
+                                                src="{{asset('icons/edit.png')}}" 
+                                                alt="Editar datos del profesional" 
+                                                width="20px" 
+                                                height="20px"/>
+                                        </span>
+                                        <span>Editar</span>
+                                    </button>
+                                    <button 
+                                        class="button_delete" 
+                                        onclick="delete_professional(${professional.id})">
+                                        <span>
+                                            <img 
+                                                src="{{asset('icons/delete.png')}}" 
+                                                alt="Eliminar datos del profesional" 
+                                                width="20px" 
+                                                height="20px"/>
+                                        </span>
+                                        <span>
+                                            Eliminar
+                                        </span>
+                                    </button>
+                                </div>
+                            </td>
+                            <td colspan="6">
+                                <div class="container_button_schedule">
+                                    <button onclick="window.location.href='/my_professionals_availability/${professional.id}'">
+                                        <span>Ver horarios</span>
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        table_body.appendChild(tr);
+
+
+                    });
+                }else{
+                    table_body.innerHTML = '';
+                    table.style.display = 'none';
+                }
+            })
+            .catch(error => console.log(error));
         }
     </script>
 </body>

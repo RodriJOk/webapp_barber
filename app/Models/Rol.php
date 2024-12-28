@@ -11,6 +11,9 @@ class Rol extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'roles';
+    protected $primaryKey = 'id';
+    protected $keyType = 'int';
     /**
      * The attributes that are mass assignable.
      *
@@ -47,7 +50,8 @@ class Rol extends Authenticatable
 
     protected function getRolById($id)
     {
-        $rol = Rol::select('*')->where('id', $id)->first();
+        // dd($id);
+        $rol = $this->where('id', $id)->first();
         return $rol ? $rol->toArray() : null;
     }
 }

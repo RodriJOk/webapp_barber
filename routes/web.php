@@ -79,7 +79,7 @@ Route::controller(ProfessionalsController::class)->group(function () {
     Route::post('/save_professional', 'save_professional')->name('save_professional')->middleware('auth', 'rol:admin');
     Route::get('/delete_professional/{id}', 'delete_professional')->name('delete_professional')->middleware('auth', 'rol:admin');
     Route::post('/update_schedules_professional', 'update_schedules_professional')->name('update_schedules_professional')->middleware('auth', 'rol:admin');
-    
+    Route::get('/get_professional_by_branch/{id}', 'get_professional_by_branch')->name('get_professional_by_branch');
     Route::get('/edit_professional/{id}', 'edit_professional')->name('edit_professional')->middleware('auth', 'rol:admin');
     Route::post('/update_professional/{id}', 'update_professional')->name('update_professional')->middleware('auth', 'rol:admin');
 });

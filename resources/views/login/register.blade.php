@@ -32,7 +32,6 @@
                 width:40%;
             }
             .form_header .container_title{
-                /* margin: 40px 0px 30px; */
                 display:none;
             }
             .form_header .container_title .title{
