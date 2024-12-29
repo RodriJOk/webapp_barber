@@ -13,7 +13,7 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <title>Mi calendario</title>
+        <title>Realizar una reserva</title>
         <style>
             body{
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -85,33 +85,6 @@
             .navbar.close .navbar_image{
                 margin: 0px auto;
             }
-            .calendar_container{
-                min-width: 70%; 
-                padding: 10px; 
-                margin: 0 auto; 
-                position: relative; 
-                margin-left: 350px;
-            }
-            .header{
-                display: flex; 
-                flex-direction:row; 
-                justify-content: space-between; 
-                align-items: center;
-            }
-            .header .title{
-                font-size: 26px;
-            }
-            .container_button .create_event{
-                padding: 10px; 
-                width: 100%; 
-                background-color:#00d1b2; 
-                color:#fff; 
-                border:none; 
-                border-radius: 5px;
-            }
-            .calendar{
-                margin: 10px 0px;
-            }
             .close_session{
                 background: none;
                 border: none;
@@ -120,8 +93,46 @@
                 font-size: 16px;
                 cursor: pointer;
             }
-            /* Estilos de select de profesionales */
-            .select_professional{
+            /* Estilos de la seccion main contenedor principal */
+            .calendar_container{
+                min-width: 70%; 
+                padding: 10px; 
+                margin: 0 auto; 
+                position: relative; 
+                margin-left: 350px;
+            }
+            .calendar_container .header{
+                display: flex; 
+                flex-direction:row; 
+                justify-content: space-between; 
+                align-items: center;
+            }
+            .calendar_container .header .title{
+                font-size: 26px;
+            }
+            .calendar_container .body{
+                display:flex; 
+                flex-direction: column; 
+                width: 60%; 
+                margin: 0 auto; 
+                border: 2px solid #ccc;
+                padding:10px; 
+                border-radius: 5px;
+            }
+            /* Estilos del select de profesionales */
+            .container_select_professional{
+                display:flex; 
+                flex-direction: column; 
+                justify-content: center; 
+                width:100%; 
+                gap:10px; 
+                margin:20px 0px;
+            }
+            .container_select_professional .label_select{
+                font-size:18px; 
+                font-weight: 700;
+            }
+            .container_select_professional .select_professional{
                 margin: 10px auto;
                 border: 1px solid #ccc; 
                 width: 100%;
@@ -133,13 +144,96 @@
                 border-radius: 15px;
                 color: #000;
             }
-            .select_professional option{
+            .container_select_professional .select_professional option{
                 background-color: #fff;
                 color: #000;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 0px 10px;
+            }
+            /* Estilos del contenedor de servicios */
+            .container_select_service{
+                display:flex; 
+                flex-direction:column; 
+                display:none;
+            }
+            .container_select_service .label_select{
+                font-size:18px; 
+                font-weight: 700;
+            }
+            .container_select_service .container_services{
+                margin: 10px auto;
+                border: 1px solid #ccc; 
+                width: 100%;
+                font-size: 16px; 
+                outline: none; 
+                text-decoration: none; 
+                background: transparent;
+                border-radius: 15px;
+                color: #000;
+            }
+            .container_services .header_type_service{
+                height: 40px;
+                min-width: 99%;
+                max-width: 100%; 
+                display: flex; 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+                padding: 0 10px;
+                background: none;
+                border: none;
+            }
+            .container_services .header_type_service .title_service{
+                font-size: 16px; 
+                font-weight: 400; 
+                margin: 0;
+            }
+            .container_services .body_type_service{
+                display: none; 
+                flex-direction: column;
+                gap: 10px;
+                max-width: 100%;
+                list-style: none;
+                padding: 0;
+                margin: 15px 0px;
+            }
+            .container_services .body_type_service li .container_item_service{
+                min-width: 97%;
+                max-width: 100%; 
+                background: none; 
+                border: none; 
+                cursor: pointer; 
+                display: flex; 
+                justify-content: space-between;
+                border:1px solid #ccc;
+                font-size:18px;
+                text-align: center;
+                margin: 0 auto;
+                border-radius:15px;
+            }
+            .container_item_service .title{}
+            .container_item_service .price{
+                display:flex; 
+                flex-direction: row; 
+                justify-content:center; 
+                gap: 5px;
+            }
+            .container_item_service .time{
+                display:flex; 
+                flex-direction: row; 
+                justify-content:center; 
+                gap: 5px
+            }
+            /* Estilos del contenedor de dias */
+            .container_days_available{
+                display:none;
+                margin: 15px 0px;
+            }
+            .container_days_available .title{
+                font-size:18px; 
+                font-weight: 700;
             }
             /* Estilos de la seccion de servicios */
             .select_services{
@@ -208,30 +302,6 @@
                 background:none; 
                 margin:5px 0px;
             }
-            .container_buttom{
-                display: flex; 
-                flex-direction: row; 
-                margin: 10px 0px; 
-                width:100%;
-                font-size: 18px;
-            }
-            .container_buttom .cancel_event{
-                padding: 10px 0px;
-                width: 50%; 
-                background-color:#c50f34; 
-                color:#fff; 
-                border:none; 
-                border-radius: 5px; 
-                margin-right: 10px;
-            }
-            .container_buttom .create_event{
-                padding: 10px 0px;
-                width: 50%; 
-                color:#fff; 
-                border:none; 
-                border-radius: 5px;
-                background-color: #ccc;
-            }
             /* Seccion de la informacion de los usuarios */
             .container_user_information{
                 display:flex; 
@@ -276,6 +346,31 @@
                 border-radius: 15px;
                 padding: 0px 16px;
             }
+            /* Estilos de la seccion de contenedor de botones */
+            .container_buttom{
+                display: flex; 
+                flex-direction: row; 
+                margin: 10px 0px; 
+                width:100%;
+                font-size: 18px;
+            }
+            .container_buttom .cancel_event{
+                padding: 10px 0px;
+                width: 50%; 
+                background-color:#c50f34; 
+                color:#fff; 
+                border:none; 
+                border-radius: 5px; 
+                margin-right: 10px;
+            }
+            .container_buttom .create_event{
+                padding: 10px 0px;
+                width: 50%; 
+                color:#fff; 
+                border:none; 
+                border-radius: 5px;
+                background-color: #ccc;
+            }
             @media (max-width: 768px){
                 .header .title{
                     font-size: 18px;
@@ -284,38 +379,6 @@
                     margin-left: 70px;
                     min-width: 78%;
                 }
-                .calendar{
-                    height: 600px;
-                }
-                .fc-header-toolbar{
-                    display: flex;
-                    flex-direction: column-reverse;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(1){
-                    width: 100%;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(1) .fc-button-group{
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    gap: 40px;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) .fc-toolbar-title{
-                    font-size: 18px;
-                    font-family: Verdana, Geneva, Tahoma, sans-serif;
-                    margin: 10px 0px;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(3){
-                    width: 100%;
-                }
-                .fc-header-toolbar .fc-toolbar-chunk:nth-child(3) .fc-button-group{
-                    width: 100%;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    gap: 10px;
-                }
-
             }
         </style>
     </head>
@@ -427,11 +490,13 @@
                 <header class="header">
                     <h2 class="title">Realizar una nueva reserva</h2>
                 </header>
-                <main style="display:flex; flex-direction: column; width: 60%; margin: 0 auto; border: 2px solid #ccc;padding:10px; border-radius: 5px;">
+                <main class="body">
                     <form action="{{ route('create_event')}}" method="POST" class="form_create_event">
                         @csrf
-                        <div style="display:flex; flex-direction: column; justify-content: center; width:100%; gap:10px; margin:20px 0px;">
-                            <label style="font-size:18px; font-weight: 700;">Profesionales</label>
+                        <div class="container_select_professional">
+                            <label class="label_select" for="professional">
+                                Profesionales
+                            </label>
                             <select name="professional" id="professional" class="select_professional">
                                 <option value="">Selecciona un profesional</option>
                                 @foreach($professionals as $professional)
@@ -440,76 +505,44 @@
                             </select>
                         </div>
 
-                        <div class="container_select_service" style="display:flex; flex-direction:column; display:none;">
-                            <label style="font-size:18px; font-weight: 700;">Servicios</label>
-                            <div
-                                class="container_services"
-                                style="
-                                    margin: 10px 0;
-                                    border: 1px solid #ccc;
-                                    width: 100%;
-                                    font-size: 16px;
-                                    outline: none;
-                                    background: transparent;
-                                    border-radius: 15px;
-                                    color: #000;">
+                        <div class="container_select_service">
+                            <label class="label_select" for="container_services">
+                                Servicios
+                            </label>
+                            <div id="container_services" class="container_services">
                                 <button
+                                    class="header_type_service"
                                     onclick="toggle_mostrar_opciones('opciones_servicios')"
-                                    type="button"
-                                    style="
-                                        height: 40px;
-                                        min-width: 99%;
-                                        max-width: 100%; 
-                                        display: flex; 
-                                        flex-direction: row; 
-                                        justify-content: space-between; 
-                                        align-items: center; 
-                                        padding: 0 10px;
-                                        background: none;
-                                        border: none;">
-                                    <h2 style="font-size: 16px; font-weight: 400; margin: 0;">Seleccione un servicio</h2>
+                                    type="button">
+                                    <h2 class="title_service">Seleccione un servicio</h2>
                                     <img
                                         class="icon_toggle_options" 
                                         src="{{ asset('icons/expand_circle_down.png') }}" 
                                         alt="Abrir" 
                                         width="20" 
-                                        height="20" />
+                                        height="20"/>
                                 </button>
-                                <ul
-                                    id="opciones_servicios"
-                                    style="
-                                        display: none; 
-                                        flex-direction: column;
-                                        gap: 10px;
-                                        max-width: 100%;
-                                        list-style: none;
-                                        padding: 0;
-                                        margin: 15px 0px;">
+                                <ul class="body_type_service" id="opciones_servicios">
                                     <li>
                                         <button 
+                                            class="container_item_service"
                                             onclick="select_services(this)"
-                                            type="button" 
-                                            style="
-                                                min-width: 97%;
-                                                max-width: 100%; 
-                                                background: none; 
-                                                border: none; 
-                                                cursor: pointer; 
-                                                display: flex; 
-                                                justify-content: space-between;
-                                                border:1px solid #ccc;
-                                                font-size:18px;
-                                                text-align: center;
-                                                margin: 0 auto;
-                                                border-radius:15px;
-                                                ">
-                                            <span>Corte de pelo</span>
-                                            <span style="display:flex; flex-direction: row; justify-content:center; gap: 5px">
-                                                <img src="{{ asset('icons/money.png') }}" alt="Pricing" width="20" height="20" />
+                                            type="button">
+                                            <span class="title">Corte de pelo</span>
+                                            <span class="price">
+                                                <img 
+                                                    src="{{ asset('icons/money.png') }}" 
+                                                    alt="Pricing" 
+                                                    width="20" 
+                                                    height="20" />
                                                 <span>7000 ARS</span>
                                             </span>
-                                            <span style="display:flex; flex-direction: row; justify-content:center; gap: 5px">
-                                                <img src="{{ asset('icons/clock.png') }}" alt="Duration" width="20" height="20" />    
+                                            <span class="time">
+                                                <img 
+                                                    src="{{asset('icons/clock.png')}}" 
+                                                    alt="Duration" 
+                                                    width="20" 
+                                                    height="20" />    
                                                 <span>30 minutos</span>
                                             </span>
                                         </button>
@@ -518,8 +551,8 @@
                             </div>
                         </div>
 
-                        <div class="container_days_available" style="display:none; margin:15px 0px;">
-                            <label style="font-size:18px; font-weight: 700;">Dias disponibles</label>
+                        <div class="container_days_available">
+                            <label class="title">Dias disponibles</label>
                             <div class="days_available"></div>
                         </div>
                         <div class="container_buttom">
