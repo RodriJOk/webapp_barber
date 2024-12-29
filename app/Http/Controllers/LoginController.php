@@ -62,7 +62,6 @@ class LoginController extends Controller
         }
 
         Auth::login($user_information);
-        // Guarda los datos del usuario en sesión si es necesario
         $branch = Branch::getBranchByUserId($user_information->id);
         session(['id_usuario' => $user_information->id]);
         session(['nombre_usuario' => $user_information->name]);
