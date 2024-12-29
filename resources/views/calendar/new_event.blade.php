@@ -13,8 +13,6 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-
         <title>Mi calendario</title>
         <style>
             body{
@@ -73,7 +71,13 @@
                 text-decoration: none;
                 color: #fff;
             }
-
+            .navbar .button_toggle_navbar{
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #fff;
+                font-size: 16px;
+            }
             .navbar.close .button_toggle_navbar{
                 text-align: center;
                 margin: 0px auto;
@@ -322,7 +326,9 @@
                     <h2 class="header_title">
                         <a href="{{route('home')}}" class="text_link">Menu</a>
                     </h2>
-                    <button class="button_toggle_navbar" onclick="toggle_navbar()" style="background: none; border:none;">
+                    <button 
+                        class="button_toggle_navbar" 
+                        onclick="toggle_navbar()">
                         <img 
                             class="toggle_navbar"
                             src="{{asset('icons/arrow_to_right.png')}}" 
@@ -780,7 +786,6 @@
             }
         }
         function cancel_event(){
-            //Si se selecciono todo le formulario, se limpia. Si no se redirige a la pagina principal
             let professional = document.getElementById('professional');
             let service = document.getElementById('service');
             let slots = document.querySelectorAll('.day button');
@@ -874,6 +879,32 @@
             let professional = document.getElementById('professional');
             let services = id;
             get_available(services, professional.value);
+        }
+        function toggle_navbar(){
+            let navbar = document.querySelector('.navbar');
+            if(navbar.classList.contains('close')){
+                let header_title = document.getElementsByClassName('header_title')[0];
+                let text_link = document.querySelectorAll('.text_link');
+                let toggle_navbar = document.getElementsByClassName('toggle_navbar')[0];
+                
+                navbar.classList.remove('close');
+                text_link.forEach(element => {
+                    element.style.display = 'block';
+                });
+                header_title.style.display = 'block';
+                toggle_navbar.style.transform = 'rotate(180deg)';
+            }else{
+                let text_link = document.querySelectorAll('.text_link');
+                let header_title = document.getElementsByClassName('header_title')[0];
+                let toggle_navbar = document.getElementsByClassName('toggle_navbar')[0];
+                
+                navbar.classList.add('close');
+                text_link.forEach(element => {
+                    element.style.display = 'none';
+                });
+                header_title.style.display = 'none';
+                toggle_navbar.style.transform = 'rotate(0deg)';
+            }
         }
     </script>
 </html>
