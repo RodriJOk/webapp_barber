@@ -362,17 +362,19 @@
                             <a href="{{ route('suscription') }}" class="text_link">Mi suscripcion</a>
                         </div>
                     </li>
-                    <li>
-                        <div class="item_list">
-                            <img 
-                                class="navbar_image"
-                                src="{{asset('icons/members_groups.png')}}" 
-                                alt="Membresia"
-                                width="20px"
-                                height="20px">
-                            <a href="{{ route('my_professionals') }}" class="text_link">Mis profesionales</a>
-                        </div>
-                    </li>
+                    <?php if(Auth::user()->rol_id == 1){ ?>
+                        <li>
+                            <div class="item_list">
+                                <img 
+                                    class="navbar_image"
+                                    src="{{asset('icons/members_groups.png')}}" 
+                                    alt="Membresia"
+                                    width="20px"
+                                    height="20px">
+                                <a href="{{ route('my_professionals') }}" class="text_link">Mis profesionales</a>
+                            </div>
+                        </li>
+                    <?php } ?>
                     <li>
                         <div class="item_list">
                             <img 
@@ -385,7 +387,7 @@
                         </div>
                     </li>
                     <li>
-                        <div class="item">
+                        <div class="item_list">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/add_home.png')}}"
