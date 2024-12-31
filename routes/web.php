@@ -11,6 +11,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CollaboratorAvailableController;
 use App\Http\Controllers\ProfessionalsController;
 use App\Http\Controllers\ProfessionalAvailabilityController;
+use App\Http\Controllers\ServicesController;
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth', 'rol:admin,colaborador,client');
 
@@ -89,4 +90,8 @@ Route::controller(ProfessionalAvailabilityController::class)->group(function () 
     Route::post('/store_professional_availability', 'store_professional_availability')->name('store_professional_availability')->middleware('auth', 'rol:admin, colaborador, client');
     Route::get('/delete_professional_availability/{id}', 'delete_professional_availability')->name('delete_professional_availability')->middleware('auth', 'rol:admin');
     Route::post('/update_professional_availability', 'update_professional_availability')->name('update_professional_availability')->middleware('auth', 'rol:admin');
+});
+
+Route::controller(ServicesController::class)->group(function () {
+    Route::get('/my_services', 'my_services')->name('my_services')->middleware('auth', 'rol:admin');
 });
