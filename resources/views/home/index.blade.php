@@ -261,6 +261,17 @@
                     </li>
                     <li>
                         <div class="item">
+                            <img 
+                                class="navbar_image"
+                                src="{{asset('icons/scissors.png')}}"
+                                alt="Sucursales"
+                                width="20px"
+                                height="20px">
+                            <a href="{{ route('my_services') }}" class="text_link">Mis servicios</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item">
                             <img
                                 class="navbar_image"
                                 src="{{asset('icons/logout.png')}}" 
@@ -314,6 +325,15 @@
                         <div class="link_info">
                             <h2 class="title">Mis suscripcion</h2>
                             <p class="description">Renueva y gestiona tu membresia</p>
+                        </div>
+                    </a>
+                    <a href="{{ route('my_services') }}" class="link">
+                        <div class="link_icon">
+                            <img src="{{asset('icons/scissors.png')}}" alt="Tipo de servicios. Gestiona tus servicios">
+                        </div>
+                        <div class="link_info">
+                            <h2 class="title">Mis servicios</h2>
+                            <p class="description">Gestiona tus servicios</p>
                         </div>
                     </a>
                 </main>
