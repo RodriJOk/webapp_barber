@@ -459,7 +459,8 @@
                         <input 
                             id="name"
                             class="input_name"
-                            type="text" 
+                            type="text"
+                            max-lenght="255"
                             name="name" 
                             autocomplete="off" 
                             placeholder="Nombre">
@@ -467,6 +468,7 @@
                     <div class="items">
                         <label for="description">Descripcion</label>
                         <input 
+                            max-lenght="255"
                             id="description"
                             class="input_description"
                             type="text" 
@@ -495,8 +497,8 @@
                             placeholder="Duracion">
                     </div>
                     <div class="items">
-                        <label for="estado">Estado</label>
-                        <select name="estado" id="estado" class="select_estado">
+                        <label for="state">Estado</label>
+                        <select name="state" id="state" class="select_estado">
                             <option value="">Seleccione un estado</option>
                             <option value="activo">Activo</option>
                             <option value="inactivo">Inactivo</option>
