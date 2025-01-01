@@ -95,4 +95,8 @@ Route::controller(ProfessionalAvailabilityController::class)->group(function () 
 Route::controller(ServicesController::class)->group(function () {
     Route::get('/my_services', 'my_services')->name('my_services')->middleware('auth', 'rol:admin');
     Route::post('/save_service', 'save_service')->name('save_service')->middleware('auth', 'rol:admin');
+    Route::get('/delete_service/{id}', 'delete_service')->name('delete_service')->middleware('auth', 'rol:admin');
+    Route::get('/active_service/{id}', 'active_service')->name('active_service')->middleware('auth', 'rol:admin');
+    Route::get('/edit_service/{id}', 'edit_service')->name('edit_service')->middleware('auth', 'rol:admin');
+    Route::post('/update_service/{id}', 'update_service')->name('update_service')->middleware('auth', 'rol:admin');
 });

@@ -35,9 +35,9 @@ class Services extends Authenticatable{
 
     protected function saveService($data){
         $service = new Services();
-        $service->name = $data['name'];
+        $service->name = $data['services'];
         $service->description = $data['description'];
-        $service->branch_id = $data['branch_id'];
+        $service->branch_id = $data['branch'];
         $service->created_at = date('Y-m-d H:i:s');
         $service->updated_at = date('Y-m-d H:i:s');
         $service->price = $data['price'];
