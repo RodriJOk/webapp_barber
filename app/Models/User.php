@@ -73,7 +73,10 @@ class User extends Authenticatable
     }
 
     protected function getUserByEmail($email){
-        $user = User::select('users.*', 'roles.name as rol')->join('roles', 'users.rol_id', '=', 'roles.id')->where('users.email', $email)->first();
+        $user = User::select('users.*', 'roles.name as rol', 'branch.id as branch_id')
+                    ->join('roles', 'users.rol_id', '=', 'roles.id')
+                    ->join('branch', 'branch.id_user', '=', 'users.id')
+                    ->where('users.email', $email)->first();
         return $user;
     }
 
