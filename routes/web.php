@@ -94,4 +94,5 @@ Route::controller(ProfessionalAvailabilityController::class)->group(function () 
 
 Route::controller(ServicesController::class)->group(function () {
     Route::get('/my_services', 'my_services')->name('my_services')->middleware('auth', 'rol:admin');
+    Route::post('/save_service', 'save_service')->name('save_service')->middleware('auth', 'rol:admin');
 });
