@@ -71,7 +71,13 @@
         .navbar.close .navbar_image{
             margin: 0px auto;
         }
-
+        .close_session{
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
         /* Estilos de la seccion de informacion y ABM*/
         .section_main{
             min-width: 70%; 
@@ -234,7 +240,7 @@
             font-size: 18px;
             cursor: pointer;
         }
-        .modal_body .container_buttom .delete_reservation{
+        .modal_body .container_buttom .save_service{
             padding: 10px 0px;
             width: 50%; 
             background-color:#00d1b2; 
@@ -245,9 +251,9 @@
             cursor: pointer;
         }
         .items .input_name,
-        .items .input_surname,
-        .items .input_phone,
-        .items .input_email{
+        .items .input_description,
+        .items .input_price,
+        .items .input_duration{
             margin: 10px auto;
             border: 1px solid #ccc; 
             color: #000; 
@@ -260,12 +266,25 @@
             border-radius: 15px;
             padding: 0px 5px;
         }
-        .close_session{
-            background: none;
-            border: none;
-            margin: 0;
-            padding: 0;
-            font-size: 16px;
+        .items .select_estado{
+            margin: 10px auto;
+            border: 1px solid #ccc; 
+            width: 100%;
+            font-size: 16px; 
+            height: 40px;
+            outline: none; 
+            text-decoration: none; 
+            background: transparent;
+            border-radius: 15px;
+            color: #000;
+        }
+        .items .select_estado option{
+            background-color: #fff;
+            color: #000;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 0px 10px;
         }
         @media (max-width: 768px){
             .section_main{
@@ -423,7 +442,7 @@
 
         <dialog id="modal" class="modal">
             <div class="modal_header">
-                <h2>Agregar un profesional</h2>
+                <h2>Agregar un nuevo servicio</h2>
                 <button class="close_modal" onclick="close_modal('modal')">
                     <img 
                         src="{{asset('icons/close.png')}}" 
@@ -433,7 +452,7 @@
                 </button>
             </div>
             <section class="modal_body">
-                <form action="{{ route('save_professional') }}" method="POST">
+                <form action="{{ route('save_service') }}" method="POST">
                     @csrf
                     <div class="items">
                         <label for="name">Nombre</label>
@@ -446,40 +465,53 @@
                             placeholder="Nombre">
                     </div>
                     <div class="items">
-                        <label for="surname">Apellido</label>
+                        <label for="description">Descripcion</label>
                         <input 
-                            id="surname"
-                            class="input_surname"
+                            id="description"
+                            class="input_description"
                             type="text" 
-                            name="surname" 
-                            autocomplete="off" 
-                            placeholder="Apellido">
+                            name="description"
+                            autocomplete="off"
+                            placeholder="Descripcion">
                     </div>
                     <div class="items">
-                        <label for="email">Email</label>
+                        <label for="price">Precio</label>
                         <input 
-                            id="email"
-                            class="input_email"
-                            type="text" 
-                            name="email" 
+                            id="price"
+                            class="input_price"
+                            type="numeric"
+                            name="price" 
                             autocomplete="off" 
-                            placeholder="Email">
+                            placeholder="Precio en ARS">
                     </div>
                     <div class="items">
-                        <label for="phone">Celular/Whatsapp</label>
+                        <label for="duration">Duracion</label>
                         <input 
-                            id="phone"
-                            class="input_phone"
+                            id="duration"
+                            class="input_duration"
                             type="text" 
-                            name="phone"
+                            name="duration"
                             autocomplete="off" 
-                            placeholder="Celular">
+                            placeholder="Duracion">
+                    </div>
+                    <div class="items">
+                        <label for="estado">Estado</label>
+                        <select name="estado" id="estado" class="select_estado">
+                            <option value="">Seleccione un estado</option>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
                     </div>
                     <div class="container_buttom">
-                        <button type="button" class="close_modal" onclick="close_modal('modal')">
+                        <button 
+                            type="button" 
+                            class="close_modal" 
+                            onclick="close_modal('modal')">
                             Cerrar modal
                         </button>
-                        <button type="submit" class="delete_reservation">
+                        <button 
+                            type="submit" 
+                            class="save_service">
                             Guardar cambios
                         </button>
                     </div>
