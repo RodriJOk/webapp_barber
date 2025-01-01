@@ -250,7 +250,7 @@
             font-size: 18px;
             cursor: pointer;
         }
-        .items .input_name,
+        .items .input_services,
         .items .input_description,
         .items .input_price,
         .items .input_duration{
@@ -266,7 +266,8 @@
             border-radius: 15px;
             padding: 0px 5px;
         }
-        .items .select_estado{
+        .items .select_estado,
+        .items .select_branch{
             margin: 10px auto;
             border: 1px solid #ccc; 
             width: 100%;
@@ -278,7 +279,8 @@
             border-radius: 15px;
             color: #000;
         }
-        .items .select_estado option{
+        .items .select_estado option,
+        .items .select_branch option{
             background-color: #fff;
             color: #000;
             display: flex;
@@ -417,23 +419,46 @@
             <table class="table">
                 <thead class="table_header">
                     <tr>
-                        <th>Id</th>
+                        <th>Sucursal</th>
                         <th>Nombre</th>
-                        <th>Descripcion</th>
                         <th>Precio</th>
                         <th>Duracion</th>
                         <th>Creado el </th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="table_body">
-                    @foreach($myServicesByIdBranch as $service)
+                    @foreach($myServicesByBranch as $service)
                         <tr>
-                            <td>{{ $service->id }}</td>
+                            <td>{{ $service->branch_name }}</td>
                             <td>{{ $service->name }}</td>
-                            <td>{{ $service->description }}</td>
                             <td>{{ $service->price }}</td>
                             <td>{{ $service->duration }}</td>
-                            <td>{{ $service->created_at }}</td>
+                            <td>
+                                {{ date('d-m-Y', strtotime($service->created_at)) }}
+                            </td>
+                            <td>
+                                <div class="container_button_actions">
+                                    <button 
+                                        class="button_edit" 
+                                        onclick="window.location.href='{{ route('edit_service', ['id' => $service->id]) }}'">
+                                        Editar
+                                    </button>
+                                    @if($service->state == 'activo')
+                                        <button 
+                                            class="button_delete"
+                                            onclick="window.location.href='{{ route('delete_service', ['id' => $service->id]) }}'">
+                                            Desactivar
+                                        </button>
+                                    @else
+                                        <button 
+                                            class="button_delete"
+                                            onclick="window.location.href='{{ route('active_service', ['id' => $service->id]) }}'">
+                                            Activar
+                                        </button>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -455,15 +480,15 @@
                 <form action="{{ route('save_service') }}" method="POST">
                     @csrf
                     <div class="items">
-                        <label for="name">Nombre</label>
+                        <label for="services">Servicios</label>
                         <input 
-                            id="name"
-                            class="input_name"
+                            id="services"
+                            class="input_services"
                             type="text"
                             max-lenght="255"
-                            name="name" 
+                            name="services" 
                             autocomplete="off" 
-                            placeholder="Nombre">
+                            placeholder="Nombre del servicio">
                     </div>
                     <div class="items">
                         <label for="description">Descripcion</label>
@@ -502,6 +527,17 @@
                             <option value="">Seleccione un estado</option>
                             <option value="activo">Activo</option>
                             <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="items">
+                        <label for="branch">Sucursales</label>
+                        <select 
+                            name="branch" 
+                            id="branch" 
+                            class="select_branch">
+                            @foreach($getAllBranches as $branch)
+                                <option value="{{ $branch['id'] }}">{{ $branch['name']}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="container_buttom">
