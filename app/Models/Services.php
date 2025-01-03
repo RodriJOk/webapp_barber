@@ -46,4 +46,10 @@ class Services extends Authenticatable{
         $service->save();
         return true;
     }
+    protected function deleteService($id_service){
+        $service = Services::find($id_service);
+        $service->state = 'inactivo';
+        $service->save();
+        return true;
+    }
 }

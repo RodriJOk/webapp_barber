@@ -56,4 +56,19 @@ class ServicesController extends Controller
         toastr()->success('Servicio guardado correctamente');
         return redirect()->route('my_services');
     }
+    public function delete_service($id_service){
+        if(!Services::deleteService($id_service)){
+            toastr()->error('Error al eliminar el servicio');
+            return redirect()->route('my_services');
+        }
+        toastr()->success('Servicio eliminado correctamente');
+        return redirect()->route('my_services');
+    }
+    public function edit_service($id_service){
+        $service = Services::find($id_service);
+        $id_user = session()->get('id_usuario');
+        $myServicesByBranch = Services::getServicesByIdUser($id_user);
+        $getAllBranches = Branch::getBranchById($id_user);
+        return view('services.index', ['myServicesByBranch' => $myServicesByBranch, 'getAllBranches' => $getAllBranches, 'service' => $service]);
+    }
 }
