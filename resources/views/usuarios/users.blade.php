@@ -156,7 +156,7 @@
                         </div>
                     </li>
                     <li>
-                        <div style="display: flex; flex-direction: row; gap: 10px;"
+                        <div style="display: flex; flex-direction: row; gap: 10px;">
                             <img 
                                 class="navbar_image"
                                 src="{{asset('icons/add_home.png')}}"
@@ -166,6 +166,19 @@
                             <a href="{{ route('my_branch') }}" class="text_link">Mis sucursales</a>
                         </div>
                     </li>
+                    @if(Auth::user()->rol_id == 1)
+                        <li>
+                            <div style="display: flex; flex-direction: row; gap: 10px;">
+                                <img 
+                                    class="navbar_image"
+                                    src="{{asset('icons/scissors.png')}}"
+                                    alt="Sucursales"
+                                    width="20px"
+                                    height="20px">
+                                <a href="{{ route('my_services') }}" class="text_link">Mis servicios</a>
+                            </div>
+                        </li>
+                    @endif
                     <li>
                         <div style="display: flex; flex-direction: row; gap: 10px;">
                             <img
