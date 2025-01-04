@@ -167,18 +167,6 @@
             border:none;
             border-radius: 5px;
         }
-        .table .table_body tr td .container_button_actions .button_activate{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            background-color: #28a745;
-            color: #fff;
-            padding: 5px 10px; 
-            border:none;
-            border-radius: 5px;
-        }
         .table .table_body tr .container_button_schedule{
             display: flex; 
             flex-direction: row; 
@@ -265,7 +253,8 @@
         .items .input_services,
         .items .input_description,
         .items .input_price,
-        .items .input_duration{
+        .items .input_duration,
+        .items .input_branch{
             margin: 10px auto;
             border: 1px solid #ccc; 
             color: #000; 
@@ -277,6 +266,11 @@
             background: transparent;
             border-radius: 15px;
             padding: 0px 5px;
+        }
+        .items .input_branch{
+            cursor: not-allowed;
+            pointer-events: none;
+            user-select: none;
         }
         .items .select_estado,
         .items .select_branch{
@@ -436,77 +430,20 @@
                 </div>
             @endif
             <div class="container_title">
-                <h2 class="title">Mis servicios</h2>
+                <h2 class="title">Editar mi servicios</h2>
                 <div class="container_button">
-                    <button onclick="open_modal('modal')">Agregar un nuevo servicio</button>
+                    <a href="{{ route('my_services') }}">
+                        <button>Volver a servicios</button>
+                    </a>
                 </div>
-            </div>
-            <table class="table">
-                <thead class="table_header">
-                    <tr>
-                        <th>Sucursal</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Duracion</th>
-                        <th>Creado el </th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="table_body">
-                    @foreach($myServicesByBranch as $service)
-                        <tr>
-                            <td>{{ $service->branch_name }}</td>
-                            <td>{{ $service->name }}</td>
-                            <td>{{ $service->price }}</td>
-                            <td>{{ $service->duration }} min.</td>
-                            <td>
-                                {{ date('d-m-Y', strtotime($service->created_at)) }}
-                            </td>
-                            <td>
-                                <div class="container_button_actions">
-                                    <button 
-                                        class="button_edit" 
-                                        onclick="window.location.href='{{ route('edit_service', ['id' => $service->id]) }}'">
-                                        Editar
-                                    </button>
-                                    @if($service->state == 'activo')
-                                        <button 
-                                            class="button_delete"
-                                            onclick="window.location.href='{{ route('delete_service', ['id' => $service->id]) }}'">
-                                            Desactivar
-                                        </button>
-                                    @else
-                                        <button 
-                                            class="button_activate"
-                                            onclick="window.location.href='{{ route('active_service', ['id' => $service->id]) }}'">
-                                            Activar
-                                        </button>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <dialog id="modal" class="modal">
-            <div class="modal_header">
-                <h2>Agregar un nuevo servicio</h2>
-                <button class="close_modal" onclick="close_modal('modal')">
-                    <img 
-                        src="{{asset('icons/close.png')}}" 
-                        alt="Cerrar el modal"
-                        width="20px" 
-                        height="20px">
-                </button>
             </div>
             <section class="modal_body">
                 <form action="{{ route('save_service') }}" method="POST">
                     @csrf
                     <div class="items">
                         <label for="services">Servicios</label>
-                        <input 
+                        <input
+                            value="{{ $service['name'] }}"
                             id="services"
                             class="input_services"
                             type="text"
@@ -517,7 +454,8 @@
                     </div>
                     <div class="items">
                         <label for="description">Descripcion</label>
-                        <input 
+                        <input
+                            value="{{ $service['description'] }}"
                             max-lenght="255"
                             id="description"
                             class="input_description"
@@ -527,8 +465,9 @@
                             placeholder="Descripcion">
                     </div>
                     <div class="items">
-                        <label for="price">Precio</label>
-                        <input 
+                        <label for="price">Precio (en ARS)</label>
+                        <input
+                            value="{{ $service['price'] }}"
                             id="price"
                             class="input_price"
                             type="numeric"
@@ -538,7 +477,8 @@
                     </div>
                     <div class="items">
                         <label for="duration">Duracion</label>
-                        <input 
+                        <input
+                            value="{{ $service['duration'] }}"
                             id="duration"
                             class="input_duration"
                             type="text" 
@@ -550,20 +490,30 @@
                         <label for="state">Estado</label>
                         <select name="state" id="state" class="select_estado">
                             <option value="">Seleccione un estado</option>
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
+                            <option 
+                                @if($service['state'] == 'activo')
+                                    selected
+                                @endif
+                                value="activo">
+                                Activo
+                            </option>
+                            <option
+                                @if($service['state'] == 'inactivo')
+                                    selected
+                                @endif 
+                                value="inactivo">
+                                Inactivo
+                            </option>
                         </select>
                     </div>
                     <div class="items">
                         <label for="branch">Sucursales</label>
-                        <select 
-                            name="branch" 
-                            id="branch" 
-                            class="select_branch">
-                            @foreach($getAllBranches as $branch)
-                                <option value="{{ $branch['id'] }}">{{ $branch['name']}}</option>
-                            @endforeach
-                        </select>
+                        <input 
+                            class="input_branch"
+                            type="text" 
+                            disabled 
+                            name="service_id" 
+                            value="{{ $branch['name'] }}">
                     </div>
                     <div class="container_buttom">
                         <button 
@@ -580,7 +530,7 @@
                     </div>
                 </form>
             </section>
-        </dialog> 
+        </div>
     </main>
     <script>
         function toggle_navbar(){
@@ -606,14 +556,6 @@
                 let toggle_navbar = document.getElementsByClassName('toggle_navbar')[0];
                 toggle_navbar.style.transform = 'rotate(0deg)';
             }
-        }
-        function open_modal(element){
-            let modal = document.getElementById(element);
-            modal.style.display = 'block';
-        }
-        function close_modal(id){
-            let modal = document.getElementById(id);
-            modal.style.display = 'none';
         }
     </script>
 </body>

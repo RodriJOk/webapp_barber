@@ -66,9 +66,16 @@ class ServicesController extends Controller
     }
     public function edit_service($id_service){
         $service = Services::find($id_service);
+        if(!$service){
+            toastr()->error('Servicio no encontrado');
+            return redirect()->route('my_services');
+        }
         $id_user = session()->get('id_usuario');
         $myServicesByBranch = Services::getServicesByIdUser($id_user);
-        $getAllBranches = Branch::getBranchById($id_user);
-        return view('services.index', ['myServicesByBranch' => $myServicesByBranch, 'getAllBranches' => $getAllBranches, 'service' => $service]);
+        $branch = Branch::getBranchByIdBranch($service->branch_id);
+        return view('services.edit', [
+            'myServicesByBranch' => $myServicesByBranch, 
+            'branch' => $branch, 
+            'service' => $service]);
     }
 }
